@@ -302,7 +302,6 @@ tr.row-removed td{background:var(--gray-light)!important;opacity:.7}
       <span class="nav-icon">✅</span> 白名单列表
       <span class="nav-badge yellow" id="badge-pending">12</span>
     </div>
-    <div class="nav-item" onclick="navTo('wl-rule',this)"><span class="nav-icon">⚙️</span> 审核规则</div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">激励计划</div>
@@ -445,7 +444,10 @@ tr.row-removed td{background:var(--gray-light)!important;opacity:.7}
       <div class="page-title">✅ 白名单管理</div>
       <div class="page-subtitle">创作者资格审核与管理</div>
     </div>
-    <button class="btn btn-primary" onclick="openModal('modal-add-white')">＋ 人工加白</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-gray" onclick="navTo('wl-rule',this)">⚙️ 审核规则</button>
+      <button class="btn btn-primary" onclick="openModal('modal-add-white')">＋ 人工加白</button>
+    </div>
   </div>
 
   <div class="stats-row" style="grid-template-columns:repeat(5,1fr)">
