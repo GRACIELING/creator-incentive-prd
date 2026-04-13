@@ -1,0 +1,3043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>创作者激励系统 — 管理端</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#4f46e5;--primary-dark:#4338ca;--primary-light:#eff6ff;
+  --green:#16a34a;--green-light:#f0fdf4;--green-border:#bbf7d0;
+  --red:#dc2626;--red-light:#fef2f2;--red-border:#fecaca;
+  --orange:#ea580c;--orange-light:#fff7ed;--orange-border:#fed7aa;
+  --yellow:#a16207;--yellow-light:#fef9c3;--yellow-border:#fde68a;
+  --purple:#7c3aed;--purple-light:#faf5ff;
+  --gray:#6b7280;--gray-light:#f3f4f6;--gray-border:#e8eaf0;
+  --text:#1a1a2e;--text2:#374151;--text3:#4b5563;--text4:#6b7280;
+  --bg:#f0f2f5;--white:#fff;
+  --sidebar:240px;--topbar:56px;
+  --radius:10px;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+
+/* ===== TOPBAR ===== */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar);z-index:200;
+  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);
+  display:flex;align-items:center;padding:0 20px;gap:16px;
+  box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.topbar-brand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.topbar-brand .icon{font-size:20px}
+.topbar-brand .title{color:#fff;font-size:16px;font-weight:700}
+.topbar-brand .badge{background:var(--primary);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.topbar-role{display:flex;gap:4px;background:rgba(255,255,255,.1);border-radius:8px;padding:4px}
+.role-btn{padding:4px 12px;border:none;background:transparent;color:rgba(255,255,255,.7);border-radius:6px;font-size:12px;font-weight:600;transition:all .2s}
+.role-btn.active{background:var(--primary);color:#fff}
+.topbar-user{color:rgba(255,255,255,.8);font-size:13px;display:flex;align-items:center;gap:6px}
+.topbar-user .avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+
+/* ===== SIDEBAR ===== */
+.sidebar{position:fixed;top:var(--topbar);left:0;width:var(--sidebar);height:calc(100vh - var(--topbar));
+  background:var(--white);border-right:1px solid var(--gray-border);overflow-y:auto;z-index:100}
+.sidebar-section{padding:16px 0 8px}
+.sidebar-label{font-size:11px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1px;padding:0 16px 8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;font-weight:500;color:var(--text3);
+  border-left:3px solid transparent;transition:all .2s;cursor:pointer}
+.nav-item:hover{background:var(--gray-light);color:var(--primary)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);border-left-color:var(--primary);font-weight:600}
+.nav-item .nav-icon{font-size:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.yellow{background:var(--yellow)}
+.nav-badge.blue{background:var(--primary)}
+
+/* ===== MAIN ===== */
+.main{margin-left:var(--sidebar);margin-top:var(--topbar);min-height:calc(100vh - var(--topbar));padding:24px}
+
+/* ===== PAGE ===== */
+.page{display:none}
+.page.active{display:block}
+
+/* ===== PAGE HEADER ===== */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.page-title{font-size:22px;font-weight:800;color:var(--text)}
+.page-subtitle{font-size:13px;color:var(--text4);margin-top:2px}
+
+/* ===== STATS ROW ===== */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:var(--white);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);border:1px solid var(--gray-border)}
+.stat-num{font-size:26px;font-weight:800;color:var(--text)}
+.stat-label{font-size:12px;color:var(--text4);margin-top:2px}
+.stat-trend{font-size:11px;margin-top:4px}
+.stat-card.c-blue .stat-num{color:var(--primary)}
+.stat-card.c-green .stat-num{color:var(--green)}
+.stat-card.c-red .stat-num{color:var(--red)}
+.stat-card.c-orange .stat-num{color:var(--orange)}
+.stat-card.c-yellow .stat-num{color:var(--yellow)}
+.stat-card.c-purple .stat-num{color:var(--purple)}
+
+/* ===== CARD ===== */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--gray-border);margin-bottom:16px;overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--gray-border);flex-wrap:wrap;gap:10px}
+.card-title{font-size:15px;font-weight:700;color:var(--text)}
+.card-body{padding:20px}
+.card-body.no-pad{padding:0}
+
+/* ===== TOOLBAR ===== */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.search-input{padding:7px 12px;border:1px solid var(--gray-border);border-radius:7px;font-size:13px;color:var(--text2);width:200px;outline:none;transition:border .2s}
+.search-input:focus{border-color:var(--primary)}
+.filter-select{padding:7px 10px;border:1px solid var(--gray-border);border-radius:7px;font-size:13px;color:var(--text2);background:var(--white);outline:none}
+
+/* ===== TABLE ===== */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--gray-light);padding:10px 16px;text-align:left;font-weight:600;color:var(--text2);border-bottom:2px solid var(--gray-border);white-space:nowrap}
+td{padding:10px 16px;border-bottom:1px solid #f0f2f5;color:var(--text3);vertical-align:middle}
+tr:hover td{background:#fafbfc}
+tr.row-punish td{background:var(--orange-light)!important}
+tr.row-removed td{background:var(--gray-light)!important;opacity:.7}
+
+/* ===== BADGES ===== */
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.badge-normal{background:var(--green-light);color:var(--green)}
+.badge-pending{background:var(--yellow-light);color:var(--yellow)}
+.badge-active{background:var(--primary-light);color:var(--primary)}
+.badge-punish{background:var(--orange-light);color:var(--orange)}
+.badge-fail{background:var(--red-light);color:var(--red)}
+.badge-success{background:var(--green-light);color:var(--green)}
+.badge-settle{background:var(--purple-light);color:var(--purple)}
+.badge-removed{background:var(--gray-light);color:var(--gray)}
+.badge-review{background:#e0f2fe;color:#0369a1}
+.badge-finance{background:#fdf4ff;color:#9333ea}
+.badge-paid{background:var(--green-light);color:var(--green)}
+
+.rank-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.rank-bronze{background:#fff7ed;color:#92400e}
+.rank-silver{background:var(--gray-light);color:var(--text2)}
+.rank-gold{background:var(--yellow-light);color:var(--yellow)}
+.rank-diamond{background:var(--primary-light);color:#1d4ed8}
+.rank-master{background:var(--purple-light);color:var(--purple)}
+
+.track-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.track-encourage{background:var(--purple-light);color:var(--purple)}
+.track-normal{background:var(--gray-light);color:var(--gray)}
+
+/* ===== BUTTONS ===== */
+.btn{padding:7px 16px;border-radius:7px;border:none;font-size:13px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#15803d}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#b91c1c}
+.btn-orange{background:var(--orange);color:#fff}.btn-orange:hover{background:#c2410c}
+.btn-gray{background:var(--gray-light);color:var(--text2);border:1px solid var(--gray-border)}.btn-gray:hover{background:#e5e7eb}
+.btn-outline{background:transparent;color:var(--primary);border:1px solid var(--primary)}.btn-outline:hover{background:var(--primary-light)}
+.btn-lg{padding:10px 24px;font-size:14px}
+.btn-sm{padding:3px 10px;border-radius:5px;border:none;font-size:12px;font-weight:600;transition:all .2s;cursor:pointer}
+.btn-sm.g{background:#dcfce7;color:var(--green)}.btn-sm.g:hover{background:var(--green-border)}
+.btn-sm.r{background:#fee2e2;color:var(--red)}.btn-sm.r:hover{background:var(--red-border)}
+.btn-sm.b{background:var(--primary-light);color:var(--primary)}.btn-sm.b:hover{background:#dbeafe}
+.btn-sm.o{background:var(--orange-light);color:var(--orange)}.btn-sm.o:hover{background:var(--orange-border)}
+.btn-sm.gray{background:var(--gray-light);color:var(--gray)}.btn-sm.gray:hover{background:#e5e7eb}
+.btn-sm.p{background:var(--purple-light);color:var(--purple)}.btn-sm.p:hover{background:#ede9fe}
+
+/* ===== ALERT ===== */
+.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:13px}
+.alert-warn{background:var(--orange-light);border:1px solid var(--orange-border);color:var(--orange)}
+.alert-info{background:var(--primary-light);border:1px solid #bfdbfe;color:var(--primary)}
+.alert-success{background:var(--green-light);border:1px solid var(--green-border);color:var(--green)}
+.alert-error{background:var(--red-light);border:1px solid var(--red-border);color:var(--red)}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
+/* ===== FORM ===== */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:13px;font-weight:600;color:var(--text2)}
+.form-label .req{color:var(--red)}
+.form-input{padding:8px 12px;border:1px solid var(--gray-border);border-radius:7px;font-size:13px;color:var(--text2);outline:none;transition:border .2s}
+.form-input:focus{border-color:var(--primary)}
+.form-select{padding:8px 12px;border:1px solid var(--gray-border);border-radius:7px;font-size:13px;color:var(--text2);background:var(--white);outline:none}
+.form-hint{font-size:12px;color:var(--text4)}
+.form-section{margin-bottom:20px}
+.form-section-title{font-size:14px;font-weight:700;color:var(--text2);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gray-border)}
+
+/* ===== MODAL ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--white);border-radius:14px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-lg{width:680px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--gray-border)}
+.modal-header-title{font-size:16px;font-weight:700;color:var(--text)}
+.modal-close{background:none;border:none;font-size:20px;color:var(--text4);cursor:pointer;line-height:1}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:14px 24px;border-top:1px solid var(--gray-border);display:flex;justify-content:flex-end;gap:10px;background:var(--gray-light)}
+
+/* ===== SNAPSHOT ===== */
+.snapshot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.snapshot-item{background:var(--gray-light);border-radius:8px;padding:12px;text-align:center}
+.snapshot-val{font-size:18px;font-weight:800;color:var(--text)}
+.snapshot-key{font-size:12px;color:var(--text4);margin-top:2px}
+
+/* ===== PLAN CARDS ===== */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.plan-card{border-radius:var(--radius);border:1px solid var(--gray-border);overflow:hidden;background:var(--white)}
+.plan-card-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.plan-card-name{font-size:14px;font-weight:700;color:var(--text)}
+.plan-card-body{padding:0 16px 12px}
+.plan-row{display:flex;justify-content:space-between;padding:7px 0;font-size:13px;color:var(--text3);border-bottom:1px dashed #f0f2f5}
+.plan-row:last-child{border-bottom:none}
+.plan-row strong{color:var(--text2)}
+.plan-card-footer{padding:12px 16px;background:var(--gray-light);display:flex;gap:8px;border-top:1px solid var(--gray-border)}
+.plan-active{border-color:#bfdbfe}.plan-active .plan-card-header{background:var(--primary-light)}
+.plan-pending{border-color:var(--yellow-border)}.plan-pending .plan-card-header{background:var(--yellow-light)}
+.plan-done{border-color:var(--green-border)}.plan-done .plan-card-header{background:var(--green-light)}
+.plan-settle{border-color:#e9d5ff}.plan-settle .plan-card-header{background:var(--purple-light)}
+
+/* ===== REVIEW PANEL ===== */
+.review-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.review-stat{background:var(--gray-light);border-radius:8px;padding:14px;text-align:center}
+.review-stat-num{font-size:22px;font-weight:800;color:var(--text)}
+.review-stat-label{font-size:12px;color:var(--text4);margin-top:2px}
+
+/* ===== AUDIT LOG ===== */
+.audit-log{max-height:300px;overflow-y:auto}
+.audit-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed var(--gray-border)}
+.audit-item:last-child{border-bottom:none}
+.audit-time{font-size:12px;color:var(--text4);flex-shrink:0;min-width:130px}
+.audit-content{font-size:13px;color:var(--text3)}
+.audit-op{font-weight:600;color:var(--primary)}
+
+/* ===== RULE CONFIG ===== */
+.rule-config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rule-config-item{background:var(--gray-light);border-radius:8px;padding:16px;border:1px solid var(--gray-border)}
+.rule-config-label{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px}
+.rule-config-value{display:flex;align-items:center;gap:8px}
+.rule-config-input{padding:6px 10px;border:1px solid var(--gray-border);border-radius:6px;font-size:14px;font-weight:700;color:var(--text);width:80px;text-align:center;outline:none}
+.rule-config-unit{font-size:13px;color:var(--text4)}
+
+/* ===== PROGRESS ===== */
+.progress-bar{height:6px;background:var(--gray-border);border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .5s}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--text);color:#fff;padding:10px 24px;border-radius:24px;
+  font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+.toast.warn{background:var(--orange)}
+
+/* ===== EMPTY ===== */
+.empty-state{text-align:center;padding:48px 20px;color:var(--text4)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-text{font-size:14px}
+
+/* ===== DIVIDER ===== */
+.divider{height:1px;background:var(--gray-border);margin:16px 0}
+
+/* ===== INLINE EDIT ===== */
+.inline-edit{display:inline-flex;align-items:center;gap:6px}
+.inline-input{padding:3px 8px;border:1px solid var(--primary);border-radius:5px;font-size:13px;width:90px;outline:none}
+
+/* ===== STEP FLOW ===== */
+.step-flow{display:flex;align-items:center;gap:0;margin-bottom:20px;flex-wrap:wrap}
+.step-node{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 16px;border-radius:8px;min-width:90px;text-align:center;font-size:12px;font-weight:600}
+.step-arrow{color:var(--gray);font-size:18px;padding:0 4px}
+.step-node.done{background:var(--green-light);color:var(--green)}
+.step-node.current{background:var(--primary-light);color:var(--primary);border:2px solid var(--primary)}
+.step-node.todo{background:var(--gray-light);color:var(--text4)}
+.step-node .step-icon{font-size:18px}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--gray-light)}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1100px){.stats-row{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .plan-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .form-grid,.form-grid-3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== TOPBAR ===== -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="icon">🎮</span>
+    <span class="title">创作者激励系统</span>
+    <span class="badge">管理端</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-role">
+      <button class="role-btn active" onclick="switchRole('ops',this)">运营</button>
+      <button class="role-btn" onclick="switchRole('leader',this)">Leader</button>
+      <button class="role-btn" onclick="switchRole('finance',this)">财务</button>
+    </div>
+    <div class="topbar-user">
+      <div class="avatar" id="userAvatar">运</div>
+      <span id="userName">运营_小王</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">概览</div>
+    <div class="nav-item active" onclick="navTo('dashboard',this)">
+      <span class="nav-icon">📊</span> 数据总览
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">白名单管理</div>
+    <div class="nav-item" onclick="navTo('whitelist',this)">
+      <span class="nav-icon">✅</span> 白名单列表
+      <span class="nav-badge yellow" id="badge-pending">12</span>
+    </div>
+    <div class="nav-item" onclick="navTo('wl-rule',this)">
+      <span class="nav-icon">⚙️</span> 审核规则配置
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">激励计划</div>
+    <div class="nav-item" onclick="navTo('incentive',this)">
+      <span class="nav-icon">🏆</span> 计划管理
+    </div>
+    <div class="nav-item" onclick="navTo('maps',this)">
+      <span class="nav-icon">🗺️</span> 激励计划地图
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">结算流程</div>
+    <div class="nav-item" onclick="navTo('calc',this)">
+      <span class="nav-icon">🧮</span> 奖金计算
+    </div>
+    <div class="nav-item" onclick="navTo('bonus-adjust',this)">
+      <span class="nav-icon">💰</span> 奖金结算调整
+    </div>
+    <div class="nav-item" onclick="navTo('leader-review',this)">
+      <span class="nav-icon">👤</span> Leader 审核
+      <span class="nav-badge" id="badge-leader">1</span>
+    </div>
+    <div class="nav-item" onclick="navTo('finance-review',this)">
+      <span class="nav-icon">🏦</span> 财务审核
+    </div>
+    <div class="nav-item" onclick="navTo('payout',this)">
+      <span class="nav-icon">📤</span> 奖金发放记录
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">数据</div>
+    <div class="nav-item" onclick="navTo('analytics',this)">
+      <span class="nav-icon">📈</span> 数据复盘
+    </div>
+    <div class="nav-item" onclick="navTo('audit',this)">
+      <span class="nav-icon">📋</span> 审计日志
+    </div>
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+<!-- ======== 数据总览 ======== -->
+<div id="page-dashboard" class="page active">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📊 数据总览</div>
+      <div class="page-subtitle">2026年4月 · 当前进行中</div>
+    </div>
+    <button class="btn btn-primary" onclick="navTo('incentive',null)">查看激励计划 →</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card c-blue">
+      <div class="stat-num">128</div>
+      <div class="stat-label">白名单创作者</div>
+      <div class="stat-trend" style="color:var(--green)">↑ 本月新增 8 人</div>
+    </div>
+    <div class="stat-card c-green">
+      <div class="stat-num">86</div>
+      <div class="stat-label">本月归属地图</div>
+      <div class="stat-trend" style="color:var(--green)">↑ 较上月 +14</div>
+    </div>
+    <div class="stat-card c-purple">
+      <div class="stat-num">¥487,200</div>
+      <div class="stat-label">本月预计奖金</div>
+      <div class="stat-trend" style="color:var(--text4)">上限 ¥500,000</div>
+    </div>
+    <div class="stat-card c-yellow">
+      <div class="stat-num">12</div>
+      <div class="stat-label">待审核申请</div>
+      <div class="stat-trend" style="color:var(--orange)">⚠️ 需处理</div>
+    </div>
+    <div class="stat-card c-orange">
+      <div class="stat-num">3</div>
+      <div class="stat-label">处罚中用户</div>
+      <div class="stat-trend" style="color:var(--text4)">发奖需确认</div>
+    </div>
+  </div>
+
+  <!-- 流程进度 -->
+  <div class="card">
+    <div class="card-header"><span class="card-title">📅 本月结算流程进度</span></div>
+    <div class="card-body">
+      <div class="step-flow">
+        <div class="step-node done"><span class="step-icon">✅</span>计划创建</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node done"><span class="step-icon">✅</span>白名单审核</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node done"><span class="step-icon">✅</span>地图归属</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node done"><span class="step-icon">✅</span>数据积累</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node current"><span class="step-icon">⚙️</span>月度结算</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node todo"><span class="step-icon">🔧</span>运营调整</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node todo"><span class="step-icon">👤</span>Leader审核</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node todo"><span class="step-icon">🏦</span>财务审核</div>
+        <div class="step-arrow">→</div>
+        <div class="step-node todo"><span class="step-icon">📤</span>奖金发放</div>
+      </div>
+      <div class="alert alert-info">
+        <span class="alert-icon">ℹ️</span>
+        <span>当前处于 <strong>月度结算</strong> 阶段，次月15日（2026-05-15）将自动触发奖金计算，请提前完成运营调整配置。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 赛道分布 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-header"><span class="card-title">🏁 赛道分布</span></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+              <span>🏆 鼓励赛道</span><strong style="color:var(--purple)">52 张 (60%)</strong>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--purple)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+              <span>📋 非鼓励赛道</span><strong style="color:var(--gray)">34 张 (40%)</strong>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--gray)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📈 奖金预算使用</span></div>
+      <div class="card-body">
+        <div style="font-size:13px;color:var(--text4);margin-bottom:8px">已使用 ¥487,200 / 总额 ¥500,000</div>
+        <div class="progress-bar" style="height:10px"><div class="progress-fill" style="width:97.4%;background:var(--orange)"></div></div>
+        <div style="font-size:12px;color:var(--orange);margin-top:6px">⚠️ 预算使用率 97.4%，接近上限</div>
+        <div style="margin-top:12px;font-size:13px;color:var(--text3)">
+          <div style="display:flex;justify-content:space-between;padding:4px 0">
+            <span>鼓励赛道奖金</span><strong>¥ 312,000</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0">
+            <span>非鼓励赛道奖金</span><strong>¥ 175,200</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 白名单列表 ======== -->
+<div id="page-whitelist" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">✅ 白名单管理</div>
+      <div class="page-subtitle">创作者资格审核与管理</div>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('modal-add-white')">＋ 人工加白</button>
+  </div>
+
+  <div class="stats-row" style="grid-template-columns:repeat(5,1fr)">
+    <div class="stat-card"><div class="stat-num" id="stat-total-count">12</div><div class="stat-label">总记录</div></div>
+    <div class="stat-card c-yellow"><div class="stat-num" id="stat-pending-count">3</div><div class="stat-label">待审核</div></div>
+    <div class="stat-card c-green"><div class="stat-num" id="stat-normal-count">5</div><div class="stat-label">已加入</div></div>
+    <div class="stat-card c-red"><div class="stat-num" id="stat-fail-count">1</div><div class="stat-label">已拒绝</div></div>
+    <div class="stat-card c-orange"><div class="stat-num" id="stat-punish-count">3</div><div class="stat-label">处罚中</div></div>
+  </div>
+
+  <!-- 子页签 -->
+  <div style="display:flex;gap:0;margin-bottom:16px;background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-border);overflow:hidden;box-shadow:var(--shadow)">
+    <button class="wl-tab active" data-tab="all" onclick="switchWlTab('all',this)" style="flex:1;padding:11px 0;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">全部</button>
+    <button class="wl-tab" data-tab="pending" onclick="switchWlTab('pending',this)" style="flex:1;padding:11px 0;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">⏳ 待人工审核 <span id="wl-tab-badge-pending" style="background:var(--yellow);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:4px">3</span></button>
+    <button class="wl-tab" data-tab="normal" onclick="switchWlTab('normal',this)" style="flex:1;padding:11px 0;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">✅ 已加入</button>
+    <button class="wl-tab" data-tab="punish" onclick="switchWlTab('punish',this)" style="flex:1;padding:11px 0;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">⚠️ 处罚中</button>
+    <button class="wl-tab" data-tab="fail" onclick="switchWlTab('fail',this)" style="flex:1;padding:11px 0;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">❌ 已拒绝</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title" id="wl-tab-title">全部列表</span>
+      <div class="toolbar">
+        <input class="search-input" placeholder="🔍 搜索用户昵称/ID..." oninput="filterWhitelist(this.value)" id="wl-search"/>
+        <select class="filter-select" onchange="filterWlRank(this.value)">
+          <option value="">全部段位</option>
+          <option value="bronze">青铜</option>
+          <option value="silver">白银</option>
+          <option value="gold">黄金</option>
+          <option value="diamond">钻石</option>
+          <option value="master">大师</option>
+        </select>
+        <select class="filter-select" onchange="filterWlSource(this.value)">
+          <option value="">全部来源</option>
+          <option value="申请">用户申请</option>
+          <option value="人工加白">人工加白</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body no-pad">
+      <div class="table-wrap">
+        <table id="whitelist-table">
+          <thead>
+            <tr><th>用户昵称</th><th>段位</th><th>地图数</th><th>游玩次数</th><th>游玩人数</th><th>申请时间</th><th>来源</th><th>状态</th><th>操作</th></tr>
+          </thead>
+          <tbody id="whitelist-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 审核规则配置 ======== -->
+<div id="page-wl-rule" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">⚙️ 审核规则配置</div>
+      <div class="page-subtitle">白名单自动审核条件，修改后不回溯，仅对新申请生效</div>
+    </div>
+    <button class="btn btn-primary" onclick="saveRuleConfig()">💾 保存配置</button>
+  </div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <span><strong>注意：</strong>规则修改后不回溯，已通过的白名单用户不受影响，仅新提交的申请按新规则审核。</span>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">自动审核条件</span></div>
+    <div class="card-body">
+      <div class="rule-config-grid">
+        <div class="rule-config-item">
+          <div class="rule-config-label">🎖️ 最低段位要求</div>
+          <div class="rule-config-value">
+            <select class="form-select" id="rule-rank" style="width:120px">
+              <option value="bronze">青铜</option>
+              <option value="silver" selected>白银</option>
+              <option value="gold">黄金</option>
+              <option value="diamond">钻石</option>
+            </select>
+            <span class="rule-config-unit">及以上</span>
+          </div>
+          <div class="form-hint" style="margin-top:6px">客户端提交时先校验，不满足直接拦截</div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">🗺️ 最少发布地图数</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="rule-map-count" type="number" value="3" min="1"/>
+            <span class="rule-config-unit">张</span>
+          </div>
+          <div class="form-hint" style="margin-top:6px">已发布且审核通过的地图数量</div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">🎮 最低游玩次数</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="rule-play-count" type="number" value="500" min="0"/>
+            <span class="rule-config-unit">次</span>
+          </div>
+          <div class="form-hint" style="margin-top:6px">所有地图累计游玩次数</div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">👥 最低游玩人数</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="rule-player-count" type="number" value="200" min="0"/>
+            <span class="rule-config-unit">人</span>
+          </div>
+          <div class="form-hint" style="margin-top:6px">所有地图累计游玩人数</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="form-section-title">固定规则（不可修改）</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="alert alert-info" style="margin:0">
+          <span class="alert-icon">🔒</span>
+          <span>规则修改后<strong>不回溯</strong>，已通过的白名单用户不受影响</span>
+        </div>
+        <div class="alert alert-info" style="margin:0">
+          <span class="alert-icon">🔒</span>
+          <span>人工加白可<strong>跳过段位校验</strong>，但用户仍需游戏内签约才能参与激励</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">🏁 鼓励赛道判断条件</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">地图类型标签</label>
+          <input class="form-input" value="冒险,解谜,创意" placeholder="多个用逗号分隔"/>
+          <div class="form-hint">包含以下标签的地图自动归入鼓励赛道</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">最低游玩时长（分钟）</label>
+          <input class="form-input" type="number" value="5"/>
+          <div class="form-hint">平均游玩时长超过此值才可进入鼓励赛道</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 激励计划 ======== -->
+<div id="page-incentive" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🏆 激励计划管理</div>
+      <div class="page-subtitle">月度激励活动配置与管理</div>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('modal-create-plan')">＋ 创建计划</button>
+  </div>
+
+  <!-- 进行中计划详情 -->
+  <div class="card" style="border:2px solid var(--primary);margin-bottom:20px">
+    <div class="card-header" style="background:linear-gradient(135deg,var(--primary-light),#e0e7ff)">
+      <div>
+        <span class="card-title" style="color:var(--primary)">🔥 当前进行中：2026年4月激励计划</span>
+        <div style="font-size:12px;color:var(--text4);margin-top:2px">统计周期：2026-04-01 ~ 2026-04-30 · 结算日：2026-05-15</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" onclick="navTo('calc',null)">🧮 进入奖金计算</button>
+        <button class="btn btn-primary" onclick="navTo('bonus-adjust',null)">进入结算调整 →</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- 预算概览 -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+        <div class="review-stat" style="background:var(--primary-light)">
+          <div class="review-stat-num" style="color:var(--primary)">¥500,000</div>
+          <div class="review-stat-label">奖金总额上限</div>
+        </div>
+        <div class="review-stat" style="background:#fdf4ff">
+          <div class="review-stat-num" style="color:var(--purple)">¥487,200</div>
+          <div class="review-stat-label">已产生预算</div>
+        </div>
+        <div class="review-stat" style="background:var(--orange-light)">
+          <div class="review-stat-num" style="color:var(--orange)">97.4%</div>
+          <div class="review-stat-label">预算使用率</div>
+        </div>
+        <div class="review-stat" style="background:var(--green-light)">
+          <div class="review-stat-num" style="color:var(--green)">86</div>
+          <div class="review-stat-label">归属地图数</div>
+        </div>
+        <div class="review-stat">
+          <div class="review-stat-num" style="color:var(--text)">52</div>
+          <div class="review-stat-label">参与创作者</div>
+        </div>
+      </div>
+      <!-- 预算进度条 -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span style="color:var(--text3)">预算消耗进度</span>
+          <span style="color:var(--orange);font-weight:700">¥487,200 / ¥500,000 <span style="color:var(--text4);font-weight:400">（剩余 ¥12,800）</span></span>
+        </div>
+        <div class="progress-bar" style="height:10px">
+          <div class="progress-fill" style="width:97.4%;background:linear-gradient(90deg,var(--primary),var(--orange))"></div>
+        </div>
+        <div style="font-size:12px;color:var(--orange);margin-top:4px">⚠️ 预算接近上限，新增地图奖金将受到限制</div>
+      </div>
+      <!-- 赛道分布 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:12px">🏁 赛道奖金分布</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+                <span>🏆 鼓励赛道</span>
+                <span><strong style="color:var(--purple)">¥312,000</strong> <span style="color:var(--text4);font-size:12px">(64%)</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:64%;background:var(--purple)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+                <span>📋 非鼓励赛道</span>
+                <span><strong style="color:var(--gray)">¥175,200</strong> <span style="color:var(--text4);font-size:12px">(36%)</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:36%;background:var(--gray)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:12px">🗺️ 赛道地图数分布</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+                <span>🏆 鼓励赛道</span>
+                <span><strong style="color:var(--purple)">52 张</strong> <span style="color:var(--text4);font-size:12px">(60%)</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--purple)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+                <span>📋 非鼓励赛道</span>
+                <span><strong style="color:var(--gray)">34 张</strong> <span style="color:var(--text4);font-size:12px">(40%)</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--gray)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 单张/单人上限 -->
+      <div style="display:flex;gap:12px;margin-top:16px">
+        <div style="background:var(--gray-light);border-radius:8px;padding:10px 16px;font-size:13px;flex:1">
+          <span style="color:var(--text4)">单张地图上限：</span><strong>¥50,000</strong>
+          <span style="color:var(--text4);margin-left:16px">单用户累计上限：</span><strong>¥100,000</strong>
+          <span style="color:var(--text4);margin-left:16px">计算公式：</span><strong>游玩次数 × 单价系数</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 历史计划列表 -->
+  <div style="font-size:14px;font-weight:700;color:var(--text2);margin-bottom:12px">📋 全部计划</div>
+  <div class="plan-grid" id="plan-grid"></div>
+</div>
+
+<!-- ======== 激励计划地图列表 ======== -->
+<div id="page-maps" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🗺️ 激励计划地图列表</div>
+      <div class="page-subtitle">按计划周期查看地图数据与奖金情况</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-gray" onclick="openModal('modal-import-maps')">📥 批量导入赛道</button>
+      <button class="btn btn-primary" onclick="openModal('modal-add-map')">＋ 手动添加地图</button>
+    </div>
+  </div>
+
+  <!-- 计划切换 -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="plan-tabs">
+    <button class="plan-tab-btn active" data-plan="2026-04" onclick="switchPlanTab('2026-04',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--primary);background:var(--primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年4月 <span style="font-size:11px;opacity:.8">进行中</span></button>
+    <button class="plan-tab-btn" data-plan="2026-03" onclick="switchPlanTab('2026-03',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年3月 <span style="font-size:11px;opacity:.7">已结算</span></button>
+    <button class="plan-tab-btn" data-plan="2026-02" onclick="switchPlanTab('2026-02',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年2月 <span style="font-size:11px;opacity:.7">已结算</span></button>
+  </div>
+
+  <!-- 当前计划统计 -->
+  <div class="stats-row" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px" id="maps-stats-row">
+    <div class="stat-card c-blue"><div class="stat-num" id="maps-stat-total">86</div><div class="stat-label">归属地图</div></div>
+    <div class="stat-card c-purple"><div class="stat-num" id="maps-stat-encourage">52</div><div class="stat-label">鼓励赛道</div></div>
+    <div class="stat-card"><div class="stat-num" id="maps-stat-normal">34</div><div class="stat-label">非鼓励赛道</div></div>
+    <div class="stat-card c-purple"><div class="stat-num" id="maps-stat-expected">¥487,200</div><div class="stat-label">预期总奖金</div></div>
+    <div class="stat-card c-green"><div class="stat-num" id="maps-stat-settled">¥0</div><div class="stat-label">已结算奖金</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title" id="maps-card-title">2026年4月 · 地图列表</span>
+      <div class="toolbar">
+        <input class="search-input" placeholder="🔍 搜索地图名称/ID..." id="maps-search" oninput="filterMaps(this.value)"/>
+        <select class="filter-select" id="maps-track-filter" onchange="filterMapsTrack(this.value)">
+          <option value="">全部赛道</option>
+          <option value="encourage">🏆 鼓励赛道</option>
+          <option value="normal">📋 非鼓励赛道</option>
+        </select>
+        <select class="filter-select" onchange="filterMapsCreator(this.value)" id="maps-creator-filter">
+          <option value="">全部创作者</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body no-pad">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="maps-check-all" onchange="toggleAllMaps(this.checked)" style="cursor:pointer"/></th>
+              <th>地图名称</th><th>地图ID</th><th>创作者</th><th>发布日期</th>
+              <th>赛道</th><th>游玩次数(14天)</th><th>游玩人数</th><th>均玩时长</th>
+              <th>预期奖金</th><th>已结算奖金</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="maps-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div style="padding:12px 20px;background:var(--gray-light);border-top:1px solid var(--gray-border);display:flex;align-items:center;gap:10px" id="maps-batch-bar">
+      <span style="font-size:13px;color:var(--text4)" id="maps-selected-count">已选 0 条</span>
+      <button class="btn-sm p" onclick="batchSetTrack('encourage')">批量设为鼓励赛道</button>
+      <button class="btn-sm gray" onclick="batchSetTrack('normal')">批量设为非鼓励赛道</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 奖金计算 ======== -->
+<div id="page-calc" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🧮 奖金计算</div>
+      <div class="page-subtitle">按月度计划计算全部奖金，确认后进入审批流</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select class="filter-select" id="calc-plan-select" style="font-weight:600">
+        <option value="2026-04">2026年4月激励计划</option>
+        <option value="2026-03">2026年3月激励计划</option>
+      </select>
+      <button class="btn btn-gray" onclick="runCalc()">🔄 重跑计算</button>
+      <button class="btn btn-primary" onclick="confirmCalcAndSubmit()">✅ 确认名单 → 进入审批流</button>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">ℹ️</span>
+    <span>当前使用 <strong>2026年4月激励计划</strong> 规则。修改下方参数后点击「重跑计算」，结果仅为预览，不影响正式结算，确认后才会进入审批流。</span>
+  </div>
+
+  <!-- 规则配置 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">⚙️ 计算规则（可临时调整）</span>
+      <button class="btn btn-gray" onclick="resetCalcRule()">↩️ 恢复计划默认</button>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div class="rule-config-item">
+          <div class="rule-config-label">💰 奖金总额上限（元）</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-total" type="number" value="500000" style="width:110px"/>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">🗺️ 单张地图上限（元）</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-single" type="number" value="50000" style="width:110px"/>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">👤 单用户累计上限（元）</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-user-limit" type="number" value="100000" style="width:110px"/>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">🏆 鼓励赛道系数</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-encourage-rate" type="number" value="2.0" step="0.1" style="width:80px"/>
+            <span class="rule-config-unit">× 基础单价</span>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">📋 非鼓励赛道系数</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-normal-rate" type="number" value="1.0" step="0.1" style="width:80px"/>
+            <span class="rule-config-unit">× 基础单价</span>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">💵 基础单价（元/次）</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-base-price" type="number" value="3.0" step="0.1" style="width:80px"/>
+            <span class="rule-config-unit">元/次</span>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">📅 统计周期（天）</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-days" type="number" value="14" style="width:80px"/>
+            <span class="rule-config-unit">天</span>
+          </div>
+        </div>
+        <div class="rule-config-item">
+          <div class="rule-config-label">⏱️ 最低游玩时长（分钟）</div>
+          <div class="rule-config-value">
+            <input class="rule-config-input" id="calc-min-duration" type="number" value="3" style="width:80px"/>
+            <span class="rule-config-unit">分钟</span>
+          </div>
+          <div class="form-hint" style="margin-top:4px">低于此时长的游玩不计入</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 计算结果 -->
+  <div class="card" id="calc-result-card">
+    <div class="card-header">
+      <span class="card-title">📊 计算结果预览</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:13px;color:var(--text4)" id="calc-run-time">最后计算：2026-04-13 15:30:00</span>
+        <span class="badge badge-active">预览中</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+        <div class="review-stat"><div class="review-stat-num" style="color:var(--primary)" id="calc-res-total">¥487,200</div><div class="review-stat-label">预计总奖金</div></div>
+        <div class="review-stat"><div class="review-stat-num" style="color:var(--purple)" id="calc-res-encourage">¥312,000</div><div class="review-stat-label">鼓励赛道奖金</div></div>
+        <div class="review-stat"><div class="review-stat-num" style="color:var(--gray)" id="calc-res-normal">¥175,200</div><div class="review-stat-label">非鼓励赛道奖金</div></div>
+        <div class="review-stat"><div class="review-stat-num" style="color:var(--green)" id="calc-res-maps">86</div><div class="review-stat-label">参与地图数</div></div>
+        <div class="review-stat"><div class="review-stat-num" style="color:var(--text)" id="calc-res-creators">52</div><div class="review-stat-label">参与创作者</div></div>
+      </div>
+      <!-- 预算使用进度 -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span>预算使用率</span><strong id="calc-budget-rate" style="color:var(--orange)">97.4%</strong>
+        </div>
+        <div class="progress-bar" style="height:8px">
+          <div class="progress-fill" id="calc-budget-bar" style="width:97.4%;background:var(--orange)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body no-pad">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>排名</th><th>地图名称</th><th>创作者</th><th>赛道</th><th>游玩次数</th><th>原始计算</th><th>上限截断</th><th>最终奖金</th><th>备注</th></tr>
+          </thead>
+          <tbody id="calc-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 奖金结算调整 ======== -->
+<div id="page-bonus-adjust" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">💰 奖金结算调整</div>
+      <div class="page-subtitle">2026年4月 · 运营调整阶段</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span style="font-size:13px;color:var(--text4)">总奖金：</span>
+      <strong style="font-size:16px;color:var(--primary)" id="total-bonus-display">¥ 487,200</strong>
+      <button class="btn btn-primary" onclick="submitToLeader()">提交 Leader 审核 →</button>
+    </div>
+  </div>
+
+  <div class="alert alert-warn" id="punish-alert-adjust">
+    <span class="alert-icon">🚨</span>
+    <span>名单中含有 <strong>3 名"处罚中"用户</strong>，发奖时需逐一确认。</span>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">奖金明细</span>
+      <div class="toolbar">
+        <input class="search-input" placeholder="🔍 搜索地图/创作者..."/>
+        <select class="filter-select" onchange="filterBonusTrack(this.value)">
+          <option value="">全部赛道</option>
+          <option value="encourage">鼓励赛道</option>
+          <option value="normal">非鼓励赛道</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body no-pad">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>地图名称</th><th>创作者</th><th>赛道</th><th>游玩次数(14天)</th><th>计算奖金</th><th>调整后奖金</th><th>操作</th></tr>
+          </thead>
+          <tbody id="bonus-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== Leader 审核 ======== -->
+<div id="page-leader-review" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">👤 Leader 审核</div>
+      <div class="page-subtitle">2026年4月激励计划 · 待审核</div>
+    </div>
+  </div>
+
+  <div class="alert alert-warn" id="leader-punish-alert">
+    <span class="alert-icon">🚨</span>
+    <span>本次发奖名单中含有 <strong>3 名"处罚中"用户</strong>，请在审核通过前逐一确认是否发放！</span>
+    <button class="btn btn-orange" style="margin-left:auto;flex-shrink:0" onclick="openModal('modal-punish-confirm')">查看并确认</button>
+  </div>
+
+  <div class="review-stats">
+    <div class="review-stat">
+      <div class="review-stat-num" style="color:var(--primary)">¥487,200</div>
+      <div class="review-stat-label">总奖金</div>
+    </div>
+    <div class="review-stat">
+      <div class="review-stat-num" style="color:var(--green)">86</div>
+      <div class="review-stat-label">地图数</div>
+    </div>
+    <div class="review-stat">
+      <div class="review-stat-num" style="color:var(--primary)">52</div>
+      <div class="review-stat-label">创作者数</div>
+    </div>
+    <div class="review-stat">
+      <div class="review-stat-num" style="color:var(--purple)">52 / 34</div>
+      <div class="review-stat-label">鼓励 / 非鼓励</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="card" style="margin:0">
+      <div class="card-header"><span class="card-title">🏁 赛道奖金分布</span></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+              <span>🏆 鼓励赛道（52张）</span><strong style="color:var(--purple)">¥ 312,000</strong>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:64%;background:var(--purple)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+              <span>📋 非鼓励赛道（34张）</span><strong style="color:var(--gray)">¥ 175,200</strong>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:36%;background:var(--gray)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin:0">
+      <div class="card-header"><span class="card-title">⚠️ 处罚中用户</span></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:8px" id="leader-punish-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">地图奖金明细（TOP 10）</span></div>
+    <div class="card-body no-pad">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>排名</th><th>地图名称</th><th>创作者</th><th>赛道</th><th>游玩次数</th><th>奖金</th></tr></thead>
+          <tbody id="leader-detail-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:12px;margin-top:16px" id="leader-action-area">
+    <button class="btn btn-green btn-lg" onclick="leaderApprove()">✅ 审核通过 → 提交财务审核</button>
+    <button class="btn btn-red btn-lg" onclick="leaderReject()">↩️ 退回运营调整</button>
+  </div>
+</div>
+
+<!-- ======== 财务审核 ======== -->
+<div id="page-finance-review" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🏦 财务审核</div>
+      <div class="page-subtitle">2026年4月激励计划 · 等待财务确认</div>
+    </div>
+  </div>
+
+  <div id="finance-pending-area">
+    <div class="alert alert-info">
+      <span class="alert-icon">ℹ️</span>
+      <span>Leader 已审核通过，请财务核对发奖名单后确认发放。</span>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">📋 发奖名单概览</span></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+          <div class="review-stat"><div class="review-stat-num" style="color:var(--primary)">¥487,200</div><div class="review-stat-label">总发放金额</div></div>
+          <div class="review-stat"><div class="review-stat-num" style="color:var(--green)">52</div><div class="review-stat-label">发放创作者数</div></div>
+          <div class="review-stat"><div class="review-stat-num" style="color:var(--primary)">86</div><div class="review-stat-label">涉及地图数</div></div>
+          <div class="review-stat"><div class="review-stat-num" style="color:var(--orange)">3</div><div class="review-stat-label">处罚中（已确认）</div></div>
+        </div>
+        <div class="alert alert-info" style="margin:0">
+          <span class="alert-icon">📝</span>
+          <span><strong>税务说明：</strong>奖金发放按劳务报酬所得计税，超过800元部分按20%预扣个人所得税，发放金额为税前金额，实际到账以税后为准。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">💰 奖金明细（前10名）</span></div>
+      <div class="card-body no-pad">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>创作者</th><th>地图数</th><th>总奖金（税前）</th><th>预扣税</th><th>实发金额</th><th>状态</th></tr></thead>
+            <tbody id="finance-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:16px">
+      <button class="btn btn-green btn-lg" onclick="financeApprove()">✅ 确认发奖 → 开始发放</button>
+      <button class="btn btn-red btn-lg" onclick="financeReject()">↩️ 退回 Leader 重审</button>
+    </div>
+  </div>
+
+  <div id="finance-done-area" style="display:none">
+    <div class="alert alert-success">
+      <span class="alert-icon">🎉</span>
+      <span><strong>财务已确认！</strong>奖金发放任务已创建，正在批量处理中，请前往「奖金发放记录」查看进度。</span>
+    </div>
+    <button class="btn btn-primary" onclick="navTo('payout',null)">查看发放记录 →</button>
+  </div>
+</div>
+
+<!-- ======== 奖金发放记录 ======== -->
+<div id="page-payout" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📤 奖金发放记录</div>
+      <div class="page-subtitle">按周期查看发放情况</div>
+    </div>
+    <button class="btn btn-gray" onclick="exportPayout()">📥 导出明细</button>
+  </div>
+
+  <!-- 周期切换 -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="payout-period-tabs">
+    <button class="payout-tab active" data-period="2026-04" onclick="switchPayoutPeriod('2026-04',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--primary);background:var(--primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年4月</button>
+    <button class="payout-tab" data-period="2026-03" onclick="switchPayoutPeriod('2026-03',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年3月</button>
+    <button class="payout-tab" data-period="2026-02" onclick="switchPayoutPeriod('2026-02',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年2月</button>
+  </div>
+
+  <div class="stats-row" style="grid-template-columns:repeat(5,1fr)">
+    <div class="stat-card c-green"><div class="stat-num" id="pay-success-count">0</div><div class="stat-label">已发放</div></div>
+    <div class="stat-card c-blue"><div class="stat-num" id="pay-processing-count">52</div><div class="stat-label">发放中</div></div>
+    <div class="stat-card c-red"><div class="stat-num" id="pay-fail-count">0</div><div class="stat-label">失败</div></div>
+    <div class="stat-card c-purple"><div class="stat-num" id="pay-total-amount">¥487,200</div><div class="stat-label">总金额（税前）</div></div>
+    <div class="stat-card c-green"><div class="stat-num" id="pay-actual-amount">¥389,760</div><div class="stat-label">实发金额（税后）</div></div>
+  </div>
+
+  <!-- 按创作者汇总 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title" id="payout-period-title">2026年4月 · 发放汇总（按创作者）</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-gray" onclick="simulatePayout()">🔄 模拟发放进度</button>
+        <input class="search-input" placeholder="🔍 搜索创作者..." oninput="filterPayout(this.value)"/>
+      </div>
+    </div>
+    <div class="card-body no-pad">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>创作者</th><th>地图数</th><th>总奖金（税前）</th><th>预扣税</th><th>实发金额</th><th>发放状态</th><th>操作</th></tr></thead>
+          <tbody id="payout-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 数据复盘 ======== -->
+<div id="page-analytics" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📈 数据复盘</div>
+      <div class="page-subtitle">多周期创作者与地图数据分析</div>
+    </div>
+    <button class="btn btn-gray" onclick="exportAnalytics()">📥 导出报表</button>
+  </div>
+
+  <!-- 周期切换 -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="analytics-tab active" data-period="2026-04" onclick="switchAnalyticsPeriod('2026-04',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--primary);background:var(--primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年4月</button>
+    <button class="analytics-tab" data-period="2026-03" onclick="switchAnalyticsPeriod('2026-03',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年3月</button>
+    <button class="analytics-tab" data-period="2026-02" onclick="switchAnalyticsPeriod('2026-02',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">2026年2月</button>
+    <button class="analytics-tab" data-period="all" onclick="switchAnalyticsPeriod('all',this)" style="padding:7px 18px;border-radius:20px;border:2px solid var(--gray-border);background:var(--white);color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">📊 全周期对比</button>
+  </div>
+
+  <!-- 核心指标 -->
+  <div class="stats-row" style="grid-template-columns:repeat(6,1fr);margin-bottom:16px">
+    <div class="stat-card c-blue"><div class="stat-num" id="ana-creators">52</div><div class="stat-label">参与创作者</div><div class="stat-trend" style="color:var(--green)">↑ +8 vs 上月</div></div>
+    <div class="stat-card c-green"><div class="stat-num" id="ana-maps">86</div><div class="stat-label">参与地图</div><div class="stat-trend" style="color:var(--green)">↑ +14 vs 上月</div></div>
+    <div class="stat-card c-purple"><div class="stat-num" id="ana-bonus">¥487,200</div><div class="stat-label">总奖金</div><div class="stat-trend" style="color:var(--green)">↑ +15% vs 上月</div></div>
+    <div class="stat-card c-orange"><div class="stat-num" id="ana-plays">1,234,560</div><div class="stat-label">总游玩次数</div><div class="stat-trend" style="color:var(--green)">↑ +22%</div></div>
+    <div class="stat-card"><div class="stat-num" id="ana-avg-bonus">¥9,369</div><div class="stat-label">人均奖金</div></div>
+    <div class="stat-card c-yellow"><div class="stat-num" id="ana-encourage-ratio">60%</div><div class="stat-label">鼓励赛道占比</div></div>
+  </div>
+
+  <!-- 维度切换 -->
+  <div style="display:flex;gap:0;margin-bottom:16px;background:var(--white);border-radius:var(--radius);border:1px solid var(--gray-border);overflow:hidden;width:fit-content;box-shadow:var(--shadow)">
+    <button class="dim-tab active" onclick="switchDim('creator',this)" style="padding:9px 24px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">👤 创作者维度</button>
+    <button class="dim-tab" onclick="switchDim('map',this)" style="padding:9px 24px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">🗺️ 地图维度</button>
+    <button class="dim-tab" onclick="switchDim('trend',this)" style="padding:9px 24px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s">📊 趋势对比</button>
+  </div>
+
+  <!-- 创作者维度 -->
+  <div id="dim-creator">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">👤 创作者排行榜</span>
+        <div class="toolbar">
+          <input class="search-input" placeholder="🔍 搜索创作者..." oninput="filterAnalyticsCreator(this.value)"/>
+          <select class="filter-select" onchange="filterAnalyticsRank(this.value)">
+            <option value="">全部段位</option>
+            <option value="master">大师</option>
+            <option value="diamond">钻石</option>
+            <option value="gold">黄金</option>
+            <option value="silver">白银</option>
+          </select>
+          <select class="filter-select" onchange="sortAnalyticsCreator(this.value)">
+            <option value="bonus">按奖金排序</option>
+            <option value="plays">按游玩次数</option>
+            <option value="maps">按地图数</option>
+            <option value="growth">按增长率</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body no-pad">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>排名</th><th>创作者</th><th>段位</th><th>地图数</th><th>总游玩次数</th><th>总游玩人数</th><th>鼓励/非鼓励</th><th>本期奖金</th><th>上期奖金</th><th>环比</th><th>操作</th></tr>
+            </thead>
+            <tbody id="analytics-creator-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 地图维度 -->
+  <div id="dim-map" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🗺️ 地图排行榜</span>
+        <div class="toolbar">
+          <input class="search-input" placeholder="🔍 搜索地图名称..."/>
+          <select class="filter-select" onchange="filterAnalyticsMapTrack(this.value)">
+            <option value="">全部赛道</option>
+            <option value="encourage">🏆 鼓励赛道</option>
+            <option value="normal">📋 非鼓励赛道</option>
+          </select>
+          <select class="filter-select">
+            <option>按奖金排序</option>
+            <option>按游玩次数</option>
+            <option>按游玩时长</option>
+            <option>按点赞数</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body no-pad">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>排名</th><th>地图名称</th><th>创作者</th><th>赛道</th><th>游玩次数</th><th>游玩人数</th><th>均玩时长</th><th>点赞</th><th>收藏</th><th>本期奖金</th><th>上期奖金</th><th>环比</th></tr>
+            </thead>
+            <tbody id="analytics-map-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 趋势对比 -->
+  <div id="dim-trend" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card" style="margin:0">
+        <div class="card-header"><span class="card-title">📊 月度奖金趋势</span></div>
+        <div class="card-body">
+          <div id="trend-bonus-chart" style="height:200px;display:flex;align-items:flex-end;gap:12px;padding:0 8px"></div>
+          <div style="display:flex;justify-content:space-around;margin-top:8px;font-size:12px;color:var(--text4)" id="trend-bonus-labels"></div>
+        </div>
+      </div>
+      <div class="card" style="margin:0">
+        <div class="card-header"><span class="card-title">👤 月度创作者数趋势</span></div>
+        <div class="card-body">
+          <div id="trend-creator-chart" style="height:200px;display:flex;align-items:flex-end;gap:12px;padding:0 8px"></div>
+          <div style="display:flex;justify-content:space-around;margin-top:8px;font-size:12px;color:var(--text4)" id="trend-creator-labels"></div>
+        </div>
+      </div>
+      <div class="card" style="margin:0">
+        <div class="card-header"><span class="card-title">🏁 赛道奖金占比趋势</span></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:12px" id="trend-track-list"></div>
+        </div>
+      </div>
+      <div class="card" style="margin:0">
+        <div class="card-header"><span class="card-title">🎮 月度游玩次数趋势</span></div>
+        <div class="card-body">
+          <div id="trend-plays-chart" style="height:200px;display:flex;align-items:flex-end;gap:12px;padding:0 8px"></div>
+          <div style="display:flex;justify-content:space-around;margin-top:8px;font-size:12px;color:var(--text4)" id="trend-plays-labels"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== 审计日志 ======== -->
+<div id="page-audit" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📋 审计日志</div>
+      <div class="page-subtitle">所有运营操作记录，可追溯</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">操作日志</span>
+      <div class="toolbar">
+        <select class="filter-select">
+          <option>全部操作</option>
+          <option>白名单审核</option>
+          <option>奖金调整</option>
+          <option>赛道调整</option>
+          <option>处罚操作</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="audit-log" id="audit-log-list"></div>
+    </div>
+  </div>
+</div>
+
+</main><!-- end main -->
+
+<!-- ===== MODALS ===== -->
+
+<!-- 人工加白 -->
+<div class="modal-overlay" id="modal-add-white" onclick="closeModalOutside(event,'modal-add-white')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">➕ 人工加白</span>
+      <button class="modal-close" onclick="closeModal('modal-add-white')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-info" style="margin-bottom:16px">
+        <span class="alert-icon">ℹ️</span>
+        <span>人工加白将<strong>跳过段位校验</strong>，用户仍需在游戏内完成签约才能参与激励计划。</span>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">用户昵称 <span class="req">*</span></label>
+          <input class="form-input" id="add-white-name" placeholder="输入游戏昵称"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">用户ID <span class="req">*</span></label>
+          <input class="form-input" id="add-white-id" placeholder="输入用户ID"/>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">加白原因 <span class="req">*</span></label>
+          <textarea class="form-input" id="add-white-reason" rows="3" placeholder="请说明人工加白的原因，将记录在审计日志中"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-add-white')">取消</button>
+      <button class="btn btn-primary" onclick="doAddWhite()">确认加白</button>
+    </div>
+  </div>
+</div>
+
+<!-- 查看快照 -->
+<div class="modal-overlay" id="modal-snapshot" onclick="closeModalOutside(event,'modal-snapshot')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">📊 数据快照</span>
+      <button class="modal-close" onclick="closeModal('modal-snapshot')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="snapshot-user-info" style="margin-bottom:16px;padding:12px;background:var(--gray-light);border-radius:8px;font-size:13px"></div>
+      <div class="snapshot-grid" id="snapshot-grid"></div>
+      <div class="divider"></div>
+      <div id="snapshot-actions" style="display:flex;gap:10px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-snapshot')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 拒绝原因 -->
+<div class="modal-overlay" id="modal-reject" onclick="closeModalOutside(event,'modal-reject')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">❌ 拒绝申请</span>
+      <button class="modal-close" onclick="closeModal('modal-reject')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">拒绝原因 <span class="req">*</span></label>
+        <select class="form-select" id="reject-reason-select" style="margin-bottom:8px">
+          <option value="">请选择原因</option>
+          <option value="段位不足">段位不足</option>
+          <option value="地图数量不足">地图数量不足</option>
+          <option value="游玩数据不达标">游玩数据不达标</option>
+          <option value="内容质量问题">内容质量问题</option>
+          <option value="其他">其他</option>
+        </select>
+        <textarea class="form-input" id="reject-reason-text" rows="3" placeholder="补充说明（可选）"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-reject')">取消</button>
+      <button class="btn btn-red" onclick="doReject()">确认拒绝</button>
+    </div>
+  </div>
+</div>
+
+<!-- 处罚确认 -->
+<div class="modal-overlay" id="modal-punish-confirm" onclick="closeModalOutside(event,'modal-punish-confirm')">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div class="modal-header" style="background:var(--orange-light);border-bottom-color:var(--orange-border)">
+      <span class="modal-header-title" style="color:var(--orange)">🚨 处罚中用户确认</span>
+      <button class="modal-close" onclick="closeModal('modal-punish-confirm')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text3);margin-bottom:16px">以下用户当前处于"处罚中"状态，请逐一确认是否发放本月奖金：</p>
+      <div id="punish-confirm-list" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-punish-confirm')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 创建激励计划 -->
+<div class="modal-overlay" id="modal-create-plan" onclick="closeModalOutside(event,'modal-create-plan')">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">🏆 创建激励计划</span>
+      <button class="modal-close" onclick="closeModal('modal-create-plan')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">计划名称 <span class="req">*</span></label>
+          <input class="form-input" id="plan-name" placeholder="如：2026年6月激励计划"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">激励月份 <span class="req">*</span></label>
+          <input class="form-input" id="plan-month" type="month" value="2026-06"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">奖金总额（元）<span class="req">*</span></label>
+          <input class="form-input" id="plan-total" type="number" placeholder="500000"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">单张地图上限（元）</label>
+          <input class="form-input" id="plan-single-limit" type="number" placeholder="50000"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">单用户累计上限（元）</label>
+          <input class="form-input" id="plan-user-limit" type="number" placeholder="100000"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">赛道规则</label>
+          <select class="form-select" id="plan-track-rule">
+            <option>沿用上月规则</option>
+            <option>重新配置</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-create-plan')">取消</button>
+      <button class="btn btn-primary" onclick="doCreatePlan()">创建计划</button>
+    </div>
+  </div>
+</div>
+
+<!-- 调整奖金 -->
+<div class="modal-overlay" id="modal-adjust-bonus" onclick="closeModalOutside(event,'modal-adjust-bonus')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">💰 调整奖金金额</span>
+      <button class="modal-close" onclick="closeModal('modal-adjust-bonus')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="adjust-bonus-info" style="margin-bottom:16px;padding:12px;background:var(--gray-light);border-radius:8px;font-size:13px"></div>
+      <div class="form-group">
+        <label class="form-label">调整后奖金（元）<span class="req">*</span></label>
+        <input class="form-input" id="adjust-bonus-input" type="number" placeholder="输入新金额"/>
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label class="form-label">调整原因</label>
+        <textarea class="form-input" id="adjust-bonus-reason" rows="2" placeholder="请说明调整原因（将记录在审计日志）"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-adjust-bonus')">取消</button>
+      <button class="btn btn-primary" onclick="doAdjustBonus()">确认调整</button>
+    </div>
+  </div>
+</div>
+
+<!-- Excel批量导入赛道 -->
+<div class="modal-overlay" id="modal-import-maps" onclick="closeModalOutside(event,'modal-import-maps')">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">📥 批量导入赛道归属</span>
+      <button class="modal-close" onclick="closeModal('modal-import-maps')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-info" style="margin-bottom:16px">
+        <span class="alert-icon">ℹ️</span>
+        <div>
+          <div>导入格式：Excel 文件，包含两列：<strong>地图ID</strong>、<strong>赛道（encourage/normal）</strong></div>
+          <div style="margin-top:4px">冲突处理策略：覆盖 = 强制更新；跳过 = 保留原值；报错 = 遇到冲突停止</div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">冲突处理策略</label>
+          <select class="form-select" id="import-conflict-strategy">
+            <option value="overwrite">覆盖（强制更新所有）</option>
+            <option value="skip" selected>跳过（保留已有值）</option>
+            <option value="error">报错（遇冲突停止）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">所属计划</label>
+          <select class="form-select" id="import-plan-select">
+            <option value="2026-04">2026年4月激励计划</option>
+            <option value="2026-03">2026年3月激励计划</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">选择文件 <span class="req">*</span></label>
+          <div style="border:2px dashed var(--gray-border);border-radius:8px;padding:32px;text-align:center;cursor:pointer;background:var(--gray-light)" onclick="document.getElementById('import-file-input').click()">
+            <div style="font-size:32px;margin-bottom:8px">📂</div>
+            <div style="font-size:14px;font-weight:600;color:var(--text2)">点击选择 Excel 文件</div>
+            <div style="font-size:12px;color:var(--text4);margin-top:4px">支持 .xlsx / .csv 格式</div>
+            <input type="file" id="import-file-input" accept=".xlsx,.csv" style="display:none" onchange="handleImportFile(this)"/>
+          </div>
+          <div id="import-file-preview" style="display:none;margin-top:12px"></div>
+        </div>
+      </div>
+      <div id="import-result" style="display:none;margin-top:12px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-import-maps')">取消</button>
+      <button class="btn btn-gray" onclick="downloadTemplate()">📄 下载模板</button>
+      <button class="btn btn-primary" onclick="doImportMaps()">开始导入</button>
+    </div>
+  </div>
+</div>
+
+<!-- 手动添加地图 -->
+<div class="modal-overlay" id="modal-add-map" onclick="closeModalOutside(event,'modal-add-map')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">➕ 手动添加地图</span>
+      <button class="modal-close" onclick="closeModal('modal-add-map')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">地图ID <span class="req">*</span></label>
+          <input class="form-input" id="add-map-id" placeholder="输入地图ID"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">赛道归属 <span class="req">*</span></label>
+          <select class="form-select" id="add-map-track">
+            <option value="encourage">🏆 鼓励赛道</option>
+            <option value="normal">📋 非鼓励赛道</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">备注</label>
+          <input class="form-input" id="add-map-note" placeholder="可选备注"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-add-map')">取消</button>
+      <button class="btn btn-primary" onclick="doAddMap()">确认添加</button>
+    </div>
+  </div>
+</div>
+
+<!-- 修改单条赛道 -->
+<div class="modal-overlay" id="modal-edit-track" onclick="closeModalOutside(event,'modal-edit-track')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title">✏️ 修改赛道归属</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-track')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="edit-track-info" style="margin-bottom:16px;padding:12px;background:var(--gray-light);border-radius:8px;font-size:13px"></div>
+      <div class="form-group">
+        <label class="form-label">赛道归属 <span class="req">*</span></label>
+        <select class="form-select" id="edit-track-select">
+          <option value="encourage">🏆 鼓励赛道</option>
+          <option value="normal">📋 非鼓励赛道</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label class="form-label">修改原因</label>
+        <textarea class="form-input" id="edit-track-reason" rows="2" placeholder="请说明修改原因（将记录在审计日志）"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-edit-track')">取消</button>
+      <button class="btn btn-primary" onclick="doEditTrack()">确认修改</button>
+    </div>
+  </div>
+</div>
+
+<!-- 发放明细弹窗 -->
+<div class="modal-overlay" id="modal-payout-detail" onclick="closeModalOutside(event,'modal-payout-detail')">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title" id="payout-detail-title">📋 发放明细</span>
+      <button class="modal-close" onclick="closeModal('modal-payout-detail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="payout-detail-summary" style="margin-bottom:16px;padding:12px;background:var(--gray-light);border-radius:8px;font-size:13px"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>地图名称</th><th>赛道</th><th>游玩次数</th><th>奖金（税前）</th><th>实发金额</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody id="payout-detail-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-payout-detail')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 创作者详情弹窗 -->
+<div class="modal-overlay" id="modal-creator-detail" onclick="closeModalOutside(event,'modal-creator-detail')">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-header-title" id="creator-detail-title">👤 创作者详情</span>
+      <button class="modal-close" onclick="closeModal('modal-creator-detail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="creator-detail-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px"></div>
+      <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px">地图明细</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>地图名称</th><th>赛道</th><th>游玩次数</th><th>游玩人数</th><th>均玩时长</th><th>本期奖金</th><th>上期奖金</th></tr></thead>
+          <tbody id="creator-detail-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-gray" onclick="closeModal('modal-creator-detail')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const whitelistData = [
+  {id:1,name:'创作者_Alpha',uid:'U10001',rank:'gold',maps:7,plays:2341,players:1200,applyTime:'2026-04-10',source:'申请',status:'pending'},
+  {id:2,name:'MapMaker_007',uid:'U10002',rank:'silver',maps:3,plays:891,players:450,applyTime:'2026-04-09',source:'申请',status:'normal'},
+  {id:3,name:'Builder_Pro',uid:'U10003',rank:'bronze',maps:1,plays:120,players:60,applyTime:'2026-04-08',source:'申请',status:'fail'},
+  {id:4,name:'StarCreator',uid:'U10004',rank:'diamond',maps:15,plays:8920,players:4200,applyTime:'2026-04-07',source:'申请',status:'punish'},
+  {id:5,name:'GameDesigner_X',uid:'U10005',rank:'gold',maps:5,plays:3100,players:1500,applyTime:'2026-04-06',source:'申请',status:'normal'},
+  {id:6,name:'MapArtist_99',uid:'U10006',rank:'silver',maps:4,plays:760,players:380,applyTime:'2026-04-05',source:'人工加白',status:'normal'},
+  {id:7,name:'CreativeBuilder',uid:'U10007',rank:'master',maps:22,plays:15600,players:7800,applyTime:'2026-04-04',source:'申请',status:'normal'},
+  {id:8,name:'LevelDesigner',uid:'U10008',rank:'gold',maps:8,plays:4200,players:2100,applyTime:'2026-04-03',source:'申请',status:'punish'},
+  {id:9,name:'MapWizard',uid:'U10009',rank:'diamond',maps:12,plays:6800,players:3400,applyTime:'2026-04-02',source:'申请',status:'normal'},
+  {id:10,name:'NewCreator_01',uid:'U10010',rank:'bronze',maps:2,plays:80,players:40,applyTime:'2026-04-01',source:'申请',status:'pending'},
+  {id:11,name:'ProMapper',uid:'U10011',rank:'silver',maps:3,plays:620,players:310,applyTime:'2026-03-30',source:'申请',status:'pending'},
+  {id:12,name:'ArtisanMap',uid:'U10012',rank:'gold',maps:6,plays:2800,players:1400,applyTime:'2026-03-29',source:'申请',status:'punish'},
+];
+
+const mapsData = [
+  {id:'M001',name:'末日城市',creator:'创作者_Alpha',date:'2026-04-01',track:'encourage',plays:12450,players:6200,duration:8.5,likes:892,favorites:445,plan:'2026-04',expectedBonus:48000,settledBonus:0},
+  {id:'M002',name:'星际探索',creator:'MapMaker_007',date:'2026-04-02',track:'normal',plays:8230,players:4100,duration:6.2,likes:612,favorites:306,plan:'2026-04',expectedBonus:25000,settledBonus:0},
+  {id:'M003',name:'古代遗迹',creator:'StarCreator',date:'2026-04-01',track:'encourage',plays:15800,players:7900,duration:12.3,likes:1240,favorites:620,plan:'2026-04',expectedBonus:50000,settledBonus:0},
+  {id:'M004',name:'未来都市',creator:'GameDesigner_X',date:'2026-04-03',track:'encourage',plays:9800,players:4900,duration:9.1,likes:780,favorites:390,plan:'2026-04',expectedBonus:36000,settledBonus:0},
+  {id:'M005',name:'海底世界',creator:'CreativeBuilder',date:'2026-04-02',track:'encourage',plays:11200,players:5600,duration:10.5,likes:960,favorites:480,plan:'2026-04',expectedBonus:42000,settledBonus:0},
+  {id:'M006',name:'迷失森林',creator:'MapArtist_99',date:'2026-04-04',track:'normal',plays:5600,players:2800,duration:5.8,likes:420,favorites:210,plan:'2026-04',expectedBonus:15000,settledBonus:0},
+  {id:'M007',name:'冰雪王国',creator:'LevelDesigner',date:'2026-04-03',track:'encourage',plays:7800,players:3900,duration:7.2,likes:580,favorites:290,plan:'2026-04',expectedBonus:28000,settledBonus:0},
+  {id:'M008',name:'火山岛屿',creator:'MapWizard',date:'2026-04-05',track:'normal',plays:4200,players:2100,duration:4.5,likes:310,favorites:155,plan:'2026-04',expectedBonus:10000,settledBonus:0},
+  // 3月历史数据
+  {id:'M101',name:'末日城市',creator:'创作者_Alpha',date:'2026-03-01',track:'encourage',plays:10200,players:5100,duration:8.5,likes:720,favorites:360,plan:'2026-03',expectedBonus:40000,settledBonus:40000},
+  {id:'M102',name:'古代遗迹',creator:'StarCreator',date:'2026-03-01',track:'encourage',plays:13200,players:6600,duration:12.3,likes:1050,favorites:525,plan:'2026-03',expectedBonus:50000,settledBonus:50000},
+  {id:'M103',name:'海底世界',creator:'CreativeBuilder',date:'2026-03-02',track:'encourage',plays:9800,players:4900,duration:10.5,likes:820,favorites:410,plan:'2026-03',expectedBonus:38000,settledBonus:38000},
+];
+
+const bonusData = [
+  {id:1,name:'古代遗迹',creator:'StarCreator',creatorStatus:'punish',track:'encourage',plays:15800,calcBonus:50000,adjBonus:50000,removed:false},
+  {id:2,name:'末日城市',creator:'创作者_Alpha',creatorStatus:'normal',track:'encourage',plays:12450,calcBonus:48000,adjBonus:48000,removed:false},
+  {id:3,name:'海底世界',creator:'CreativeBuilder',creatorStatus:'normal',track:'encourage',plays:11200,calcBonus:42000,adjBonus:42000,removed:false},
+  {id:4,name:'未来都市',creator:'GameDesigner_X',creatorStatus:'normal',track:'encourage',plays:9800,calcBonus:36000,adjBonus:36000,removed:false},
+  {id:5,name:'星际探索',creator:'MapMaker_007',creatorStatus:'normal',track:'normal',plays:8230,calcBonus:22000,adjBonus:25000,removed:false},
+  {id:6,name:'冰雪王国',creator:'LevelDesigner',creatorStatus:'punish',track:'encourage',plays:7800,calcBonus:28000,adjBonus:28000,removed:false},
+  {id:7,name:'迷失森林',creator:'MapArtist_99',creatorStatus:'normal',track:'normal',plays:5600,calcBonus:15000,adjBonus:15000,removed:false},
+  {id:8,name:'火山岛屿',creator:'MapWizard',creatorStatus:'normal',track:'normal',plays:4200,calcBonus:10000,adjBonus:10000,removed:false},
+  {id:9,name:'神秘洞穴',creator:'ArtisanMap',creatorStatus:'punish',track:'encourage',plays:3800,calcBonus:8000,adjBonus:8000,removed:false},
+  {id:10,name:'太空站',creator:'ProMapper',creatorStatus:'normal',track:'normal',plays:3200,calcBonus:6000,adjBonus:6000,removed:false},
+];
+
+const planData = [
+  {id:1,name:'2026年4月激励计划',month:'2026-04',status:'settle',total:500000,singleLimit:50000,userLimit:100000,maps:86,actualBonus:487200},
+  {id:2,name:'2026年5月激励计划',month:'2026-05',status:'pending',total:null,singleLimit:null,userLimit:null,maps:0,actualBonus:0},
+  {id:3,name:'2026年3月激励计划',month:'2026-03',status:'paid',total:450000,singleLimit:50000,userLimit:100000,maps:72,actualBonus:423800},
+];
+
+const auditLog = [
+  {time:'2026-04-13 15:42:11',op:'奖金调整',user:'运营_小王',content:'将「星际探索」奖金从 ¥22,000 调整为 ¥25,000，原因：数据优秀'},
+  {time:'2026-04-13 14:30:05',op:'赛道调整',user:'运营_小王',content:'将「迷失森林」从鼓励赛道调整为非鼓励赛道'},
+  {time:'2026-04-13 11:20:33',op:'处罚操作',user:'运营_小王',content:'将用户「LevelDesigner」标记为处罚中，原因：违规刷量'},
+  {time:'2026-04-12 16:45:22',op:'白名单审核',user:'运营_小王',content:'通过用户「MapArtist_99」的白名单申请'},
+  {time:'2026-04-12 10:12:08',op:'白名单审核',user:'运营_小王',content:'拒绝用户「Builder_Pro」的白名单申请，原因：地图数量不足'},
+  {time:'2026-04-11 09:30:00',op:'人工加白',user:'运营_小王',content:'人工加白用户「MapArtist_99」，跳过段位校验，原因：特邀创作者'},
+  {time:'2026-04-10 17:00:00',op:'计划配置',user:'运营_小王',content:'配置2026年4月激励计划，奖金总额 ¥500,000'},
+];
+
+// 历史发放数据（多周期）
+const payoutHistory = {
+  '2026-04': bonusData.filter(b=>!b.removed).map(b=>({...b, tax:Math.round(b.adjBonus>800?(b.adjBonus-800)*0.2:0), payStatus:'processing', retryCount:0})),
+  '2026-03': [
+    {id:101,name:'古代遗迹',creator:'StarCreator',creatorStatus:'normal',track:'encourage',plays:13200,adjBonus:50000,tax:9840,payStatus:'success',retryCount:0},
+    {id:102,name:'末日城市',creator:'创作者_Alpha',creatorStatus:'normal',track:'encourage',plays:10200,adjBonus:40000,tax:7840,payStatus:'success',retryCount:0},
+    {id:103,name:'海底世界',creator:'CreativeBuilder',creatorStatus:'normal',track:'encourage',plays:9800,adjBonus:38000,tax:7440,payStatus:'success',retryCount:0},
+    {id:104,name:'星际探索',creator:'MapMaker_007',creatorStatus:'normal',track:'normal',plays:7200,adjBonus:20000,tax:3840,payStatus:'success',retryCount:0},
+    {id:105,name:'迷失森林',creator:'MapArtist_99',creatorStatus:'normal',track:'normal',plays:4800,adjBonus:12000,tax:2240,payStatus:'fail',retryCount:2},
+  ],
+  '2026-02': [
+    {id:201,name:'古代遗迹',creator:'StarCreator',creatorStatus:'normal',track:'encourage',plays:11000,adjBonus:45000,tax:8840,payStatus:'success',retryCount:0},
+    {id:202,name:'末日城市',creator:'创作者_Alpha',creatorStatus:'normal',track:'encourage',plays:9500,adjBonus:38000,tax:7440,payStatus:'success',retryCount:0},
+  ],
+};
+
+// 趋势数据
+const trendData = [
+  {period:'2026-02',bonus:380000,creators:38,maps:62,plays:980000,encourageBonus:240000,normalBonus:140000},
+  {period:'2026-03',bonus:423800,creators:44,maps:72,plays:1120000,encourageBonus:270000,normalBonus:153800},
+  {period:'2026-04',bonus:487200,creators:52,maps:86,plays:1234560,encourageBonus:312000,normalBonus:175200},
+];
+
+// ===== STATE =====
+let currentRole = 'ops';
+let currentRejectId = null;
+let currentAdjustId = null;
+let currentEditTrackId = null;
+let currentPayoutPeriod = '2026-04';
+let currentAnalyticsPeriod = '2026-04';
+let currentWlTab = 'all';
+let currentMapsPlan = '2026-04';
+let currentDim = 'creator';
+let leaderApproved = false;
+let financeApproved = false;
+let punishConfirmed = {1:null, 6:null, 9:null};
+let selectedMaps = new Set();
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  updateWlStats();
+  renderWhitelist(getFilteredWl());
+  renderPlans();
+  renderMapsPage('2026-04');
+  renderBonus();
+  renderCalcTable();
+  renderLeaderDetail();
+  renderLeaderPunishList();
+  renderFinanceTable();
+  renderPayoutPage('2026-04');
+  renderAuditLog();
+  renderPunishConfirmList();
+  renderAnalytics('2026-04','creator');
+  renderTrend();
+  // 初始化地图创作者筛选
+  const creators = [...new Set(mapsData.map(m=>m.creator))];
+  const sel = document.getElementById('maps-creator-filter');
+  if(sel) creators.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+});
+
+// ===== NAV =====
+function navTo(pageId, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  if (el) el.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'"+pageId+"'")) n.classList.add('active');
+    });
+  }
+}
+
+// ===== ROLE SWITCH =====
+function switchRole(role, btn) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const roleMap = {ops:{name:'运营_小王',avatar:'运'}, leader:{name:'Leader_张总',avatar:'L'}, finance:{name:'财务_李姐',avatar:'财'}};
+  document.getElementById('userName').textContent = roleMap[role].name;
+  document.getElementById('userAvatar').textContent = roleMap[role].avatar;
+  showToast('已切换为 ' + roleMap[role].name + ' 视角', 'success');
+}
+
+// ===== WHITELIST =====
+const rankMap = {bronze:'青铜',silver:'白银',gold:'黄金',diamond:'钻石',master:'大师'};
+const rankClass = {bronze:'rank-bronze',silver:'rank-silver',gold:'rank-gold',diamond:'rank-diamond',master:'rank-master'};
+const statusMap = {pending:'待审核',normal:'已加入',fail:'已拒绝',punish:'处罚中',removed:'已移除'};
+const statusClass = {pending:'badge-pending',normal:'badge-normal',fail:'badge-fail',punish:'badge-punish',removed:'badge-removed'};
+
+function getFilteredWl(tab, search, rank, source) {
+  tab = tab || currentWlTab;
+  let data = [...whitelistData];
+  if (tab && tab !== 'all') data = data.filter(u => u.status === tab);
+  if (search) data = data.filter(u => u.name.toLowerCase().includes(search.toLowerCase()) || (u.uid||'').includes(search));
+  if (rank) data = data.filter(u => u.rank === rank);
+  if (source) data = data.filter(u => u.source === source);
+  return data;
+}
+
+function updateWlStats() {
+  document.getElementById('stat-total-count').textContent = whitelistData.length;
+  document.getElementById('stat-pending-count').textContent = whitelistData.filter(u=>u.status==='pending').length;
+  document.getElementById('stat-normal-count').textContent = whitelistData.filter(u=>u.status==='normal').length;
+  document.getElementById('stat-fail-count').textContent = whitelistData.filter(u=>u.status==='fail').length;
+  document.getElementById('stat-punish-count').textContent = whitelistData.filter(u=>u.status==='punish').length;
+  const pendingCount = whitelistData.filter(u=>u.status==='pending').length;
+  document.getElementById('badge-pending').textContent = pendingCount;
+  const tabBadge = document.getElementById('wl-tab-badge-pending');
+  if(tabBadge) tabBadge.textContent = pendingCount;
+}
+
+function switchWlTab(tab, btn) {
+  currentWlTab = tab;
+  document.querySelectorAll('.wl-tab').forEach(b => {
+    b.style.borderBottomColor = 'transparent';
+    b.style.color = 'var(--text3)';
+    b.style.background = 'transparent';
+  });
+  btn.style.borderBottomColor = 'var(--primary)';
+  btn.style.color = 'var(--primary)';
+  const titles = {all:'全部列表',pending:'待人工审核',normal:'已加入白名单',punish:'处罚中',fail:'已拒绝'};
+  document.getElementById('wl-tab-title').textContent = titles[tab] || '全部列表';
+  const search = document.getElementById('wl-search') ? document.getElementById('wl-search').value : '';
+  renderWhitelist(getFilteredWl(tab, search));
+}
+
+function renderWhitelist(data) {
+  const tbody = document.getElementById('whitelist-tbody');
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text4)">暂无数据</td></tr>'; return; }
+  tbody.innerHTML = data.map(u => `
+    <tr class="${u.status==='punish'?'row-punish':u.status==='removed'?'row-removed':''}">
+      <td><strong>${u.name}</strong><div style="font-size:11px;color:var(--text4)">${u.uid||''}</div></td>
+      <td><span class="rank-badge ${rankClass[u.rank]}">${rankMap[u.rank]}</span></td>
+      <td>${u.maps}</td>
+      <td>${u.plays.toLocaleString()}</td>
+      <td>${u.players.toLocaleString()}</td>
+      <td>${u.applyTime}</td>
+      <td><span style="font-size:12px;color:var(--text4)">${u.source}</span></td>
+      <td><span class="badge ${statusClass[u.status]}">${statusMap[u.status]}</span></td>
+      <td>${getWhitelistActions(u)}</td>
+    </tr>
+  `).join('');
+}
+
+function getWhitelistActions(u) {
+  if (u.status === 'pending') return `
+    <button class="btn-sm g" onclick="approveWhitelist(${u.id})">通过</button>
+    <button class="btn-sm r" onclick="openRejectModal(${u.id})">拒绝</button>
+    <button class="btn-sm gray" onclick="viewSnapshot(${u.id})">快照</button>
+  `;
+  if (u.status === 'normal') return `
+    <button class="btn-sm o" onclick="punishUser(${u.id})">处罚</button>
+    <button class="btn-sm gray" onclick="viewSnapshot(${u.id})">快照</button>
+  `;
+  if (u.status === 'punish') return `
+    <button class="btn-sm b" onclick="unpunishUser(${u.id})">解除处罚</button>
+    <button class="btn-sm gray" onclick="viewSnapshot(${u.id})">快照</button>
+  `;
+  if (u.status === 'fail') return `<button class="btn-sm gray" onclick="viewSnapshot(${u.id})">快照</button>`;
+  return '';
+}
+
+function filterWhitelist(val) {
+  renderWhitelist(getFilteredWl(currentWlTab, val));
+}
+function filterWlRank(val) { renderWhitelist(getFilteredWl(currentWlTab, '', val)); }
+function filterWlSource(val) { renderWhitelist(getFilteredWl(currentWlTab, '', '', val)); }
+function filterWhitelistStatus(val) { renderWhitelist(val ? whitelistData.filter(u=>u.status===val) : whitelistData); }
+
+function approveWhitelist(id) {
+  const u = whitelistData.find(x => x.id === id);
+  u.status = 'normal';
+  updateWlStats();
+  renderWhitelist(getFilteredWl());
+  addAuditLog('白名单审核', `通过用户「${u.name}」的白名单申请`);
+  showToast(`✅ 已通过「${u.name}」的申请`, 'success');
+}
+
+function openRejectModal(id) { currentRejectId = id; openModal('modal-reject'); }
+
+function doReject() {
+  const reason = document.getElementById('reject-reason-select').value || document.getElementById('reject-reason-text').value;
+  if (!reason) { showToast('请选择拒绝原因', 'error'); return; }
+  const u = whitelistData.find(x => x.id === currentRejectId);
+  u.status = 'fail';
+  updateWlStats();
+  renderWhitelist(getFilteredWl());
+  addAuditLog('白名单审核', `拒绝用户「${u.name}」的申请，原因：${reason}`);
+  closeModal('modal-reject');
+  showToast(`已拒绝「${u.name}」`, 'warn');
+}
+
+function punishUser(id) {
+  const u = whitelistData.find(x => x.id === id);
+  u.status = 'punish';
+  updateWlStats();
+  renderWhitelist(getFilteredWl());
+  addAuditLog('处罚操作', `将用户「${u.name}」标记为处罚中`);
+  showToast(`⚠️ 已将「${u.name}」标记为处罚中`, 'warn');
+}
+
+function unpunishUser(id) {
+  const u = whitelistData.find(x => x.id === id);
+  u.status = 'normal';
+  updateWlStats();
+  renderWhitelist(getFilteredWl());
+  addAuditLog('处罚操作', `解除用户「${u.name}」的处罚状态`);
+  showToast(`✅ 已解除「${u.name}」的处罚`, 'success');
+}
+
+function viewSnapshot(id) {
+  const u = whitelistData.find(x => x.id === id);
+  document.getElementById('snapshot-user-info').innerHTML = `
+    <strong>${u.name}</strong> &nbsp;
+    <span class="rank-badge ${rankClass[u.rank]}">${rankMap[u.rank]}</span> &nbsp;
+    <span class="badge ${statusClass[u.status]}">${statusMap[u.status]}</span>
+    <span style="float:right;color:var(--text4)">申请时间：${u.applyTime}</span>
+  `;
+  document.getElementById('snapshot-grid').innerHTML = `
+    <div class="snapshot-item"><div class="snapshot-val">${rankMap[u.rank]}</div><div class="snapshot-key">段位</div></div>
+    <div class="snapshot-item"><div class="snapshot-val">${u.maps}</div><div class="snapshot-key">发布地图数</div></div>
+    <div class="snapshot-item"><div class="snapshot-val">${u.plays.toLocaleString()}</div><div class="snapshot-key">游玩次数</div></div>
+    <div class="snapshot-item"><div class="snapshot-val">${u.players.toLocaleString()}</div><div class="snapshot-key">游玩人数</div></div>
+    <div class="snapshot-item"><div class="snapshot-val">${u.maps>0?Math.round(u.plays/u.maps).toLocaleString():'-'}</div><div class="snapshot-key">均次/图</div></div>
+    <div class="snapshot-item"><div class="snapshot-val">${u.source}</div><div class="snapshot-key">申请来源</div></div>
+  `;
+  const actions = document.getElementById('snapshot-actions');
+  if (u.status === 'pending') {
+    actions.innerHTML = `
+      <button class="btn btn-green" onclick="approveWhitelist(${u.id});closeModal('modal-snapshot')">✅ 通过审核</button>
+      <button class="btn btn-red" onclick="closeModal('modal-snapshot');openRejectModal(${u.id})">❌ 拒绝</button>
+    `;
+  } else { actions.innerHTML = ''; }
+  openModal('modal-snapshot');
+}
+
+function doAddWhite() {
+  const name = document.getElementById('add-white-name').value.trim();
+  const uid = document.getElementById('add-white-id').value.trim();
+  const reason = document.getElementById('add-white-reason').value.trim();
+  if (!name || !uid || !reason) { showToast('请填写完整信息', 'error'); return; }
+  const newUser = {id:Date.now(),name,uid,rank:'silver',maps:0,plays:0,players:0,applyTime:new Date().toISOString().slice(0,10),source:'人工加白',status:'normal'};
+  whitelistData.unshift(newUser);
+  updateWlStats();
+  renderWhitelist(getFilteredWl());
+  addAuditLog('人工加白', `人工加白用户「${name}」，原因：${reason}`);
+  closeModal('modal-add-white');
+  showToast(`✅ 已将「${name}」加入白名单`, 'success');
+  ['add-white-name','add-white-id','add-white-reason'].forEach(id=>document.getElementById(id).value='');
+}
+
+function updatePendingBadge() { updateWlStats(); }
+
+// ===== RULE CONFIG =====
+function saveRuleConfig() {
+  addAuditLog('规则配置', `更新白名单审核规则：段位≥${document.getElementById('rule-rank').options[document.getElementById('rule-rank').selectedIndex].text}，地图数≥${document.getElementById('rule-map-count').value}，游玩次数≥${document.getElementById('rule-play-count').value}`);
+  showToast('✅ 规则已保存，新规则仅对新申请生效', 'success');
+}
+
+// ===== PLANS =====
+function renderPlans() {
+  const grid = document.getElementById('plan-grid');
+  grid.innerHTML = planData.map(p => {
+    const statusLabel = {settle:'结算中',pending:'待配置',active:'进行中',paid:'已发放'}[p.status];
+    const statusBadge = {settle:'badge-settle',pending:'badge-pending',active:'badge-active',paid:'badge-success'}[p.status];
+    const cardClass = {settle:'plan-settle',pending:'plan-pending',active:'plan-active',paid:'plan-done'}[p.status];
+    return `
+      <div class="plan-card ${cardClass}">
+        <div class="plan-card-header">
+          <span class="plan-card-name">${p.name}</span>
+          <span class="badge ${statusBadge}">${statusLabel}</span>
+        </div>
+        <div class="plan-card-body">
+          ${p.total ? `<div class="plan-row"><span>奖金总额</span><strong>¥ ${p.total.toLocaleString()}</strong></div>` : '<div class="plan-row"><span>奖金总额</span><strong style="color:var(--text4)">待配置</strong></div>'}
+          ${p.singleLimit ? `<div class="plan-row"><span>单张上限</span><strong>¥ ${p.singleLimit.toLocaleString()}</strong></div>` : ''}
+          ${p.userLimit ? `<div class="plan-row"><span>累计上限</span><strong>¥ ${p.userLimit.toLocaleString()}</strong></div>` : ''}
+          <div class="plan-row"><span>归属地图</span><strong>${p.maps} 张</strong></div>
+          ${p.status==='paid' ? `<div class="plan-row"><span>实际发放</span><strong style="color:var(--green)">¥ ${p.actualBonus.toLocaleString()}</strong></div>` : ''}
+        </div>
+        <div class="plan-card-footer">
+          ${p.status==='pending' ? `<button class="btn btn-primary" onclick="openModal('modal-create-plan')">立即配置</button>` : ''}
+          ${p.status==='settle' ? `<button class="btn btn-primary" onclick="navTo('calc',null)">进入奖金计算</button>` : ''}
+          <button class="btn btn-gray" onclick="showToast('查看详情功能开发中','warn')">查看详情</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function doCreatePlan() {
+  const name = document.getElementById('plan-name').value.trim();
+  const month = document.getElementById('plan-month').value;
+  const total = document.getElementById('plan-total').value;
+  if (!name || !month || !total) { showToast('请填写必填项', 'error'); return; }
+  planData.unshift({id:Date.now(),name,month,status:'pending',total:parseInt(total),singleLimit:parseInt(document.getElementById('plan-single-limit').value)||50000,userLimit:parseInt(document.getElementById('plan-user-limit').value)||100000,maps:0,actualBonus:0});
+  renderPlans();
+  closeModal('modal-create-plan');
+  showToast('✅ 激励计划已创建', 'success');
+}
+
+// ===== MAPS PAGE =====
+function renderMapsPage(plan) {
+  currentMapsPlan = plan;
+  const data = mapsData.filter(m => m.plan === plan);
+  const encourage = data.filter(m=>m.track==='encourage');
+  const normal = data.filter(m=>m.track==='normal');
+  const expectedTotal = data.reduce((s,m)=>s+m.expectedBonus,0);
+  const settledTotal = data.reduce((s,m)=>s+m.settledBonus,0);
+  document.getElementById('maps-stat-total').textContent = data.length;
+  document.getElementById('maps-stat-encourage').textContent = encourage.length;
+  document.getElementById('maps-stat-normal').textContent = normal.length;
+  document.getElementById('maps-stat-expected').textContent = '¥'+expectedTotal.toLocaleString();
+  document.getElementById('maps-stat-settled').textContent = '¥'+settledTotal.toLocaleString();
+  document.getElementById('maps-card-title').textContent = plan.replace('-','年').replace('-','月') + ' · 地图列表（共'+data.length+'张）';
+  renderMapsTable(data);
+}
+
+function renderMapsTable(data) {
+  const tbody = document.getElementById('maps-tbody');
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text4)">暂无数据</td></tr>'; return; }
+  tbody.innerHTML = data.map(m => `
+    <tr>
+      <td><input type="checkbox" class="map-check" data-id="${m.id}" onchange="toggleMapSelect('${m.id}',this.checked)" style="cursor:pointer"/></td>
+      <td><strong>${m.name}</strong></td>
+      <td style="font-size:12px;color:var(--text4)">${m.id}</td>
+      <td>${m.creator}</td>
+      <td>${m.date}</td>
+      <td>
+        <span class="track-badge ${m.track==='encourage'?'track-encourage':'track-normal'}">${m.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span>
+      </td>
+      <td>${m.plays.toLocaleString()}</td>
+      <td>${m.players.toLocaleString()}</td>
+      <td>${m.duration}分钟</td>
+      <td style="color:var(--purple);font-weight:600">¥${m.expectedBonus.toLocaleString()}</td>
+      <td style="color:${m.settledBonus>0?'var(--green)':'var(--text4)'}">
+        ${m.settledBonus>0?'¥'+m.settledBonus.toLocaleString():'—'}
+      </td>
+      <td>
+        <button class="btn-sm b" onclick="openEditTrack('${m.id}')">改赛道</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function switchPlanTab(plan, btn) {
+  document.querySelectorAll('.plan-tab-btn').forEach(b=>{
+    b.style.background='var(--white)';b.style.color='var(--text3)';b.style.borderColor='var(--gray-border)';
+  });
+  btn.style.background='var(--primary)';btn.style.color='#fff';btn.style.borderColor='var(--primary)';
+  renderMapsPage(plan);
+}
+
+function filterMaps(val) {
+  const data = mapsData.filter(m=>m.plan===currentMapsPlan && (m.name.toLowerCase().includes(val.toLowerCase())||m.id.toLowerCase().includes(val.toLowerCase())));
+  renderMapsTable(data);
+}
+function filterMapsTrack(val) {
+  const data = mapsData.filter(m=>m.plan===currentMapsPlan && (val===''||m.track===val));
+  renderMapsTable(data);
+}
+function filterMapsCreator(val) {
+  const data = mapsData.filter(m=>m.plan===currentMapsPlan && (val===''||m.creator===val));
+  renderMapsTable(data);
+}
+
+function toggleMapSelect(id, checked) {
+  if (checked) selectedMaps.add(id); else selectedMaps.delete(id);
+  document.getElementById('maps-selected-count').textContent = '已选 '+selectedMaps.size+' 条';
+}
+function toggleAllMaps(checked) {
+  document.querySelectorAll('.map-check').forEach(cb=>{cb.checked=checked;toggleMapSelect(cb.dataset.id,checked);});
+}
+function batchSetTrack(track) {
+  if (!selectedMaps.size) { showToast('请先选择地图','warn'); return; }
+  selectedMaps.forEach(id=>{
+    const m = mapsData.find(x=>x.id===id);
+    if(m) { addAuditLog('赛道调整',`批量将「${m.name}」设为${track==='encourage'?'鼓励':'非鼓励'}赛道`); m.track=track; }
+  });
+  selectedMaps.clear();
+  renderMapsPage(currentMapsPlan);
+  showToast(`✅ 已批量设置赛道`, 'success');
+}
+
+function openEditTrack(id) {
+  currentEditTrackId = id;
+  const m = mapsData.find(x=>x.id===id);
+  document.getElementById('edit-track-info').innerHTML = `<strong>${m.name}</strong> · ${m.creator} · 当前：<span class="track-badge ${m.track==='encourage'?'track-encourage':'track-normal'}">${m.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span>`;
+  document.getElementById('edit-track-select').value = m.track;
+  openModal('modal-edit-track');
+}
+function doEditTrack() {
+  const m = mapsData.find(x=>x.id===currentEditTrackId);
+  const newTrack = document.getElementById('edit-track-select').value;
+  const reason = document.getElementById('edit-track-reason').value || '运营调整';
+  const old = m.track;
+  m.track = newTrack;
+  renderMapsPage(currentMapsPlan);
+  addAuditLog('赛道调整',`将「${m.name}」从${old==='encourage'?'鼓励':'非鼓励'}赛道调整为${newTrack==='encourage'?'鼓励':'非鼓励'}赛道，原因：${reason}`);
+  closeModal('modal-edit-track');
+  showToast('✅ 赛道已修改','success');
+}
+
+// Excel导入模拟
+function handleImportFile(input) {
+  if (!input.files.length) return;
+  const file = input.files[0];
+  document.getElementById('import-file-preview').style.display = 'block';
+  document.getElementById('import-file-preview').innerHTML = `
+    <div style="background:var(--green-light);border:1px solid var(--green-border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green)">
+      📄 已选择：<strong>${file.name}</strong>（${(file.size/1024).toFixed(1)} KB）
+    </div>
+  `;
+}
+function doImportMaps() {
+  const fileInput = document.getElementById('import-file-input');
+  if (!fileInput.files.length) { showToast('请先选择文件','error'); return; }
+  const strategy = document.getElementById('import-conflict-strategy').value;
+  // 模拟导入结果
+  const result = document.getElementById('import-result');
+  result.style.display = 'block';
+  result.innerHTML = `
+    <div class="alert alert-success" style="margin:0 0 8px">
+      <span class="alert-icon">✅</span>
+      <span>导入完成！成功处理 <strong>24 条</strong>记录</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:13px">
+      <div style="background:var(--green-light);border-radius:6px;padding:8px;text-align:center"><strong style="color:var(--green)">20</strong><div style="color:var(--text4)">成功导入</div></div>
+      <div style="background:var(--yellow-light);border-radius:6px;padding:8px;text-align:center"><strong style="color:var(--yellow)">3</strong><div style="color:var(--text4)">${strategy==='skip'?'已跳过':'已覆盖'}</div></div>
+      <div style="background:var(--red-light);border-radius:6px;padding:8px;text-align:center"><strong style="color:var(--red)">1</strong><div style="color:var(--text4)">地图ID不存在</div></div>
+    </div>
+  `;
+  addAuditLog('批量导入','批量导入赛道归属，成功20条，跳过3条，失败1条');
+  showToast('✅ 导入完成','success');
+}
+function downloadTemplate() {
+  showToast('📄 模板下载中（模拟）','success');
+}
+function doAddMap() {
+  const id = document.getElementById('add-map-id').value.trim();
+  const track = document.getElementById('add-map-track').value;
+  if (!id) { showToast('请输入地图ID','error'); return; }
+  mapsData.push({id,name:'地图_'+id,creator:'未知',date:new Date().toISOString().slice(0,10),track,plays:0,players:0,duration:0,likes:0,favorites:0,plan:currentMapsPlan,expectedBonus:0,settledBonus:0});
+  renderMapsPage(currentMapsPlan);
+  addAuditLog('添加地图',`手动添加地图 ID:${id} 至 ${currentMapsPlan} 计划，赛道：${track==='encourage'?'鼓励':'非鼓励'}`);
+  closeModal('modal-add-map');
+  showToast('✅ 地图已添加','success');
+}
+
+// ===== BONUS =====
+function renderBonus() {
+  const tbody = document.getElementById('bonus-tbody');
+  const active = bonusData.filter(b => !b.removed);
+  tbody.innerHTML = active.map(b => `
+    <tr class="${b.creatorStatus==='punish'?'row-punish':''}">
+      <td><strong>${b.name}</strong></td>
+      <td>${b.creatorStatus==='punish'?`<span style="color:var(--orange)">⚠️ ${b.creator}</span>`:b.creator}</td>
+      <td><span class="track-badge ${b.track==='encourage'?'track-encourage':'track-normal'}">${b.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+      <td>${b.plays.toLocaleString()}</td>
+      <td>¥ ${b.calcBonus.toLocaleString()}</td>
+      <td style="${b.adjBonus!==b.calcBonus?'color:var(--orange);font-weight:700':''}">¥ ${b.adjBonus.toLocaleString()}</td>
+      <td>
+        <button class="btn-sm b" onclick="toggleTrack(${b.id})">改赛道</button>
+        <button class="btn-sm o" onclick="openAdjustBonus(${b.id})">改金额</button>
+        <button class="btn-sm r" onclick="removeBonus(${b.id})">移除</button>
+      </td>
+    </tr>
+  `).join('');
+  updateTotalBonus();
+}
+
+function toggleTrack(id) {
+  const b = bonusData.find(x => x.id === id);
+  const oldTrack = b.track;
+  b.track = b.track === 'encourage' ? 'normal' : 'encourage';
+  renderBonus();
+  addAuditLog('赛道调整', `将「${b.name}」从${oldTrack==='encourage'?'鼓励':'非鼓励'}赛道调整为${b.track==='encourage'?'鼓励':'非鼓励'}赛道`);
+  showToast(`已调整「${b.name}」赛道`, 'success');
+}
+
+function openAdjustBonus(id) {
+  currentAdjustId = id;
+  const b = bonusData.find(x => x.id === id);
+  document.getElementById('adjust-bonus-info').innerHTML = `<strong>${b.name}</strong> · ${b.creator} · 当前奖金：<strong>¥ ${b.adjBonus.toLocaleString()}</strong>`;
+  document.getElementById('adjust-bonus-input').value = b.adjBonus;
+  openModal('modal-adjust-bonus');
+}
+
+function doAdjustBonus() {
+  const val = parseInt(document.getElementById('adjust-bonus-input').value);
+  const reason = document.getElementById('adjust-bonus-reason').value || '运营调整';
+  if (!val || val < 0) { showToast('请输入有效金额', 'error'); return; }
+  const b = bonusData.find(x => x.id === currentAdjustId);
+  const old = b.adjBonus;
+  b.adjBonus = val;
+  renderBonus();
+  addAuditLog('奖金调整', `将「${b.name}」奖金从 ¥${old.toLocaleString()} 调整为 ¥${val.toLocaleString()}，原因：${reason}`);
+  closeModal('modal-adjust-bonus');
+  showToast('✅ 奖金已调整', 'success');
+}
+
+function removeBonus(id) {
+  const b = bonusData.find(x => x.id === id);
+  if (confirm(`确认将「${b.name}」从本月激励中移除？`)) {
+    b.removed = true;
+    renderBonus();
+    addAuditLog('移除地图', `将「${b.name}」从2026年4月激励计划中移除`);
+    showToast(`已移除「${b.name}」`, 'warn');
+  }
+}
+
+function filterBonusTrack(val) {
+  const tbody = document.getElementById('bonus-tbody');
+  const active = bonusData.filter(b => !b.removed && (val===''||b.track===val));
+  tbody.innerHTML = active.map(b => `
+    <tr class="${b.creatorStatus==='punish'?'row-punish':''}">
+      <td><strong>${b.name}</strong></td>
+      <td>${b.creatorStatus==='punish'?`<span style="color:var(--orange)">⚠️ ${b.creator}</span>`:b.creator}</td>
+      <td><span class="track-badge ${b.track==='encourage'?'track-encourage':'track-normal'}">${b.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+      <td>${b.plays.toLocaleString()}</td>
+      <td>¥ ${b.calcBonus.toLocaleString()}</td>
+      <td style="${b.adjBonus!==b.calcBonus?'color:var(--orange);font-weight:700':''}">¥ ${b.adjBonus.toLocaleString()}</td>
+      <td>
+        <button class="btn-sm b" onclick="toggleTrack(${b.id})">改赛道</button>
+        <button class="btn-sm o" onclick="openAdjustBonus(${b.id})">改金额</button>
+        <button class="btn-sm r" onclick="removeBonus(${b.id})">移除</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateTotalBonus() {
+  const total = bonusData.filter(b=>!b.removed).reduce((s,b)=>s+b.adjBonus,0);
+  document.getElementById('total-bonus-display').textContent = '¥ ' + total.toLocaleString();
+}
+
+function submitToLeader() {
+  addAuditLog('提交审核', '运营将2026年4月激励计划提交至Leader审核');
+  showToast('✅ 已提交 Leader 审核', 'success');
+  document.getElementById('badge-leader').textContent = '1';
+  setTimeout(()=>navTo('leader-review',null), 800);
+}
+
+// ===== CALC =====
+function renderCalcTable() {
+  const sorted = [...bonusData].filter(b=>!b.removed).sort((a,b)=>b.calcBonus-a.calcBonus);
+  document.getElementById('calc-tbody').innerHTML = sorted.map((b,i)=>{
+    const singleLimit = 50000;
+    const truncated = b.calcBonus > singleLimit;
+    return `
+      <tr>
+        <td><strong>#${i+1}</strong></td>
+        <td>${b.name}</td>
+        <td>${b.creator}</td>
+        <td><span class="track-badge ${b.track==='encourage'?'track-encourage':'track-normal'}">${b.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+        <td>${b.plays.toLocaleString()}</td>
+        <td>¥ ${b.calcBonus.toLocaleString()}</td>
+        <td>${truncated?`<span style="color:var(--orange)">截断至 ¥${singleLimit.toLocaleString()}</span>`:'—'}</td>
+        <td><strong style="color:var(--primary)">¥ ${Math.min(b.calcBonus,singleLimit).toLocaleString()}</strong></td>
+        <td style="font-size:12px;color:var(--text4)">${b.creatorStatus==='punish'?'⚠️ 处罚中':'—'}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function runCalc() {
+  const basePrice = parseFloat(document.getElementById('calc-base-price').value) || 3;
+  const encourageRate = parseFloat(document.getElementById('calc-encourage-rate').value) || 2;
+  const normalRate = parseFloat(document.getElementById('calc-normal-rate').value) || 1;
+  const singleLimit = parseInt(document.getElementById('calc-single').value) || 50000;
+  const totalLimit = parseInt(document.getElementById('calc-total').value) || 500000;
+  // 重新计算
+  bonusData.filter(b=>!b.removed).forEach(b=>{
+    const rate = b.track==='encourage' ? encourageRate : normalRate;
+    b.calcBonus = Math.min(Math.round(b.plays * basePrice * rate), singleLimit);
+    b.adjBonus = b.calcBonus;
+  });
+  const total = bonusData.filter(b=>!b.removed).reduce((s,b)=>s+b.calcBonus,0);
+  const encourage = bonusData.filter(b=>!b.removed&&b.track==='encourage').reduce((s,b)=>s+b.calcBonus,0);
+  const normal = bonusData.filter(b=>!b.removed&&b.track==='normal').reduce((s,b)=>s+b.calcBonus,0);
+  const rate = Math.min(100,(total/totalLimit*100)).toFixed(1);
+  document.getElementById('calc-res-total').textContent = '¥'+total.toLocaleString();
+  document.getElementById('calc-res-encourage').textContent = '¥'+encourage.toLocaleString();
+  document.getElementById('calc-res-normal').textContent = '¥'+normal.toLocaleString();
+  document.getElementById('calc-budget-rate').textContent = rate+'%';
+  document.getElementById('calc-budget-bar').style.width = rate+'%';
+  document.getElementById('calc-budget-bar').style.background = rate>90?'var(--orange)':'var(--primary)';
+  document.getElementById('calc-run-time').textContent = '最后计算：'+new Date().toISOString().slice(0,10)+' '+new Date().toTimeString().slice(0,8);
+  renderCalcTable();
+  addAuditLog('奖金计算','重跑奖金计算，总奖金 ¥'+total.toLocaleString());
+  showToast('🔄 计算完成，总奖金 ¥'+total.toLocaleString(),'success');
+}
+
+function resetCalcRule() {
+  document.getElementById('calc-total').value = 500000;
+  document.getElementById('calc-single').value = 50000;
+  document.getElementById('calc-user-limit').value = 100000;
+  document.getElementById('calc-encourage-rate').value = 2.0;
+  document.getElementById('calc-normal-rate').value = 1.0;
+  document.getElementById('calc-base-price').value = 3.0;
+  document.getElementById('calc-days').value = 14;
+  document.getElementById('calc-min-duration').value = 3;
+  showToast('已恢复计划默认规则','success');
+}
+
+function confirmCalcAndSubmit() {
+  addAuditLog('确认名单','确认奖金计算名单，进入审批流');
+  showToast('✅ 已确认名单，进入审批流','success');
+  setTimeout(()=>navTo('bonus-adjust',null),800);
+}
+
+// ===== LEADER REVIEW =====
+function renderLeaderDetail() {
+  const sorted = [...bonusData].filter(b=>!b.removed).sort((a,b)=>b.adjBonus-a.adjBonus).slice(0,10);
+  document.getElementById('leader-detail-tbody').innerHTML = sorted.map((b,i)=>`
+    <tr class="${b.creatorStatus==='punish'?'row-punish':''}">
+      <td><strong>#${i+1}</strong></td>
+      <td>${b.name}</td>
+      <td>${b.creatorStatus==='punish'?`<span style="color:var(--orange)">⚠️ ${b.creator}</span>`:b.creator}</td>
+      <td><span class="track-badge ${b.track==='encourage'?'track-encourage':'track-normal'}">${b.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+      <td>${b.plays.toLocaleString()}</td>
+      <td><strong>¥ ${b.adjBonus.toLocaleString()}</strong></td>
+    </tr>
+  `).join('');
+}
+
+function renderLeaderPunishList() {
+  const punishUsers = bonusData.filter(b=>!b.removed && b.creatorStatus==='punish');
+  document.getElementById('leader-punish-list').innerHTML = punishUsers.map(b=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--orange-light);border-radius:8px;padding:10px 12px;border:1px solid var(--orange-border)">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text)">⚠️ ${b.creator}</div>
+        <div style="font-size:12px;color:var(--text4)">${b.name} · ¥${b.adjBonus.toLocaleString()}</div>
+      </div>
+      <span class="badge badge-punish">处罚中</span>
+    </div>
+  `).join('');
+}
+
+function renderPunishConfirmList() {
+  const punishUsers = bonusData.filter(b=>!b.removed && b.creatorStatus==='punish');
+  document.getElementById('punish-confirm-list').innerHTML = punishUsers.map(b=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--orange-light);border-radius:8px;padding:14px;border:1px solid var(--orange-border)" id="punish-item-${b.id}">
+      <div>
+        <div style="font-size:14px;font-weight:700">⚠️ ${b.creator}</div>
+        <div style="font-size:13px;color:var(--text4);margin-top:2px">${b.name} · ¥${b.adjBonus.toLocaleString()}</div>
+      </div>
+      <div style="display:flex;gap:8px" id="punish-actions-${b.id}">
+        <button class="btn btn-green" onclick="confirmPunishPay(${b.id},true)">✅ 保留发放</button>
+        <button class="btn btn-red" onclick="confirmPunishPay(${b.id},false)">❌ 取消发放</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function confirmPunishPay(id, keep) {
+  punishConfirmed[id] = keep;
+  const actions = document.getElementById('punish-actions-'+id);
+  actions.innerHTML = keep ? '<span class="badge badge-success">✅ 已确认发放</span>' : '<span class="badge badge-removed">❌ 已取消发放</span>';
+  if (!keep) {
+    const b = bonusData.find(x=>x.id===id);
+    b.removed = true;
+    addAuditLog('处罚确认', `Leader确认取消「${b.creator}」的本月奖金发放`);
+  }
+  const allConfirmed = Object.values(punishConfirmed).every(v=>v!==null);
+  if (allConfirmed) showToast('✅ 所有处罚用户已确认', 'success');
+}
+
+function leaderApprove() {
+  leaderApproved = true;
+  document.getElementById('leader-action-area').innerHTML = `
+    <div class="alert alert-success" style="margin:0;flex:1">
+      <span class="alert-icon">✅</span>
+      <span><strong>Leader 已审核通过！</strong>已提交财务审核，等待财务确认。</span>
+    </div>
+  `;
+  document.getElementById('badge-leader').textContent = '0';
+  document.getElementById('badge-leader').style.display = 'none';
+  addAuditLog('Leader审核', 'Leader审核通过2026年4月激励计划，提交财务审核');
+  showToast('✅ 审核通过，已提交财务审核', 'success');
+  setTimeout(()=>navTo('finance-review',null), 800);
+}
+
+function leaderReject() {
+  addAuditLog('Leader审核', 'Leader退回2026年4月激励计划，返回运营调整');
+  showToast('↩️ 已退回运营调整', 'warn');
+  setTimeout(()=>navTo('bonus-adjust',null), 800);
+}
+
+// ===== FINANCE =====
+function renderFinanceTable() {
+  const creators = {};
+  bonusData.filter(b=>!b.removed).forEach(b=>{
+    if (!creators[b.creator]) creators[b.creator] = {maps:0,total:0};
+    creators[b.creator].maps++;
+    creators[b.creator].total += b.adjBonus;
+  });
+  const rows = Object.entries(creators).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+  document.getElementById('finance-tbody').innerHTML = rows.map(([name,d])=>{
+    const tax = d.total > 800 ? Math.round((d.total-800)*0.2) : 0;
+    return `
+      <tr>
+        <td><strong>${name}</strong></td>
+        <td>${d.maps}</td>
+        <td>¥ ${d.total.toLocaleString()}</td>
+        <td style="color:var(--red)">¥ ${tax.toLocaleString()}</td>
+        <td style="color:var(--green);font-weight:700">¥ ${(d.total-tax).toLocaleString()}</td>
+        <td><span class="badge badge-review">待发放</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function financeApprove() {
+  financeApproved = true;
+  document.getElementById('finance-pending-area').style.display = 'none';
+  document.getElementById('finance-done-area').style.display = 'block';
+  addAuditLog('财务审核', '财务确认2026年4月激励计划，奖金发放任务已创建');
+  showToast('🎉 财务已确认，奖金发放中', 'success');
+  payoutHistory['2026-04'].forEach(p=>p.payStatus='processing');
+  renderPayoutPage('2026-04');
+}
+
+function financeReject() {
+  addAuditLog('财务审核', '财务退回2026年4月激励计划，返回Leader重审');
+  showToast('↩️ 已退回 Leader 重审', 'warn');
+  leaderApproved = false;
+  document.getElementById('leader-action-area').innerHTML = `
+    <button class="btn btn-green btn-lg" onclick="leaderApprove()">✅ 审核通过 → 提交财务审核</button>
+    <button class="btn btn-red btn-lg" onclick="leaderReject()">↩️ 退回运营调整</button>
+  `;
+  setTimeout(()=>navTo('leader-review',null), 800);
+}
+
+// ===== PAYOUT =====
+function renderPayoutPage(period) {
+  currentPayoutPeriod = period;
+  const data = payoutHistory[period] || [];
+  // 按创作者汇总
+  const creators = {};
+  data.forEach(p=>{
+    if (!creators[p.creator]) creators[p.creator] = {maps:[],total:0,tax:0,status:'success'};
+    creators[p.creator].maps.push(p);
+    creators[p.creator].total += p.adjBonus;
+    creators[p.creator].tax += p.tax;
+    if (p.payStatus==='processing') creators[p.creator].status = 'processing';
+    else if (p.payStatus==='fail') creators[p.creator].status = 'fail';
+  });
+  const rows = Object.entries(creators).sort((a,b)=>b[1].total-a[1].total);
+  const successCount = data.filter(p=>p.payStatus==='success').length;
+  const processingCount = data.filter(p=>p.payStatus==='processing').length;
+  const failCount = data.filter(p=>p.payStatus==='fail').length;
+  const totalAmount = data.reduce((s,p)=>s+p.adjBonus,0);
+  const actualAmount = data.reduce((s,p)=>s+(p.adjBonus-p.tax),0);
+  document.getElementById('pay-success-count').textContent = successCount;
+  document.getElementById('pay-processing-count').textContent = processingCount;
+  document.getElementById('pay-fail-count').textContent = failCount;
+  document.getElementById('pay-total-amount').textContent = '¥'+totalAmount.toLocaleString();
+  document.getElementById('pay-actual-amount').textContent = '¥'+actualAmount.toLocaleString();
+  document.getElementById('payout-period-title').textContent = period.replace('-','年').replace('-','月') + ' · 发放汇总（按创作者）';
+  document.getElementById('payout-tbody').innerHTML = rows.map(([name,d])=>{
+    const statusHtml = {
+      processing:'<span class="badge badge-active">发放中</span>',
+      success:'<span class="badge badge-success">✅ 已发放</span>',
+      fail:'<span class="badge badge-fail">❌ 部分失败</span>',
+    }[d.status];
+    return `
+      <tr>
+        <td><strong>${name}</strong></td>
+        <td>${d.maps.length}</td>
+        <td>¥ ${d.total.toLocaleString()}</td>
+        <td style="color:var(--red)">¥ ${d.tax.toLocaleString()}</td>
+        <td style="color:var(--green);font-weight:700">¥ ${(d.total-d.tax).toLocaleString()}</td>
+        <td>${statusHtml}</td>
+        <td><button class="btn-sm b" onclick="openPayoutDetail('${name}','${period}')">查看明细</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function switchPayoutPeriod(period, btn) {
+  document.querySelectorAll('.payout-tab').forEach(b=>{
+    b.style.background='var(--white)';b.style.color='var(--text3)';b.style.borderColor='var(--gray-border)';
+  });
+  btn.style.background='var(--primary)';btn.style.color='#fff';btn.style.borderColor='var(--primary)';
+  renderPayoutPage(period);
+}
+
+function openPayoutDetail(creator, period) {
+  const data = (payoutHistory[period]||[]).filter(p=>p.creator===creator);
+  document.getElementById('payout-detail-title').textContent = `📋 ${creator} · ${period.replace('-','年').replace('-','月')} 发放明细`;
+  const total = data.reduce((s,p)=>s+p.adjBonus,0);
+  const tax = data.reduce((s,p)=>s+p.tax,0);
+  document.getElementById('payout-detail-summary').innerHTML = `
+    <strong>${creator}</strong> &nbsp;·&nbsp; 共 ${data.length} 张地图 &nbsp;·&nbsp; 税前总额：<strong>¥${total.toLocaleString()}</strong> &nbsp;·&nbsp; 实发：<strong style="color:var(--green)">¥${(total-tax).toLocaleString()}</strong>
+  `;
+  document.getElementById('payout-detail-tbody').innerHTML = data.map(p=>{
+    const statusHtml = {
+      processing:'<span class="badge badge-active">发放中</span>',
+      success:'<span class="badge badge-success">✅ 已发放</span>',
+      fail:'<span class="badge badge-fail">❌ 失败</span>',
+    }[p.payStatus];
+    const retryBtn = p.payStatus==='fail' ? `<button class="btn-sm b" onclick="retryPay(${p.id},'${period}')">重试(${p.retryCount}/3)</button>` : '';
+    return `
+      <tr>
+        <td><strong>${p.name}</strong></td>
+        <td><span class="track-badge ${p.track==='encourage'?'track-encourage':'track-normal'}">${p.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+        <td>${p.plays.toLocaleString()}</td>
+        <td>¥ ${p.adjBonus.toLocaleString()}</td>
+        <td style="color:var(--green)">¥ ${(p.adjBonus-p.tax).toLocaleString()}</td>
+        <td>${statusHtml}</td>
+        <td>${retryBtn}</td>
+      </tr>
+    `;
+  }).join('');
+  openModal('modal-payout-detail');
+}
+
+function filterPayout(val) {
+  const data = payoutHistory[currentPayoutPeriod]||[];
+  const creators = {};
+  data.filter(p=>p.creator.toLowerCase().includes(val.toLowerCase())).forEach(p=>{
+    if (!creators[p.creator]) creators[p.creator]={maps:[],total:0,tax:0,status:'success'};
+    creators[p.creator].maps.push(p);
+    creators[p.creator].total+=p.adjBonus;
+    creators[p.creator].tax+=p.tax;
+    if(p.payStatus==='processing') creators[p.creator].status='processing';
+    else if(p.payStatus==='fail') creators[p.creator].status='fail';
+  });
+  document.getElementById('payout-tbody').innerHTML = Object.entries(creators).map(([name,d])=>`
+    <tr>
+      <td><strong>${name}</strong></td>
+      <td>${d.maps.length}</td>
+      <td>¥ ${d.total.toLocaleString()}</td>
+      <td style="color:var(--red)">¥ ${d.tax.toLocaleString()}</td>
+      <td style="color:var(--green);font-weight:700">¥ ${(d.total-d.tax).toLocaleString()}</td>
+      <td><span class="badge badge-success">✅ 已发放</span></td>
+      <td><button class="btn-sm b" onclick="openPayoutDetail('${name}','${currentPayoutPeriod}')">查看明细</button></td>
+    </tr>
+  `).join('');
+}
+
+function simulatePayout() {
+  const data = payoutHistory[currentPayoutPeriod]||[];
+  let s=0,f=0;
+  data.forEach(p=>{
+    if(p.payStatus==='processing'){p.payStatus=Math.random()>0.15?'success':'fail';if(p.payStatus==='success')s++;else f++;}
+  });
+  renderPayoutPage(currentPayoutPeriod);
+  showToast(`发放完成：${s}成功，${f}失败`,f>0?'warn':'success');
+}
+
+function retryPay(id, period) {
+  const p = (payoutHistory[period]||[]).find(x=>x.id===id);
+  if (!p) return;
+  if (p.retryCount >= 3) { showToast('已超过最大重试次数，请人工跟进','error'); return; }
+  p.retryCount++;
+  p.payStatus = Math.random()>0.3?'success':'fail';
+  renderPayoutPage(period);
+  showToast(p.payStatus==='success'?`✅ 重试成功：${p.creator}`:`重试失败（${p.retryCount}/3）`,p.payStatus==='success'?'success':'warn');
+}
+
+function exportPayout() { showToast('📥 导出中（模拟）','success'); }
+
+// ===== ANALYTICS =====
+function renderAnalytics(period, dim) {
+  currentAnalyticsPeriod = period;
+  currentDim = dim;
+  const t = trendData.find(x=>x.period===period) || trendData[trendData.length-1];
+  document.getElementById('ana-creators').textContent = t.creators;
+  document.getElementById('ana-maps').textContent = t.maps;
+  document.getElementById('ana-bonus').textContent = '¥'+t.bonus.toLocaleString();
+  document.getElementById('ana-plays').textContent = t.plays.toLocaleString();
+  document.getElementById('ana-avg-bonus').textContent = '¥'+Math.round(t.bonus/t.creators).toLocaleString();
+  document.getElementById('ana-encourage-ratio').textContent = Math.round(t.encourageBonus/t.bonus*100)+'%';
+  if (dim==='creator') renderAnalyticsCreator(period);
+  else if (dim==='map') renderAnalyticsMap(period);
+}
+
+function renderAnalyticsCreator(period) {
+  const prevPeriod = period==='2026-04'?'2026-03':period==='2026-03'?'2026-02':null;
+  const curData = payoutHistory[period]||[];
+  const prevData = prevPeriod ? (payoutHistory[prevPeriod]||[]) : [];
+  const creators = {};
+  curData.forEach(p=>{
+    if(!creators[p.creator]) creators[p.creator]={maps:0,plays:0,players:0,encourage:0,normal:0,bonus:0};
+    creators[p.creator].maps++;
+    creators[p.creator].plays+=p.plays;
+    creators[p.creator].bonus+=p.adjBonus;
+    if(p.track==='encourage') creators[p.creator].encourage++;
+    else creators[p.creator].normal++;
+  });
+  const prevCreators = {};
+  prevData.forEach(p=>{
+    if(!prevCreators[p.creator]) prevCreators[p.creator]={bonus:0};
+    prevCreators[p.creator].bonus+=p.adjBonus;
+  });
+  const rows = Object.entries(creators).sort((a,b)=>b[1].bonus-a[1].bonus);
+  document.getElementById('analytics-creator-tbody').innerHTML = rows.map(([name,d],i)=>{
+    const u = whitelistData.find(x=>x.name===name);
+    const prevBonus = prevCreators[name]?.bonus||0;
+    const growth = prevBonus>0?((d.bonus-prevBonus)/prevBonus*100).toFixed(1):null;
+    const growthHtml = growth!==null ? `<span style="color:${growth>=0?'var(--green)':'var(--red)'}">${growth>=0?'↑':'↓'}${Math.abs(growth)}%</span>` : '—';
+    return `
+      <tr>
+        <td><strong>#${i+1}</strong></td>
+        <td>
+          <strong>${name}</strong>
+          ${u?`<div style="font-size:11px;color:var(--text4)">${u.uid||''}</div>`:''}
+        </td>
+        <td>${u?`<span class="rank-badge ${rankClass[u.rank]}">${rankMap[u.rank]}</span>`:'—'}</td>
+        <td>${d.maps}</td>
+        <td>${d.plays.toLocaleString()}</td>
+        <td>—</td>
+        <td><span style="color:var(--purple)">${d.encourage}</span> / <span style="color:var(--gray)">${d.normal}</span></td>
+        <td><strong style="color:var(--primary)">¥${d.bonus.toLocaleString()}</strong></td>
+        <td>${prevBonus>0?'¥'+prevBonus.toLocaleString():'—'}</td>
+        <td>${growthHtml}</td>
+        <td><button class="btn-sm b" onclick="openCreatorDetail('${name}','${period}')">详情</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAnalyticsMap(period) {
+  const data = mapsData.filter(m=>m.plan===period);
+  const prevPeriod = period==='2026-04'?'2026-03':null;
+  const prevData = prevPeriod ? mapsData.filter(m=>m.plan===prevPeriod) : [];
+  document.getElementById('analytics-map-tbody').innerHTML = [...data].sort((a,b)=>b.expectedBonus-a.expectedBonus).map((m,i)=>{
+    const prev = prevData.find(x=>x.name===m.name);
+    const growth = prev&&prev.expectedBonus>0?((m.expectedBonus-prev.expectedBonus)/prev.expectedBonus*100).toFixed(1):null;
+    const growthHtml = growth!==null?`<span style="color:${growth>=0?'var(--green)':'var(--red)'}">${growth>=0?'↑':'↓'}${Math.abs(growth)}%</span>`:'—';
+    return `
+      <tr>
+        <td><strong>#${i+1}</strong></td>
+        <td><strong>${m.name}</strong></td>
+        <td>${m.creator}</td>
+        <td><span class="track-badge ${m.track==='encourage'?'track-encourage':'track-normal'}">${m.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+        <td>${m.plays.toLocaleString()}</td>
+        <td>${m.players.toLocaleString()}</td>
+        <td>${m.duration}分钟</td>
+        <td>${m.likes.toLocaleString()}</td>
+        <td>${m.favorites.toLocaleString()}</td>
+        <td><strong style="color:var(--primary)">¥${m.expectedBonus.toLocaleString()}</strong></td>
+        <td>${prev?'¥'+prev.expectedBonus.toLocaleString():'—'}</td>
+        <td>${growthHtml}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openCreatorDetail(name, period) {
+  const data = (payoutHistory[period]||[]).filter(p=>p.creator===name);
+  const u = whitelistData.find(x=>x.name===name);
+  const total = data.reduce((s,p)=>s+p.adjBonus,0);
+  const prevPeriod = period==='2026-04'?'2026-03':null;
+  const prevData = prevPeriod ? (payoutHistory[prevPeriod]||[]).filter(p=>p.creator===name) : [];
+  document.getElementById('creator-detail-title').textContent = `👤 ${name} · ${period.replace('-','年').replace('-','月')} 详情`;
+  document.getElementById('creator-detail-stats').innerHTML = `
+    <div class="review-stat"><div class="review-stat-num" style="color:var(--primary)">¥${total.toLocaleString()}</div><div class="review-stat-label">本期奖金</div></div>
+    <div class="review-stat"><div class="review-stat-num" style="color:var(--green)">${data.length}</div><div class="review-stat-label">参与地图</div></div>
+    <div class="review-stat"><div class="review-stat-num" style="color:var(--purple)">${data.filter(p=>p.track==='encourage').length}</div><div class="review-stat-label">鼓励赛道</div></div>
+    <div class="review-stat"><div class="review-stat-num">${u?`<span class="rank-badge ${rankClass[u.rank]}">${rankMap[u.rank]}</span>`:'—'}</div><div class="review-stat-label">段位</div></div>
+  `;
+  document.getElementById('creator-detail-tbody').innerHTML = data.map(p=>{
+    const prev = prevData.find(x=>x.name===p.name);
+    return `
+      <tr>
+        <td><strong>${p.name}</strong></td>
+        <td><span class="track-badge ${p.track==='encourage'?'track-encourage':'track-normal'}">${p.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+        <td>${p.plays.toLocaleString()}</td>
+        <td>—</td>
+        <td>—</td>
+        <td><strong style="color:var(--primary)">¥${p.adjBonus.toLocaleString()}</strong></td>
+        <td>${prev?'¥'+prev.adjBonus.toLocaleString():'—'}</td>
+      </tr>
+    `;
+  }).join('');
+  openModal('modal-creator-detail');
+}
+
+function switchAnalyticsPeriod(period, btn) {
+  document.querySelectorAll('.analytics-tab').forEach(b=>{
+    b.style.background='var(--white)';b.style.color='var(--text3)';b.style.borderColor='var(--gray-border)';
+  });
+  btn.style.background='var(--primary)';btn.style.color='#fff';btn.style.borderColor='var(--primary)';
+  if (period==='all') { renderTrend(); switchDim('trend',document.querySelector('.dim-tab:nth-child(3)')); return; }
+  renderAnalytics(period, currentDim);
+}
+
+function switchDim(dim, btn) {
+  currentDim = dim;
+  document.querySelectorAll('.dim-tab').forEach(b=>{
+    b.style.borderBottomColor='transparent';b.style.color='var(--text3)';
+  });
+  if(btn){btn.style.borderBottomColor='var(--primary)';btn.style.color='var(--primary)';}
+  document.getElementById('dim-creator').style.display = dim==='creator'?'block':'none';
+  document.getElementById('dim-map').style.display = dim==='map'?'block':'none';
+  document.getElementById('dim-trend').style.display = dim==='trend'?'block':'none';
+  if (dim==='creator') renderAnalyticsCreator(currentAnalyticsPeriod);
+  else if (dim==='map') renderAnalyticsMap(currentAnalyticsPeriod);
+  else renderTrend();
+}
+
+function filterAnalyticsCreator(val) { renderAnalyticsCreator(currentAnalyticsPeriod); }
+function filterAnalyticsRank(val) { renderAnalyticsCreator(currentAnalyticsPeriod); }
+function sortAnalyticsCreator(val) { renderAnalyticsCreator(currentAnalyticsPeriod); }
+function filterAnalyticsMapTrack(val) { renderAnalyticsMap(currentAnalyticsPeriod); }
+
+function renderTrend() {
+  // 奖金趋势柱状图
+  const maxBonus = Math.max(...trendData.map(t=>t.bonus));
+  document.getElementById('trend-bonus-chart').innerHTML = trendData.map(t=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="font-size:11px;color:var(--primary);font-weight:700">¥${(t.bonus/10000).toFixed(0)}万</div>
+      <div style="width:100%;background:linear-gradient(180deg,var(--primary),#818cf8);border-radius:4px 4px 0 0;height:${Math.round(t.bonus/maxBonus*160)}px"></div>
+    </div>
+  `).join('');
+  document.getElementById('trend-bonus-labels').innerHTML = trendData.map(t=>`<span>${t.period.replace('-','年').replace('-','月')}</span>`).join('');
+  // 创作者趋势
+  const maxCreators = Math.max(...trendData.map(t=>t.creators));
+  document.getElementById('trend-creator-chart').innerHTML = trendData.map(t=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="font-size:11px;color:var(--green);font-weight:700">${t.creators}人</div>
+      <div style="width:100%;background:linear-gradient(180deg,var(--green),#4ade80);border-radius:4px 4px 0 0;height:${Math.round(t.creators/maxCreators*160)}px"></div>
+    </div>
+  `).join('');
+  document.getElementById('trend-creator-labels').innerHTML = trendData.map(t=>`<span>${t.period.replace('-','年').replace('-','月')}</span>`).join('');
+  // 赛道占比
+  document.getElementById('trend-track-list').innerHTML = trendData.map(t=>`
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+        <span>${t.period.replace('-','年').replace('-','月')}</span>
+        <span><span style="color:var(--purple)">鼓励 ¥${(t.encourageBonus/10000).toFixed(0)}万</span> / <span style="color:var(--gray)">非鼓励 ¥${(t.normalBonus/10000).toFixed(0)}万</span></span>
+      </div>
+      <div style="height:8px;background:var(--gray-border);border-radius:4px;overflow:hidden;display:flex">
+        <div style="width:${Math.round(t.encourageBonus/t.bonus*100)}%;background:var(--purple)"></div>
+        <div style="flex:1;background:var(--gray)"></div>
+      </div>
+    </div>
+  `).join('');
+  // 游玩次数趋势
+  const maxPlays = Math.max(...trendData.map(t=>t.plays));
+  document.getElementById('trend-plays-chart').innerHTML = trendData.map(t=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="font-size:11px;color:var(--orange);font-weight:700">${(t.plays/10000).toFixed(0)}万</div>
+      <div style="width:100%;background:linear-gradient(180deg,var(--orange),#fb923c);border-radius:4px 4px 0 0;height:${Math.round(t.plays/maxPlays*160)}px"></div>
+    </div>
+  `).join('');
+  document.getElementById('trend-plays-labels').innerHTML = trendData.map(t=>`<span>${t.period.replace('-','年').replace('-','月')}</span>`).join('');
+}
+
+function exportAnalytics() { showToast('📥 报表导出中（模拟）','success'); }
+
+// ===== AUDIT LOG =====
+function addAuditLog(op, content) {
+  const now = new Date();
+  const time = now.toISOString().slice(0,10) + ' ' + now.toTimeString().slice(0,8);
+  const roleNames = {ops:'运营_小王',leader:'Leader_张总',finance:'财务_李姐'};
+  auditLog.unshift({time, op, user:roleNames[currentRole], content});
+  if(document.getElementById('audit-log-list')) renderAuditLog();
+}
+
+function renderAuditLog() {
+  document.getElementById('audit-log-list').innerHTML = auditLog.map(l=>`
+    <div class="audit-item">
+      <div class="audit-time">${l.time}</div>
+      <div class="audit-content">
+        <span class="audit-op">[${l.op}]</span>
+        <span style="color:var(--primary);margin:0 4px">${l.user}</span>
+        ${l.content}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== MODAL =====
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function closeModalOutside(e, id) { if (e.target.id===id) closeModal(id); }
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type?' '+type:'');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
+  const tbody = document.getElementById('bonus-tbody');
+  const active = bonusData.filter(b => !b.removed && (val===''||b.track===val));
+  tbody.innerHTML = active.map(b => `
+    <tr class="${b.creatorStatus==='punish'?'row-punish':''}">
+      <td><strong>${b.name}</strong></td>
+      <td>${b.creatorStatus==='punish'?`<span style="color:var(--orange)">⚠️ ${b.creator}</span>`:b.creator}</td>
+      <td><span class="track-badge ${b.track==='encourage'?'track-encourage':'track-normal'}">${b.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+      <td>${b.plays.toLocaleString()}</td>
+      <td>¥ ${b.calcBonus.toLocaleString()}</td>
+      <td style="${b.adjBonus!==b.calcBonus?'color:var(--orange);font-weight:700':''}">¥ ${b.adjBonus.toLocaleString()}</td>
+      <td>
+        <button class="btn-sm b" onclick="toggleTrack(${b.id})">改赛道</button>
+        <button class="btn-sm o" onclick="openAdjustBonus(${b.id})">改金额</button>
+        <button class="btn-sm r" onclick="removeBonus(${b.id})">移除</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateTotalBonus() {
+  const total = bonusData.filter(b=>!b.removed).reduce((s,b)=>s+b.adjBonus,0);
+  document.getElementById('total-bonus-display').textContent = '¥ ' + total.toLocaleString();
+}
+
+function submitToLeader() {
+  addAuditLog('提交审核', '运营将2026年4月激励计划提交至Leader审核');
+  showToast('✅ 已提交 Leader 审核', 'success');
+  document.getElementById('badge-leader').textContent = '1';
+  setTimeout(()=>navTo('leader-review',null), 800);
+}
+
+// ===== LEADER REVIEW =====
+function renderLeaderDetail() {
+  const sorted = [...bonusData].filter(b=>!b.removed).sort((a,b)=>b.adjBonus-a.adjBonus).slice(0,10);
+  document.getElementById('leader-detail-tbody').innerHTML = sorted.map((b,i)=>`
+    <tr class="${b.creatorStatus==='punish'?'row-punish':''}">
+      <td><strong>#${i+1}</strong></td>
+      <td>${b.name}</td>
+      <td>${b.creatorStatus==='punish'?`<span style="color:var(--orange)">⚠️ ${b.creator}</span>`:b.creator}</td>
+      <td><span class="track-badge ${b.track==='encourage'?'track-encourage':'track-normal'}">${b.track==='encourage'?'🏆 鼓励':'📋 非鼓励'}</span></td>
+      <td>${b.plays.toLocaleString()}</td>
+      <td><strong>¥ ${b.adjBonus.toLocaleString()}</strong></td>
+    </tr>
+  `).join('');
+}
+
+function renderLeaderPunishList() {
+  const punishUsers = bonusData.filter(b=>!b.removed && b.creatorStatus==='punish');
+  document.getElementById('leader-punish-list').innerHTML = punishUsers.map(b=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--orange-light);border-radius:8px;padding:10px 12px;border:1px solid var(--orange-border)">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text)">⚠️ ${b.creator}</div>
+        <div style="font-size:12px;color:var(--text4)">${b.name} · ¥${b.adjBonus.toLocaleString()}</div>
+      </div>
+      <span class="badge badge-punish">处罚中</span>
+    </div>
+  `).join('');
+}
+
+function renderPunishConfirmList() {
+  const punishUsers = bonusData.filter(b=>!b.removed && b.creatorStatus==='punish');
+  document.getElementById('punish-confirm-list').innerHTML = punishUsers.map(b=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--orange-light);border-radius:8px;padding:14px;border:1px solid var(--orange-border)" id="punish-item-${b.id}">
+      <div>
+        <div style="font-size:14px;font-weight:700">⚠️ ${b.creator}</div>
+        <div style="font-size:13px;color:var(--text4);margin-top:2px">${b.name} · ¥${b.adjBonus.toLocaleString()}</div>
+      </div>
+      <div style="display:flex;gap:8px" id="punish-actions-${b.id}">
+        <button class="btn btn-green" onclick="confirmPunishPay(${b.id},true)">✅ 保留发放</button>
+        <button class="btn btn-red" onclick="confirmPunishPay(${b.id},false)">❌ 取消发放</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function confirmPunishPay(id, keep) {
+  punishConfirmed[id] = keep;
+  const actions = document.getElementById('punish-actions-'+id);
+  actions.innerHTML = keep
+    ? '<span class="badge badge-success">✅ 已确认发放</span>'
+    : '<span class="badge badge-removed">❌ 已取消发放</span>';
+  if (!keep) {
+    const b = bonusData.find(x=>x.id===id);
+    b.removed = true;
+    addAuditLog('处罚确认', `Leader确认取消「${b.creator}」的本月奖金发放`);
+  }
+  const allConfirmed = Object.values(punishConfirmed).every(v=>v!==null);
+  if (allConfirmed) showToast('✅ 所有处罚用户已确认', 'success');
+}
+
+function leaderApprove() {
+  leaderApproved = true;
+  document.getElementById('leader-action-area').innerHTML = `
+    <div class="alert alert-success" style="margin:0;flex:1">
+      <span class="alert-icon">✅</span>
+      <span><strong>Leader 已审核通过！</strong>已提交财务审核，等待财务确认。</span>
+    </div>
+  `;
+  document.getElementById('badge-leader').textContent = '0';
+  document.getElementById('badge-leader').style.display = 'none';
+  addAuditLog('Leader审核', 'Leader审核通过2026年4月激励计划，提交财务审核');
+  showToast('✅ 审核通过，已提交财务审核', 'success');
+  setTimeout(()=>navTo('finance-review',null), 800);
+}
+
+function leaderReject() {
+  addAuditLog('Leader审核', 'Leader退回2026年4月激励计划，返回运营调整');
+  showToast('↩️ 已退回运营调整', 'warn');
+  setTimeout(()=>navTo('bonus-adjust',null), 800);
+}
+
+// ===== FINANCE =====
+function renderFinanceTable() {
+  const creators = {};
+  bonusData.filter(b=>!b.removed).forEach(b=>{
+    if (!creators[b.creator]) creators[b.creator] = {maps:0,total:0};
+    creators[b.creator].maps++;
+    creators[b.creator].total += b.adjBonus;
+  });
+  const rows = Object.entries(creators).sort((a,b)=>b[1].total-a[1].total).slice(0,10);
+  document.getElementById('finance-tbody').innerHTML = rows.map(([name,d])=>{
+    const tax = d.total > 800 ? Math.round((d.total-800)*0.2) : 0;
+    return `
+      <tr>
+        <td><strong>${name}</strong></td>
+        <td>${d.maps}</td>
+        <td>¥ ${d.total.toLocaleString()}</td>
+        <td style="color:var(--red)">¥ ${tax.toLocaleString()}</td>
+        <td style="color:var(--green);font-weight:700">¥ ${(d.total-tax).toLocaleString()}</td>
+        <td><span class="badge badge-review">待发放</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function financeApprove() {
+  financeApproved = true;
+  document.getElementById('finance-pending-area').style.display = 'none';
+  document.getElementById('finance-done-area').style.display = 'block';
+  addAuditLog('财务审核', '财务确认2026年4月激励计划，奖金发放任务已创建');
+  showToast('🎉 财务已确认，奖金发放中', 'success');
+  // 初始化发放状态
+  payoutData.forEach(p=>p.payStatus='processing');
+  renderPayoutTable();
+}
+
+function financeReject() {
+  addAuditLog('财务审核', '财务退回2026年4月激励计划，返回Leader重审');
+  showToast('↩️ 已退回 Leader 重审', 'warn');
+  leaderApproved = false;
+  document.getElementById('leader-action-area').innerHTML = `
+    <button class="btn btn-green btn-lg" onclick="leaderApprove()">✅ 审核通过 → 提交财务审核</button>
+    <button class="btn btn-red btn-lg" onclick="leaderReject()">↩️ 退回运营调整</button>
+  `;
+  setTimeout(()=>navTo('leader-review',null), 800);
+}
+
+    const statusHtml = {
+      processing: '<span class="badge badge-active">发放中</span>',
+      success: '<span class="badge badge-success">✅ 已发放</span>',
+      fail: '<span class="badge badge-fail">❌ 失败</span>',
+    }[p.payStatus];
+    const retryBtn = p.payStatus==='fail' ? `<button class="btn-sm b" onclick="retryPay(${p.id})">重试(${p.retryCount}/3)</button>` : '';
+    return `
+      <tr>
+        <td><strong>${p.creator}</strong></td>
+        <td>${p.name}</td>
+        <td>¥ ${p.adjBonus.toLocaleString()}</td>
+        <td style="color:var(--green)">¥ ${(p.adjBonus-p.tax).toLocaleString()}</td>
+        <td>${statusHtml}</td>
+        <td>${retryBtn}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function simulatePayout() {
+  let successCount = 0, failCount = 0;
+  payoutData.forEach(p=>{
+    if (p.payStatus==='processing') {
+      p.payStatus = Math.random() > 0.15 ? 'success' : 'fail';
+      if (p.payStatus==='success') successCount++;
+      else failCount++;
+    }
+  });
+  renderPayoutTable();
+  document.getElementById('pay-success-count').textContent = payoutData.filter(p=>p.payStatus==='success').length;
+  document.getElementById('pay-processing-count').textContent = payoutData.filter(p=>p.payStatus==='processing').length;
+  document.getElementById('pay-fail-count').textContent = payoutData.filter(p=>p.payStatus==='fail').length;
+  showToast(`发放完成：${successCount}成功，${failCount}失败`, failCount>0?'warn':'success');
+}
+
+function retryPay(id) {
+  const p = payoutData.find(x=>x.id===id);
+  if (p.retryCount >= 3) { showToast('已超过最大重试次数，请人工跟进', 'error'); return; }
+  p.retryCount++;
+  p.payStatus = Math.random() > 0.3 ? 'success' : 'fail';
+  renderPayoutTable();
+  document.getElementById('pay-success-count').textContent = payoutData.filter(x=>x.payStatus==='success').length;
+  document.getElementById('pay-fail-count').textContent = payoutData.filter(x=>x.payStatus==='fail').length;
+  showToast(p.payStatus==='success'?`✅ 重试成功：${p.creator}`:`重试失败（${p.retryCount}/3）`, p.payStatus==='success'?'success':'warn');
+}
+
+// ===== AUDIT LOG =====
+function addAuditLog(op, content) {
+  const now = new Date();
+  const time = now.toISOString().slice(0,10) + ' ' + now.toTimeString().slice(0,8);
+  const roleNames = {ops:'运营_小王',leader:'Leader_张总',finance:'财务_李姐'};
+  auditLog.unshift({time, op, user:roleNames[currentRole], content});
+  renderAuditLog();
+}
+
+function renderAuditLog() {
+  document.getElementById('audit-log-list').innerHTML = auditLog.map(l=>`
+    <div class="audit-item">
+      <div class="audit-time">${l.time}</div>
+      <div class="audit-content">
+        <span class="audit-op">[${l.op}]</span>
+        <span style="color:var(--primary);margin:0 4px">${l.user}</span>
+        ${l.content}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== MODAL =====
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function closeModalOutside(e, id) { if (e.target.id===id) closeModal(id); }
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type?' '+type:'');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
