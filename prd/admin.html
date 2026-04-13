@@ -294,57 +294,36 @@ tr.row-removed td{background:var(--gray-light)!important;opacity:.7}
 <!-- ===== SIDEBAR ===== -->
 <aside class="sidebar">
   <div class="sidebar-section">
-    <div class="sidebar-label">概览</div>
-    <div class="nav-item active" onclick="navTo('dashboard',this)">
-      <span class="nav-icon">📊</span> 数据总览
-    </div>
+    <div class="nav-item active" onclick="navTo('dashboard',this)"><span class="nav-icon">📊</span> 数据总览</div>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">白名单管理</div>
+    <div class="sidebar-label">白名单</div>
     <div class="nav-item" onclick="navTo('whitelist',this)">
       <span class="nav-icon">✅</span> 白名单列表
       <span class="nav-badge yellow" id="badge-pending">12</span>
     </div>
-    <div class="nav-item" onclick="navTo('wl-rule',this)">
-      <span class="nav-icon">⚙️</span> 审核规则配置
-    </div>
+    <div class="nav-item" onclick="navTo('wl-rule',this)"><span class="nav-icon">⚙️</span> 审核规则</div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">激励计划</div>
-    <div class="nav-item" onclick="navTo('incentive',this)">
-      <span class="nav-icon">🏆</span> 计划管理
-    </div>
-    <div class="nav-item" onclick="navTo('maps',this)">
-      <span class="nav-icon">🗺️</span> 激励计划地图
-    </div>
+    <div class="nav-item" onclick="navTo('incentive',this)"><span class="nav-icon">🏆</span> 计划管理</div>
+    <div class="nav-item" onclick="navTo('maps',this)"><span class="nav-icon">🗺️</span> 计划地图</div>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">结算流程</div>
-    <div class="nav-item" onclick="navTo('calc',this)">
-      <span class="nav-icon">🧮</span> 奖金计算
-    </div>
-    <div class="nav-item" onclick="navTo('bonus-adjust',this)">
-      <span class="nav-icon">💰</span> 奖金结算调整
-    </div>
+    <div class="sidebar-label">结算</div>
+    <div class="nav-item" onclick="navTo('calc',this)"><span class="nav-icon">🧮</span> 奖金计算</div>
+    <div class="nav-item" onclick="navTo('bonus-adjust',this)"><span class="nav-icon">💰</span> 结算调整</div>
     <div class="nav-item" onclick="navTo('leader-review',this)">
       <span class="nav-icon">👤</span> Leader 审核
       <span class="nav-badge" id="badge-leader">1</span>
     </div>
-    <div class="nav-item" onclick="navTo('finance-review',this)">
-      <span class="nav-icon">🏦</span> 财务审核
-    </div>
-    <div class="nav-item" onclick="navTo('payout',this)">
-      <span class="nav-icon">📤</span> 奖金发放记录
-    </div>
+    <div class="nav-item" onclick="navTo('finance-review',this)"><span class="nav-icon">🏦</span> 财务审核</div>
+    <div class="nav-item" onclick="navTo('payout',this)"><span class="nav-icon">📤</span> 发放记录</div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">数据</div>
-    <div class="nav-item" onclick="navTo('analytics',this)">
-      <span class="nav-icon">📈</span> 数据复盘
-    </div>
-    <div class="nav-item" onclick="navTo('audit',this)">
-      <span class="nav-icon">📋</span> 审计日志
-    </div>
+    <div class="nav-item" onclick="navTo('analytics',this)"><span class="nav-icon">📈</span> 数据复盘</div>
+    <div class="nav-item" onclick="navTo('audit',this)"><span class="nav-icon">📋</span> 审计日志</div>
   </div>
 </aside>
 
@@ -2953,52 +2932,6 @@ function financeReject() {
     <button class="btn btn-red btn-lg" onclick="leaderReject()">↩️ 退回运营调整</button>
   `;
   setTimeout(()=>navTo('leader-review',null), 800);
-}
-
-    const statusHtml = {
-      processing: '<span class="badge badge-active">发放中</span>',
-      success: '<span class="badge badge-success">✅ 已发放</span>',
-      fail: '<span class="badge badge-fail">❌ 失败</span>',
-    }[p.payStatus];
-    const retryBtn = p.payStatus==='fail' ? `<button class="btn-sm b" onclick="retryPay(${p.id})">重试(${p.retryCount}/3)</button>` : '';
-    return `
-      <tr>
-        <td><strong>${p.creator}</strong></td>
-        <td>${p.name}</td>
-        <td>¥ ${p.adjBonus.toLocaleString()}</td>
-        <td style="color:var(--green)">¥ ${(p.adjBonus-p.tax).toLocaleString()}</td>
-        <td>${statusHtml}</td>
-        <td>${retryBtn}</td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function simulatePayout() {
-  let successCount = 0, failCount = 0;
-  payoutData.forEach(p=>{
-    if (p.payStatus==='processing') {
-      p.payStatus = Math.random() > 0.15 ? 'success' : 'fail';
-      if (p.payStatus==='success') successCount++;
-      else failCount++;
-    }
-  });
-  renderPayoutTable();
-  document.getElementById('pay-success-count').textContent = payoutData.filter(p=>p.payStatus==='success').length;
-  document.getElementById('pay-processing-count').textContent = payoutData.filter(p=>p.payStatus==='processing').length;
-  document.getElementById('pay-fail-count').textContent = payoutData.filter(p=>p.payStatus==='fail').length;
-  showToast(`发放完成：${successCount}成功，${failCount}失败`, failCount>0?'warn':'success');
-}
-
-function retryPay(id) {
-  const p = payoutData.find(x=>x.id===id);
-  if (p.retryCount >= 3) { showToast('已超过最大重试次数，请人工跟进', 'error'); return; }
-  p.retryCount++;
-  p.payStatus = Math.random() > 0.3 ? 'success' : 'fail';
-  renderPayoutTable();
-  document.getElementById('pay-success-count').textContent = payoutData.filter(x=>x.payStatus==='success').length;
-  document.getElementById('pay-fail-count').textContent = payoutData.filter(x=>x.payStatus==='fail').length;
-  showToast(p.payStatus==='success'?`✅ 重试成功：${p.creator}`:`重试失败（${p.retryCount}/3）`, p.payStatus==='success'?'success':'warn');
 }
 
 // ===== AUDIT LOG =====
