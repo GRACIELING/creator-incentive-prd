@@ -1807,6 +1807,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== NAV =====
 function navTo(pageId, el) {
+  var dbg = document.getElementById('__debug_bar');
+  if(dbg){ dbg.style.display='block'; dbg.innerHTML='navTo called: '+pageId; }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + pageId).classList.add('active');
