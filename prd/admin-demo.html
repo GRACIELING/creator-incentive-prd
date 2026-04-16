@@ -873,6 +873,11 @@
             <div id="whitelist-applications" class="whitelist-tab-content">
                 <!-- 概括数据 -->
                 <div class="stats-grid" style="margin-bottom: 20px;">
+                    <div class="stat-card" style="border-left: 4px solid #af52de;">
+                        <h3>累计开通人数</h3>
+                        <div class="value">1,286</div>
+                        <div class="trend trend-up">↑ 86 本月新增</div>
+                    </div>
                     <div class="stat-card">
                         <h3>当月申请总数</h3>
                         <div class="value">48</div>
@@ -893,6 +898,16 @@
                         <div class="value">16</div>
                         <div class="trend trend-down">33.3%</div>
                     </div>
+                </div>
+
+                <!-- 排序筛选器 -->
+                <div style="margin-bottom: 15px; padding: 12px 15px; background: white; border-radius: 12px; border: 1px solid #d2d2d7; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <label style="color: #1d1d1f; font-size: 14px; font-weight: 500; margin-right: 5px;">排序依据：</label>
+                    <button class="btn btn-secondary sort-btn" data-sort="default" data-tab="applications" onclick="sortWhitelistTable('applications', 'default', this)" style="font-size: 12px; padding: 4px 12px;">默认</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="level" data-tab="applications" onclick="sortWhitelistTable('applications', 'level', this)" style="font-size: 12px; padding: 4px 12px;">按等级排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="coCreatePoints" data-tab="applications" onclick="sortWhitelistTable('applications', 'coCreatePoints', this)" style="font-size: 12px; padding: 4px 12px;">按共创点排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="playCount" data-tab="applications" onclick="sortWhitelistTable('applications', 'playCount', this)" style="font-size: 12px; padding: 4px 12px;">按地图累计游玩人数排序</button>
+                    <span style="margin-left: auto; color: #86868b; font-size: 12px;" id="sortOrder-applications">↓ 降序</span>
                 </div>
 
                 <div class="table-container">
@@ -978,6 +993,13 @@
                     <button class="btn btn-secondary" onclick="filterUserStatus('all')">全部状态</button>
                     <button class="btn btn-primary" onclick="filterUserStatus('normal')">正常</button>
                     <button class="btn btn-primary" onclick="filterUserStatus('penalized')" style="background: #d32f2f; border-color: #d32f2f;">处罚中</button>
+                    <span style="margin: 0 20px; color: #d2d2d7;">|</span>
+                    <label style="color: #1d1d1f; font-size: 14px; font-weight: 500; margin-right: 15px;">排序依据：</label>
+                    <button class="btn btn-secondary sort-btn" data-sort="default" data-tab="users" onclick="sortWhitelistTable('users', 'default', this)" style="font-size: 12px; padding: 4px 12px;">默认</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="level" data-tab="users" onclick="sortWhitelistTable('users', 'level', this)" style="font-size: 12px; padding: 4px 12px;">按等级排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="coCreatePoints" data-tab="users" onclick="sortWhitelistTable('users', 'coCreatePoints', this)" style="font-size: 12px; padding: 4px 12px;">按共创点排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="playCount" data-tab="users" onclick="sortWhitelistTable('users', 'playCount', this)" style="font-size: 12px; padding: 4px 12px;">按地图累计游玩人数排序</button>
+                    <span style="margin-left: 10px; color: #86868b; font-size: 12px;" id="sortOrder-users">↓ 降序</span>
                 </div>
 
                 <div class="table-container">
@@ -1110,6 +1132,15 @@
 
             <!-- 已移除用户 -->
             <div id="whitelist-removed" class="whitelist-tab-content" style="display: none;">
+                <!-- 排序筛选器 -->
+                <div style="margin-bottom: 15px; padding: 12px 15px; background: white; border-radius: 12px; border: 1px solid #d2d2d7; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <label style="color: #1d1d1f; font-size: 14px; font-weight: 500; margin-right: 5px;">排序依据：</label>
+                    <button class="btn btn-secondary sort-btn" data-sort="default" data-tab="removed" onclick="sortWhitelistTable('removed', 'default', this)" style="font-size: 12px; padding: 4px 12px;">默认</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="level" data-tab="removed" onclick="sortWhitelistTable('removed', 'level', this)" style="font-size: 12px; padding: 4px 12px;">按等级排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="coCreatePoints" data-tab="removed" onclick="sortWhitelistTable('removed', 'coCreatePoints', this)" style="font-size: 12px; padding: 4px 12px;">按共创点排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="playCount" data-tab="removed" onclick="sortWhitelistTable('removed', 'playCount', this)" style="font-size: 12px; padding: 4px 12px;">按地图累计游玩人数排序</button>
+                    <span style="margin-left: auto; color: #86868b; font-size: 12px;" id="sortOrder-removed">↓ 降序</span>
+                </div>
                 <div class="table-container">
                     <div class="table-header">
                         <span class="table-title">已移除用户记录</span>
@@ -1175,6 +1206,15 @@
 
             <!-- 已拒绝申请 -->
             <div id="whitelist-rejected" class="whitelist-tab-content" style="display: none;">
+                <!-- 排序筛选器 -->
+                <div style="margin-bottom: 15px; padding: 12px 15px; background: white; border-radius: 12px; border: 1px solid #d2d2d7; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <label style="color: #1d1d1f; font-size: 14px; font-weight: 500; margin-right: 5px;">排序依据：</label>
+                    <button class="btn btn-secondary sort-btn" data-sort="default" data-tab="rejected" onclick="sortWhitelistTable('rejected', 'default', this)" style="font-size: 12px; padding: 4px 12px;">默认</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="level" data-tab="rejected" onclick="sortWhitelistTable('rejected', 'level', this)" style="font-size: 12px; padding: 4px 12px;">按等级排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="coCreatePoints" data-tab="rejected" onclick="sortWhitelistTable('rejected', 'coCreatePoints', this)" style="font-size: 12px; padding: 4px 12px;">按共创点排序</button>
+                    <button class="btn btn-secondary sort-btn" data-sort="playCount" data-tab="rejected" onclick="sortWhitelistTable('rejected', 'playCount', this)" style="font-size: 12px; padding: 4px 12px;">按地图累计游玩人数排序</button>
+                    <span style="margin-left: auto; color: #86868b; font-size: 12px;" id="sortOrder-rejected">↓ 降序</span>
+                </div>
                 <div class="table-container">
                     <div class="table-header">
                         <span class="table-title">已拒绝申请</span>
@@ -4954,6 +4994,126 @@ window._calcInitialized = false;
                 return;
             }
             alert('正在加载 ' + planValue + ' 的奖金计算数据...');
+        }
+
+        // ========== 白名单排序功能 ==========
+        var _whitelistSortState = {}; // { tabName: { field: 'default', asc: false } }
+
+        // 等级数值映射
+        var _levelMap = { '青铜': 1, '白银': 2, '黄金': 3, '铂金': 4, '钻石': 5, '王者': 6 };
+        function _getLevelValue(text) {
+            if (!text) return 0;
+            for (var key in _levelMap) {
+                if (text.indexOf(key) !== -1) return _levelMap[key];
+            }
+            // Try Lv.X pattern
+            var m = text.match(/Lv\.?\s*(\d+)/i);
+            if (m) return parseInt(m[1], 10);
+            return 0;
+        }
+
+        function _parseNumber(text) {
+            if (!text) return 0;
+            var cleaned = text.replace(/[¥,，\s]/g, '');
+            return parseFloat(cleaned) || 0;
+        }
+
+        function sortWhitelistTable(tabName, sortField, clickedEl) {
+            var containerId = 'whitelist-' + tabName;
+            var container = document.getElementById(containerId);
+            if (!container) return;
+
+            var tbody = container.querySelector('tbody');
+            if (!tbody) return;
+
+            // Toggle sort direction if clicking same field
+            if (!_whitelistSortState[tabName]) {
+                _whitelistSortState[tabName] = { field: 'default', asc: false };
+            }
+            var state = _whitelistSortState[tabName];
+            if (state.field === sortField && sortField !== 'default') {
+                state.asc = !state.asc;
+            } else {
+                state.field = sortField;
+                state.asc = false;
+            }
+
+            // Update button styles
+            var sortBtns = container.querySelectorAll('.sort-btn');
+            sortBtns.forEach(function(btn) {
+                if (btn.getAttribute('data-tab') === tabName) {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-secondary');
+                }
+            });
+            if (clickedEl) {
+                clickedEl.classList.remove('btn-secondary');
+                clickedEl.classList.add('btn-primary');
+            }
+
+            // Update sort order label
+            var orderLabel = document.getElementById('sortOrder-' + tabName);
+            if (orderLabel) {
+                orderLabel.textContent = state.asc ? '↑ 升序' : '↓ 降序';
+            }
+
+            // Get rows and column index mapping based on tab
+            var rows = Array.from(tbody.querySelectorAll('tr'));
+            if (sortField === 'default') {
+                // Restore original order (use DOM order as-is since we can't easily restore)
+                // We'll just reload by not sorting
+                return;
+            }
+
+            // Determine column indices based on tab
+            var levelColIdx, pointsColIdx, playColIdx;
+            if (tabName === 'applications') {
+                // columns: checkbox, 用户ID, 昵称, 段位, 地图数, 累计游玩, 申请时间, 操作
+                levelColIdx = 3; pointsColIdx = -1; playColIdx = 5;
+            } else if (tabName === 'users') {
+                // columns: 共创师ID, 共创师昵称, 共创师等级, 共创点, 总发图数, 总激励图数, 总收益, 上月激励图数, 上月收益, 加入方式, 激励开通, 激励状态, 操作
+                levelColIdx = 2; pointsColIdx = 3; playColIdx = 4;
+            } else if (tabName === 'removed') {
+                // columns: 用户ID, 昵称, 段位, 加入时间, 移除时间, 移除原因, 移除人, 操作
+                levelColIdx = 2; pointsColIdx = -1; playColIdx = -1;
+            } else if (tabName === 'rejected') {
+                // columns: 用户ID, 昵称, 段位, 地图数, 申请时间, 拒绝时间, 拒绝原因, 审核人, 操作
+                levelColIdx = 2; pointsColIdx = -1; playColIdx = 3;
+            }
+
+            rows.sort(function(a, b) {
+                var valA = 0, valB = 0;
+                var colIdx;
+
+                if (sortField === 'level' && levelColIdx >= 0) {
+                    colIdx = levelColIdx;
+                    var cellA = a.children[colIdx];
+                    var cellB = b.children[colIdx];
+                    valA = _getLevelValue(cellA ? cellA.textContent : '');
+                    valB = _getLevelValue(cellB ? cellB.textContent : '');
+                } else if (sortField === 'coCreatePoints' && pointsColIdx >= 0) {
+                    colIdx = pointsColIdx;
+                    var cellA2 = a.children[colIdx];
+                    var cellB2 = b.children[colIdx];
+                    valA = _parseNumber(cellA2 ? cellA2.textContent : '');
+                    valB = _parseNumber(cellB2 ? cellB2.textContent : '');
+                } else if (sortField === 'playCount' && playColIdx >= 0) {
+                    colIdx = playColIdx;
+                    var cellA3 = a.children[colIdx];
+                    var cellB3 = b.children[colIdx];
+                    valA = _parseNumber(cellA3 ? cellA3.textContent : '');
+                    valB = _parseNumber(cellB3 ? cellB3.textContent : '');
+                }
+
+                if (valA < valB) return state.asc ? -1 : 1;
+                if (valA > valB) return state.asc ? 1 : -1;
+                return 0;
+            });
+
+            // Re-append sorted rows
+            rows.forEach(function(row) {
+                tbody.appendChild(row);
+            });
         }
 
         // 筛选白名单用户
