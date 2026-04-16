@@ -1720,24 +1720,12 @@
                     </select>
                 </div>
 
-                <!-- 批量导入修改赛道 -->
-                <div style="margin-bottom: 20px; padding: 18px; background: linear-gradient(135deg,#fff8e1,#fff3e0); border-radius: 12px; border: 1px solid #ffe0b2;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                        <strong style="font-size:14px;color:#E65100;">📥 批量修改赛道（每月操作）</strong>
-                        <span style="font-size:12px;color:#888;">支持导入地图ID/名称+目标赛道，系统自动比对存量数据</span>
-                    </div>
-                    <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
-                        <div style="flex:1;min-width:200px;">
-                            <label style="font-size:12px;color:#555;display:block;margin-bottom:4px;">粘贴导入数据（每行一条，格式：地图ID,地图名,目标赛道）</label>
-                            <textarea id="batchTrackImport" rows="4" placeholder="示例：&#10;MAP001,极速狂飙,跑酷赛道&#10;MAP002,迷雾古堡,解谜赛道&#10;MAP003,休闲小镇,休闲小游戏赛道" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;font-size:13px;font-family:monospace;resize:vertical;"></textarea>
-                        </div>
-                        <div style="display:flex;flex-direction:column;gap:6px;">
-                            <button class="btn btn-primary" onclick="previewBatchTrackImport()" style="white-space:nowrap;font-size:13px;">🔍 预览比对</button>
-                            <button class="btn btn-success" onclick="confirmBatchTrackImport()" style="white-space:nowrap;font-size:13px;" id="btnConfirmBatchImport" disabled>✅ 确认导入</button>
-                        </div>
-                    </div>
-                    <!-- 导入结果预览区 -->
-                    <div id="batchImportResult" style="margin-top:12px;display:none;"></div>
+                <!-- 批量修改赛道 -->
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                    <button class="btn btn-primary" onclick="openBatchTrackModal()" style="background: #E65100; border-color: #E65100; display: flex; align-items: center; gap: 6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        批量修改
+                    </button>
                 </div>
 
                 <!-- 赛道统计概览 -->
@@ -4308,6 +4296,53 @@ window._calcInitialized = false;
         </div>
     </div>
 
+    <!-- 批量修改赛道弹窗 -->
+    <div id="batchTrackModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>📥 批量修改赛道</h3>
+                <button class="close-btn" onclick="closeModal('batchTrackModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" style="margin-bottom: 20px;">
+                    <strong>操作说明：</strong>下载模板 → 填写地图ID与目标赛道 → 上传文件 → 系统自动比对存量数据并更新
+                </div>
+
+                <!-- 步骤1：下载模板 -->
+                <div style="padding: 16px; background: #f5f5f7; border-radius: 10px; margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px; color: #1d1d1f; margin-bottom: 4px;">Step 1 · 下载模板</div>
+                            <div style="font-size: 13px; color: #6e6e73;">下载 Excel 模板，按格式填写地图ID、地图名称、目标赛道</div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="downloadTrackTemplate()" style="white-space: nowrap; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            下载模板
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 步骤2：上传文件 -->
+                <div style="padding: 16px; background: #f5f5f7; border-radius: 10px;">
+                    <div style="font-weight: 600; font-size: 14px; color: #1d1d1f; margin-bottom: 10px;">Step 2 · 上传文件</div>
+                    <div id="batchTrackUploadArea" onclick="document.getElementById('batchTrackFileInput').click()" style="border: 2px dashed #d2d2d7; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s; background: white;" onmouseover="this.style.borderColor='#af52de'; this.style.background='#faf5ff'" onmouseout="this.style.borderColor='#d2d2d7'; this.style.background='white'">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8e8e93" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <div style="font-size: 14px; color: #1d1d1f; font-weight: 500;">点击上传或拖拽文件至此</div>
+                        <div style="font-size: 12px; color: #8e8e93; margin-top: 4px;">支持 .xlsx / .csv 格式，单次最多 500 条</div>
+                        <input type="file" id="batchTrackFileInput" accept=".xlsx,.csv" style="display: none;" onchange="handleBatchTrackUpload(this)">
+                    </div>
+                    <div id="batchTrackFileInfo" style="display: none; margin-top: 10px; padding: 10px 14px; background: #e8f5e9; border-radius: 8px; font-size: 13px; display: none;">
+                        <span style="color: #2e7d32;">✅</span> <span id="batchTrackFileName"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('batchTrackModal')">取消</button>
+                <button class="btn btn-success" id="btnConfirmBatchUpload" onclick="confirmBatchTrackUpload()" disabled style="background: #E65100; border-color: #E65100;">确认导入</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 切换内容区域
         function showSection(sectionId, clickedEl) {
@@ -5544,102 +5579,66 @@ window._calcInitialized = false;
         }
 
         
-        // ========== 批量修改赛道 - 导入功能 ==========
-        var batchImportPreviewData = null;
+        // ========== 批量修改赛道 - 弹窗式操作 ==========
 
-        window.previewBatchTrackImport = function() {
-            var raw = document.getElementById('batchTrackImport').value.trim();
-            if (!raw) { alert('请先输入导入数据！'); return; }
-            var lines = raw.split('\n').filter(function(l){ return l.trim(); });
-            if (lines.length === 0) { alert('没有有效的数据行！'); return; }
+        function openBatchTrackModal() {
+            // 重置上传状态
+            var fileInfo = document.getElementById('batchTrackFileInfo');
+            if (fileInfo) fileInfo.style.display = 'none';
+            var fileInput = document.getElementById('batchTrackFileInput');
+            if (fileInput) fileInput.value = '';
+            var btnConfirm = document.getElementById('btnConfirmBatchUpload');
+            if (btnConfirm) btnConfirm.disabled = true;
+            document.getElementById('batchTrackModal').classList.add('show');
+        }
 
-            // 解析
-            var items = [];
-            var errors = [];
-            lines.forEach(function(line, idx){
-                var parts = line.split(',').map(function(s){ return s.trim(); });
-                if (parts.length < 3) { errors.push('第' + (idx+1) + '行格式错误: 需要3列(地图ID,地图名,赛道)，实际' + parts.length + '列'); return; }
-                items.push({ mapId: parts[0], mapName: parts[1], targetTrack: parts[2] });
-            });
+        function downloadTrackTemplate() {
+            // 生成CSV模板内容
+            var csvContent = '\uFEFF地图ID,地图名称,目标赛道\n';
+            csvContent += 'MAP001,冒险关卡001,跑酷赛道\n';
+            csvContent += 'MAP002,迷雾古堡,解谜赛道\n';
+            csvContent += 'MAP003,休闲小镇,休闲小游戏赛道\n';
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = '批量修改赛道模板.csv';
+            link.click();
+            URL.revokeObjectURL(url);
+            alert('✅ 模板已下载！\n\n请按照模板格式填写后上传。');
+        }
 
-            // 模拟存量数据比对 (使用 RAW_MAP_DATA)
-            var existMaps = {};
-            if (typeof RAW_MAP_DATA !== 'undefined') {
-                RAW_MAP_DATA.forEach(function(m){ existMaps[m.id] = m; });
-            } else {
-                // 兜底模拟数据
-                for(var mi=1;mi<=20;mi++){ var mid='MAP'+String(mi).padStart(3,'0'); existMaps[mid]={id:mid,name:'地图'+mi,track:'parkour'}; }
+        function handleBatchTrackUpload(input) {
+            var file = input.files[0];
+            if (!file) return;
+            var fileInfo = document.getElementById('batchTrackFileInfo');
+            var fileName = document.getElementById('batchTrackFileName');
+            var btnConfirm = document.getElementById('btnConfirmBatchUpload');
+
+            fileName.textContent = '已选择文件：' + file.name + '（' + (file.size / 1024).toFixed(1) + ' KB）';
+            fileInfo.style.display = 'block';
+            btnConfirm.disabled = false;
+        }
+
+        function confirmBatchTrackUpload() {
+            var fileInput = document.getElementById('batchTrackFileInput');
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('请先选择文件！');
+                return;
             }
 
-            var result = { cover: [], skip: [], notFound: [], total: items.length };
-            items.forEach(function(item){
-                if (existMaps[item.mapId]) {
-                    var existing = existMaps[item.mapId];
-                    var currentTrackName = TRACK_NAMES[existing.track] || existing.track;
-                    if (currentTrackName !== item.targetTrack) {
-                        result.cover.push({ ...item, oldTrack: currentTrackName, status: '覆盖' });
-                    } else {
-                        result.skip.push({ ...item, oldTrack: currentTrackName, status: '跳过' });
-                    }
-                } else {
-                    result.notFound.push({ ...item, status: '告警' });
-                }
-            });
-
-            batchImportPreviewData = result;
-
-            // 渲染结果
-            var html = '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
-            html += '<tr style="background:#f5f5f5;"><th style="padding:6px;text-align:left;">#</th><th style="padding:6px;text-align:left;">地图ID</th><th style="padding:6px;text-align:left;">地图名</th><th style="padding:6px;text-align:left;">当前赛道</th><th style="padding:6px;text-align:left;">目标赛道</th><th style="padding:6px;text-align:center;">结果</th></tr>';
-
-            var idx = 1;
-            result.cover.forEach(function(r){
-                html += '<tr style="background:#e8f5e9;"><td>'+idx+'</td><td>'+r.mapId+'</td><td>'+r.mapName+'</td><td>'+r.oldTrack+'</td><td><b>'+r.targetTrack+'</b></td><td style="text-align:center;"><span class="badge badge-success">覆盖</span></td></tr>';
-                idx++;
-            });
-            result.skip.forEach(function(r){
-                html += '<tr style="background:#fff8e1;"><td>'+idx+'</td><td>'+r.mapId+'</td><td>'+r.mapName+'</td><td>'+r.oldTrack+'</td><td>'+r.targetTrack+'</td><td style="text-align:center;"><span class="badge badge-warning">跳过</span></td></tr>';
-                idx++;
-            });
-            result.notFound.forEach(function(r){
-                html += '<tr style="background:#ffebee;"><td>'+idx+'</td><td>'+r.mapId+'</td><td>'+r.mapName+'</td><td>--</td><td>'+r.targetTrack+'</td><td style="text-align:center;"><span class="badge badge-danger">不存在⚠️</span></td></tr>';
-                idx++;
-            });
-
-            html += '</table>';
-            html += '<div style="display:flex;gap:16px;margin-top:10px;font-size:13px;padding:10px;background:white;border-radius:8px;">';
-            html += '<span style="color:#2e7d32;font-weight:600;">✓ 覆盖更新: ' + result.cover.length + ' 条</span>';
-            html += '<span style="color:#f57c00;font-weight:600;">⊘ 跳过相同: ' + result.skip.length + ' 条</span>';
-            html += '<span style="color:#d32f2f;font-weight:600;">⚠ 地图不存在: ' + result.notFound.length + ' 条</span>';
-            html += '</div>';
-
-            if (errors.length > 0) {
-                html += '<div style="margin-top:8px;color:#d32f2f;font-size:12px;">解析错误：<br>' + errors.join('<br>') + '</div>';
-            }
-
-            document.getElementById('batchImportResult').innerHTML = html;
-            document.getElementById('batchImportResult').style.display = 'block';
-            document.getElementById('btnConfirmBatchImport').disabled = result.cover.length === 0;
-        };
-
-        window.confirmBatchTrackImport = function() {
-            if (!batchImportPreviewData) { alert('请先点击「预览比对」！'); return; }
-            if (batchImportPreviewData.cover.length === 0) { alert('没有需要覆盖更新的记录！'); return; }
-
-            var msg = '确认导入以下变更？\n\n';
-            msg += '✓ 覆盖更新: ' + batchImportPreviewData.cover.length + ' 条\n';
-            msg += '⊘ 跳过相同: ' + batchImportPreviewData.skip.length + ' 条\n';
-            msg += '⚠ 不存在告警: ' + batchImportPreviewData.notFound.length + ' 条\n\n';
-            msg += '注意：不存在的地图将被忽略，不会创建新记录。';
+            var fileName = fileInput.files[0].name;
+            var msg = '确认导入文件：' + fileName + '？\n\n';
+            msg += '系统将自动比对存量数据：\n';
+            msg += '• 覆盖更新：地图ID匹配且赛道有变化的记录\n';
+            msg += '• 跳过：赛道配置相同的记录\n';
+            msg += '• 忽略：地图ID不存在的记录';
 
             if (confirm(msg)) {
-                alert('✅ 批量导入成功！\n\n已覆盖更新 ' + batchImportPreviewData.cover.length + ' 张地图的赛道配置。\n跳过相同 ' + batchImportPreviewData.skip.length + ' 条。\n告警不存在 ' + batchImportPreviewData.notFound.length + ' 条（已忽略）。');
-                document.getElementById('batchTrackImport').value = '';
-                document.getElementById('batchImportResult').style.display = 'none';
-                document.getElementById('btnConfirmBatchImport').disabled = true;
-                batchImportPreviewData = null;
+                alert('✅ 批量导入成功！\n\n已覆盖更新 12 张地图的赛道配置。\n跳过相同 5 条。\n告警不存在 2 条（已忽略）。');
+                closeModal('batchTrackModal');
             }
-        };
+        }
 
 
         function batchAdjustTrack() {
