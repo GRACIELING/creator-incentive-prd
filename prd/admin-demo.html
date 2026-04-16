@@ -1760,79 +1760,123 @@
                             <button class="btn btn-primary">搜索</button>
                         </div>
                     </div>
-                    <table>
+                    <table style="min-width: 1600px;">
                         <thead>
                             <tr>
                                 <th>地图ID</th>
                                 <th>地图名称</th>
-                                <th>创作者</th>
+                                <th>地图封面</th>
+                                <th>创作者ID</th>
+                                <th>创作者名称</th>
                                 <th>发布时间</th>
-                                <th>游玩次数</th>
-                                <th>赛道类型</th>
-                                <th>奖金</th>
-                                <th>操作</th>
+                                <th>上架状态</th>
+                                <th>已发布天数</th>
+                                <th>主类型</th>
+                                <th>子类型</th>
+                                <th>地图相似度</th>
+                                <th>所属赛道</th>
+                                <th>总游玩PV</th>
+                                <th>14日游玩PV</th>
+                                <th>有效游玩PV</th>
+                                <th>预估激励金</th>
+                                <th>地图状态</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr data-track-type="encourage">
                                 <td>MAP001</td>
                                 <td>冒险关卡001</td>
-                                <td>user100</td>
+                                <td><img src="https://via.placeholder.com/48x32/4CAF50/fff?text=MAP001" style="width:48px;height:32px;border-radius:4px;object-fit:cover;"></td>
+                                <td>U10001</td>
+                                <td>冒险大师</td>
                                 <td>2026-04-01</td>
-                                <td>50,000</td>
+                                <td><span class="badge badge-success">已上架</span></td>
+                                <td>15</td>
+                                <td>跑酷</td>
+                                <td>竞速</td>
+                                <td>92%</td>
                                 <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td>50,000</td>
+                                <td>12,300</td>
+                                <td>45,600</td>
                                 <td>¥2,000</td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editMapTrack('MAP001')">调整赛道</button>
-                                </td>
+                                <td><span class="badge badge-success">正常</span></td>
                             </tr>
                             <tr data-track-type="encourage">
                                 <td>MAP002</td>
                                 <td>跑酷挑战001</td>
-                                <td>user101</td>
+                                <td><img src="https://via.placeholder.com/48x32/2196F3/fff?text=MAP002" style="width:48px;height:32px;border-radius:4px;object-fit:cover;"></td>
+                                <td>U10002</td>
+                                <td>跑酷达人</td>
                                 <td>2026-04-02</td>
-                                <td>45,000</td>
+                                <td><span class="badge badge-success">已上架</span></td>
+                                <td>14</td>
+                                <td>跑酷</td>
+                                <td>障碍</td>
+                                <td>78%</td>
                                 <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td>45,000</td>
+                                <td>10,800</td>
+                                <td>41,200</td>
                                 <td>¥1,800</td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editMapTrack('MAP002')">调整赛道</button>
-                                </td>
+                                <td><span class="badge badge-success">正常</span></td>
                             </tr>
                             <tr data-track-type="encourage">
                                 <td>MAP003</td>
                                 <td>解谜迷宫001</td>
-                                <td>user102</td>
+                                <td><img src="https://via.placeholder.com/48x32/9C27B0/fff?text=MAP003" style="width:48px;height:32px;border-radius:4px;object-fit:cover;"></td>
+                                <td>U10003</td>
+                                <td>谜境探索者</td>
                                 <td>2026-04-03</td>
-                                <td>40,000</td>
+                                <td><span class="badge badge-success">已上架</span></td>
+                                <td>13</td>
+                                <td>解谜</td>
+                                <td>迷宫</td>
+                                <td>85%</td>
                                 <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td>40,000</td>
+                                <td>9,500</td>
+                                <td>36,800</td>
                                 <td>¥1,600</td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editMapTrack('MAP003')">调整赛道</button>
-                                </td>
+                                <td><span class="badge badge-success">正常</span></td>
                             </tr>
                             <tr data-track-type="normal">
                                 <td>MAP004</td>
                                 <td>建筑展示001</td>
-                                <td>user103</td>
+                                <td><img src="https://via.placeholder.com/48x32/FF9800/fff?text=MAP004" style="width:48px;height:32px;border-radius:4px;object-fit:cover;"></td>
+                                <td>U10004</td>
+                                <td>建筑师小王</td>
                                 <td>2026-04-01</td>
-                                <td>35,000</td>
+                                <td><span class="badge badge-warning">已下架</span></td>
+                                <td>15</td>
+                                <td>休闲</td>
+                                <td>建筑</td>
+                                <td>60%</td>
                                 <td><span class="badge badge-info">非鼓励赛道</span></td>
+                                <td>35,000</td>
+                                <td>5,200</td>
+                                <td>28,400</td>
                                 <td>¥1,200</td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editMapTrack('MAP004')">调整赛道</button>
-                                </td>
+                                <td><span class="badge badge-warning">已下架</span></td>
                             </tr>
                             <tr data-track-type="normal">
                                 <td>MAP005</td>
                                 <td>休闲小镇001</td>
-                                <td>user104</td>
+                                <td><img src="https://via.placeholder.com/48x32/607D8B/fff?text=MAP005" style="width:48px;height:32px;border-radius:4px;object-fit:cover;"></td>
+                                <td>U10005</td>
+                                <td>休闲玩家</td>
                                 <td>2026-04-02</td>
-                                <td>30,000</td>
+                                <td><span class="badge badge-success">已上架</span></td>
+                                <td>14</td>
+                                <td>休闲</td>
+                                <td>社交</td>
+                                <td>55%</td>
                                 <td><span class="badge badge-info">非鼓励赛道</span></td>
+                                <td>30,000</td>
+                                <td>4,800</td>
+                                <td>24,500</td>
                                 <td>¥1,050</td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editMapTrack('MAP005')">调整赛道</button>
-                                </td>
+                                <td><span class="badge badge-danger">违规</span></td>
                             </tr>
                         </tbody>
                     </table>
