@@ -2125,138 +2125,15 @@
                     </div>
                 </div>
 
-                <div class="table-container" style="margin-bottom: 20px;">
-                    <div class="table-header">
-                        <span class="table-title">奖金预览明细</span>
-                </div>
-
-                <!-- 奖金预览统计 -->
-                <div class="stats-grid" style="margin-bottom: 20px;">
-                    <div class="stat-card">
-                        <h3>总地图数</h3>
-                        <div class="value">234</div>
-                        <div class="trend">参与奖金计算</div>
+                <!-- 数据摘要（来自奖金计算结果） -->
+                <div style="margin: 16px 0; padding: 14px 20px; background: #f0f5ff; border-radius: 10px; border: 1px solid #d0dff5; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: center;">
+                        <span style="font-size: 13px; color: #555;">地图数 <strong style="color:#1d1d1f;">234</strong></span>
+                        <span style="font-size: 13px; color: #555;">奖金总额 <strong style="color:#007aff;">¥78,500</strong></span>
+                        <span style="font-size: 13px; color: #555;">鼓励赛道 <strong style="color:#34c759;">134</strong></span>
+                        <span style="font-size: 13px; color: #555;">非鼓励赛道 <strong style="color:#007aff;">100</strong></span>
                     </div>
-                    <div class="stat-card">
-                        <h3>奖金总额</h3>
-                        <div class="value">¥78,500</div>
-                        <div class="trend">234张地图</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>平均奖金</h3>
-                        <div class="value">¥335</div>
-                        <div class="trend">单张地图</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>最高奖金</h3>
-                        <div class="value">¥2,000</div>
-                        <div class="trend">最低 ¥100</div>
-                    </div>
-                </div>
-
-                <!-- 赛道分布 -->
-                <div class="table-container" style="margin-bottom: 20px;">
-                    <div class="table-header">
-                        <span class="table-title">赛道奖金分布</span>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>赛道类型</th>
-                                <th>地图数</th>
-                                <th>总奖金</th>
-                                <th>平均奖金</th>
-                                <th>占比</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
-                                <td>134</td>
-                                <td>¥52,000</td>
-                                <td>¥388</td>
-                                <td>66.2%</td>
-                            </tr>
-                            <tr>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
-                                <td>100</td>
-                                <td>¥26,500</td>
-                                <td>¥265</td>
-                                <td>33.8%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- 地图奖金明细（Leader按批次统一操作） -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <span class="table-title">地图奖金明细（共234张）</span>
-                        <div class="search-box">
-                            <input type="text" placeholder="搜索地图ID或用户ID...">
-                            <button class="btn btn-primary">搜索</button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>地图ID</th>
-                                <th>地图名称</th>
-                                <th>创作者</th>
-                                <th>游玩次数</th>
-                                <th>赛道</th>
-                                <th>排名</th>
-                                <th>奖金金额</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>MAP001</td>
-                                <td>冒险关卡001</td>
-                                <td>user100 小明</td>
-                                <td>50,000</td>
-                                <td><span class="badge badge-success">鼓励</span></td>
-                                <td>1</td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥2,000</span></td>
-                            </tr>
-                            <tr>
-                                <td>MAP002</td>
-                                <td>解谜迷宫001</td>
-                                <td>user101 小红</td>
-                                <td>45,000</td>
-                                <td><span class="badge badge-success">鼓励</span></td>
-                                <td>2</td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥1,800</span></td>
-                            </tr>
-                            <tr style="background: #fff8e1;">
-                                <td>MAP003</td>
-                                <td>跑酷挑战001</td>
-                                <td>user104 ⚠️小陈(处罚中)</td>
-                                <td>40,000</td>
-                                <td><span class="badge badge-success">鼓励</span></td>
-                                <td>3</td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥1,600</span></td>
-                            </tr>
-                            <tr>
-                                <td>MAP004</td>
-                                <td>射击训练001</td>
-                                <td>user103 小赵</td>
-                                <td>35,000</td>
-                                <td><span class="badge badge-info">非鼓励</span></td>
-                                <td>1</td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥1,200</span></td>
-                            </tr>
-                            <tr>
-                                <td>MAP005</td>
-                                <td>策略对战001</td>
-                                <td>user102 小王</td>
-                                <td>30,000</td>
-                                <td><span class="badge badge-info">非鼓励</span></td>
-                                <td>2</td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥1,050</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <button class="btn btn-secondary" onclick="showSection('calculation', null)" style="font-size: 12px; padding: 5px 14px;">📊 查看完整计算明细 →</button>
                 </div>
             </div>
         </div>
@@ -2293,84 +2170,15 @@
                     </div>
                 </div>
 
-                <div class="stats-grid" style="margin-bottom: 20px;">
-                    <div class="stat-card">
-                        <h3>总地图数</h3>
-                        <div class="value">198</div>
-                        <div class="trend">Leader已审核通过</div>
+                <!-- 数据摘要（来自奖金计算结果） -->
+                <div style="margin: 16px 0; padding: 14px 20px; background: #f0f5ff; border-radius: 10px; border: 1px solid #d0dff5; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: center;">
+                        <span style="font-size: 13px; color: #555;">发放笔数 <strong style="color:#1d1d1f;">198</strong></span>
+                        <span style="font-size: 13px; color: #555;">奖金总额 <strong style="color:#007aff;">¥65,200</strong></span>
+                        <span style="font-size: 13px; color: #555;">处罚用户 <strong style="color:#34c759;">0</strong></span>
+                        <span style="font-size: 13px; color: #555;">Leader审核 <strong style="color:#34c759;">已通过</strong></span>
                     </div>
-                    <div class="stat-card">
-                        <h3>奖金总额</h3>
-                        <div class="value">¥65,200</div>
-                        <div class="trend">Leader已审核通过</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>平均奖金</h3>
-                        <div class="value">¥329</div>
-                        <div class="trend">单张地图</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>发放笔数</h3>
-                        <div class="value">198</div>
-                        <div class="trend">待确认发奖</div>
-                    </div>
-                </div>
-
-                <!-- 发放名单明细（财务按批次统一操作） -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <span class="table-title">发放名单明细（共198笔）</span>
-                        <div class="search-box">
-                            <input type="text" placeholder="搜索地图ID或用户ID...">
-                            <button class="btn btn-primary">搜索</button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>地图ID</th>
-                                <th>地图名称</th>
-                                <th>创作者</th>
-                                <th>游玩次数</th>
-                                <th>赛道</th>
-                                <th>奖金金额</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>MAP101</td>
-                                <td>冰雪世界001</td>
-                                <td>user200 大周</td>
-                                <td>48,000</td>
-                                <td><span class="badge badge-success">鼓励</span></td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥2,000</span></td>
-                            </tr>
-                            <tr>
-                                <td>MAP102</td>
-                                <td>休闲小镇001</td>
-                                <td>user201 小吴</td>
-                                <td>30,000</td>
-                                <td><span class="badge badge-info">非鼓励</span></td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥1,050</span></td>
-                            </tr>
-                            <tr>
-                                <td>MAP103</td>
-                                <td>解谜城堡</td>
-                                <td>user202 小郑</td>
-                                <td>42,000</td>
-                                <td><span class="badge badge-success">鼓励</span></td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥1,750</span></td>
-                            </tr>
-                            <tr>
-                                <td>MAP104</td>
-                                <td>建筑展览馆</td>
-                                <td>user203 小孙</td>
-                                <td>28,000</td>
-                                <td><span class="badge badge-info">非鼓励</span></td>
-                                <td><span style="color: #34c759; font-weight: 600;">¥900</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <button class="btn btn-secondary" onclick="showSection('calculation', null)" style="font-size: 12px; padding: 5px 14px;">📊 查看完整计算明细 →</button>
                 </div>
             </div>
 
@@ -2640,84 +2448,12 @@
                                 <div id="rd-reason" style="padding: 12px 16px; background: #fff5f5; border: 1px solid #fdd; border-radius: 8px; margin-top: 6px; color: #721c24; line-height: 1.6;"></div>
                             </div>
 
-                            <!-- 发奖名单调整区（从驳回记录中调整最终发奖名单） -->
-                            <div style="margin-bottom: 16px; padding: 14px; background: linear-gradient(135deg, #e8f5e9, #f1f8e4); border-radius: 10px; border: 1px solid #c5e1a5;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                    <strong style="color: #2e7d32;">📋 最终发奖名单调整</strong>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="btn btn-primary btn-sm" onclick="recalculateBonus()" style="font-size: 11px; background: #007aff;">🔄 刷新计算奖金</button>
-                                        <button class="btn btn-primary btn-sm" onclick="batchAdjustTrackFromReject()" style="font-size: 11px; background: #ff9500;">批量调赛道</button>
-                                        <button class="btn btn-danger btn-sm" onclick="batchRemoveFromRejectList()" style="font-size: 11px;">批量移除</button>
-                                    </div>
-                                </div>
-                                <p style="font-size: 12px; color: #555; margin-bottom: 10px;">根据上方驳回原因，请调整发奖名单后点击「确认并提交审核」。</p>
-                                
-                                <table style="width: 100%; border-collapse: collapse; font-size: 13px; background: white; border-radius: 8px; overflow: hidden;">
-                                    <thead>
-                                        <tr style="background: #f5f5f7;">
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;"><input type="checkbox" onchange="toggleSelectAllReject(this)"></th>
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;">地图ID</th>
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;">地图名称</th>
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;">创作者</th>
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;">赛道</th>
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;">预期奖金</th>
-                                            <th style="padding: 8px 10px; text-align: left; font-weight: 600;">操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="rejectAdjustBody">
-                                        <tr>
-                                            <td style="padding: 8px 10px;"><input type="checkbox" class="reject-check" data-map-id="MAP001"></td>
-                                            <td style="padding: 8px 10px;">MAP001</td>
-                                            <td style="padding: 8px 10px;">冒险关卡001</td>
-                                            <td style="padding: 8px 10px;">user100 小明</td>
-                                            <td style="padding: 8px 10px;"><span class="badge badge-success">鼓励</span></td>
-                                            <td style="padding: 8px 10px;"><span style="color: #34c759; font-weight: 600;">¥2,000</span></td>
-                                            <td style="padding: 8px 10px;">
-                                                <button class="btn btn-primary action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">调赛道</button>
-                                                <button class="btn btn-danger action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">移除</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 8px 10px;"><input type="checkbox" class="reject-check" data-map-id="MAP002"></td>
-                                            <td style="padding: 8px 10px;">MAP002</td>
-                                            <td style="padding: 8px 10px;">解谜迷宫001</td>
-                                            <td style="padding: 8px 10px;">user101 小红</td>
-                                            <td style="padding: 8px 10px;"><span class="badge badge-success">鼓励</span></td>
-                                            <td style="padding: 8px 10px;"><span style="color: #34c759; font-weight: 600;">¥1,800</span></td>
-                                            <td style="padding: 8px 10px;">
-                                                <button class="btn btn-primary action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">调赛道</button>
-                                                <button class="btn btn-danger action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">移除</button>
-                                            </td>
-                                        </tr>
-                                        <tr style="background: #fff8e1;">
-                                            <td style="padding: 8px 10px;"><input type="checkbox" class="reject-check" data-map-id="MAP003"></td>
-                                            <td style="padding: 8px 10px;">MAP003</td>
-                                            <td style="padding: 8px 10px;">跑酷挑战001</td>
-                                            <td style="padding: 8px 10px;">user104 ⚠️小陈(处罚中)</td>
-                                            <td style="padding: 8px 10px;"><span class="badge badge-success">鼓励</span></td>
-                                            <td style="padding: 8px 10px;"><span style="color: #34c759; font-weight: 600;">¥1,600</span></td>
-                                            <td style="padding: 8px 10px;">
-                                                <button class="btn btn-primary action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">调赛道</button>
-                                                <button class="btn btn-danger action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">移除</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 8px 10px;"><input type="checkbox" class="reject-check" data-map-id="MAP004"></td>
-                                            <td style="padding: 8px 10px;">MAP004</td>
-                                            <td style="padding: 8px 10px;">射击训练001</td>
-                                            <td style="padding: 8px 10px;">user103 小赵</td>
-                                            <td style="padding: 8px 10px;"><span class="badge badge-info">非鼓励</span></td>
-                                            <td style="padding: 8px 10px;"><span style="color: #34c759; font-weight: 600;">¥1,200</span></td>
-                                            <td style="padding: 8px 10px;">
-                                                <button class="btn btn-primary action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">调赛道</button>
-                                                <button class="btn btn-danger action-btn" style="font-size: 11px; padding: 3px 8px;" onclick="">移除</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div style="margin-top: 10px; font-size: 12px; color: #666; display: flex; justify-content: space-between;">
-                                    <span>共 234 张地图 | 奖金总额：<strong style="color: #2e7d32;">¥78,500</strong></span>
-                                    <span>仅展示前 4 条，完整名单请在「运营待提交」标签页查看/调整</span>
+                            <!-- 发奖名单调整提示 -->
+                            <div style="margin-bottom: 16px; padding: 16px; background: linear-gradient(135deg, #e8f5e9, #f1f8e4); border-radius: 10px; border: 1px solid #c5e1a5;">
+                                <strong style="color: #2e7d32;">📋 需要调整发奖名单？</strong>
+                                <p style="font-size: 13px; color: #555; margin-top: 6px; line-height: 1.6;">根据上方驳回原因，请在「运营待提交」标签页中调整赛道、移除地图后重新提交。调整完成后点击下方按钮直接提交审核。</p>
+                                <div style="margin-top: 10px; display: flex; gap: 8px;">
+                                    <button class="btn btn-primary" onclick="switchReviewTab('pending-submit')" style="font-size: 12px; background: #007aff;">前往运营待提交调整名单 →</button>
                                 </div>
                             </div>
 
@@ -2771,17 +2507,46 @@
                 </div>
             </div>
 
-            <!-- 发放趋势图 -->
-            <div class="table-container" style="margin-bottom: 30px; padding: 25px;">
-                <div class="table-header" style="margin-bottom: 20px;">
-                    <span class="table-title">发放趋势（按月）</span>
-                    <div>
-                        <button class="btn btn-primary btn-sm" onclick="updateTrendChart('month')" id="btnMonth" style="background: #0071e3; border-color: #0071e3;">按月</button>
-                        <button class="btn btn-secondary btn-sm" onclick="updateTrendChart('quarter')" id="btnQuarter">按季度</button>
+            <!-- 发放趋势图 - 三个独立图表 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                <!-- 人维度：时间周期发放人数 -->
+                <div class="table-container" style="padding: 20px;">
+                    <div class="table-header" style="margin-bottom: 15px;">
+                        <span class="table-title">👤 人维度 — 发放人数</span>
+                        <div>
+                            <button class="btn btn-primary btn-sm" onclick="updateTrendChart3('user','month')" id="userBtnMonth" style="background: #0071e3; border-color: #0071e3; font-size: 11px; padding: 3px 10px;">月</button>
+                            <button class="btn btn-secondary btn-sm" onclick="updateTrendChart3('user','quarter')" id="userBtnQuarter" style="font-size: 11px; padding: 3px 10px;">季</button>
+                        </div>
+                    </div>
+                    <div style="position: relative; width: 100%; height: 240px;">
+                        <canvas id="trendChartUser" style="width: 100%; height: 100%;"></canvas>
                     </div>
                 </div>
-                <div style="position: relative; width: 100%; height: 320px;">
-                    <canvas id="trendChart" style="width: 100%; height: 100%;"></canvas>
+                <!-- 图维度：时间周期发放地图数 -->
+                <div class="table-container" style="padding: 20px;">
+                    <div class="table-header" style="margin-bottom: 15px;">
+                        <span class="table-title">🗺️ 图维度 — 发放地图数</span>
+                        <div>
+                            <button class="btn btn-primary btn-sm" onclick="updateTrendChart3('map','month')" id="mapBtnMonth" style="background: #34c759; border-color: #34c759; font-size: 11px; padding: 3px 10px;">月</button>
+                            <button class="btn btn-secondary btn-sm" onclick="updateTrendChart3('map','quarter')" id="mapBtnQuarter" style="font-size: 11px; padding: 3px 10px;">季</button>
+                        </div>
+                    </div>
+                    <div style="position: relative; width: 100%; height: 240px;">
+                        <canvas id="trendChartMap" style="width: 100%; height: 100%;"></canvas>
+                    </div>
+                </div>
+                <!-- 时间维度：时间周期发放金额 -->
+                <div class="table-container" style="padding: 20px;">
+                    <div class="table-header" style="margin-bottom: 15px;">
+                        <span class="table-title">💰 时间维度 — 发放金额</span>
+                        <div>
+                            <button class="btn btn-primary btn-sm" onclick="updateTrendChart3('amount','month')" id="amountBtnMonth" style="background: #ff9500; border-color: #ff9500; font-size: 11px; padding: 3px 10px;">月</button>
+                            <button class="btn btn-secondary btn-sm" onclick="updateTrendChart3('amount','quarter')" id="amountBtnQuarter" style="font-size: 11px; padding: 3px 10px;">季</button>
+                        </div>
+                    </div>
+                    <div style="position: relative; width: 100%; height: 240px;">
+                        <canvas id="trendChartAmount" style="width: 100%; height: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
 
@@ -3250,15 +3015,43 @@
 
             <style>
                 /* ========== 奖金计算页专属样式 ========== */
-                .calc-page { max-width: 1400px; margin: 0 auto; }
+                .calc-page { max-width: 100%; margin: 0 auto; display: flex; gap: 0; position: relative; }
+
+                /* 左侧主区域 */
+                .calc-main { flex: 1; min-width: 0; padding-right: 0; transition: padding-right .3s ease; }
+                .calc-main.config-open { padding-right: 420px; }
+
+                /* 右侧配置抽屉 */
+                .calc-config-drawer {
+                    position: fixed; top: 0; right: -420px; width: 420px; height: 100vh;
+                    background: #fff; border-left: 1px solid #d2d2d7; z-index: 500;
+                    box-shadow: -4px 0 20px rgba(0,0,0,.08);
+                    transition: right .3s ease; overflow-y: auto; overflow-x: hidden;
+                }
+                .calc-config-drawer.open { right: 0; }
+                .calc-config-drawer-header {
+                    position: sticky; top: 0; z-index: 10; background: #fff;
+                    padding: 16px 20px; border-bottom: 1px solid #e5e5e5;
+                    display: flex; align-items: center; justify-content: space-between;
+                }
+                .calc-config-drawer-header h3 { font-size: 16px; font-weight: 700; color: #1d1d1f; }
+                .calc-config-drawer-body { padding: 16px 20px 80px; }
+
+                /* 遮罩层 */
+                .calc-drawer-overlay {
+                    position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 499;
+                    display: none; opacity: 0; transition: opacity .3s ease;
+                }
+                .calc-drawer-overlay.show { display: block; opacity: 1; }
 
                 /* 按钮 */
                 .btn-calc-refresh { background: linear-gradient(135deg,#007aff,#0056cc); color: white; padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all .2s; box-shadow: 0 2px 8px rgba(0,122,255,.25); }
                 .btn-calc-refresh:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,122,255,.35); }
                 .btn-calc-reset { background: #f0f0f5; color: #333; padding: 8px 16px; border-radius: 8px; border: 1px solid #d2d2d7; cursor: pointer; font-size: 13px; }
                 .btn-calc-reset:hover { background: #e5e5ea; }
-                .btn-calc-config { background: #af52de; color: white; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; }
+                .btn-calc-config { background: #af52de; color: white; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: all .2s; }
                 .btn-calc-config:hover { background: #9a3dd1; }
+                .btn-calc-config.active { background: #7c3aad; box-shadow: 0 0 0 3px rgba(175,82,222,.25); }
 
                 /* 面板通用 */
                 .calc-panel { background: white; border-radius: 12px; border: 1px solid #d2d2d7; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
@@ -3271,7 +3064,45 @@
                 .track-tag.encourage { background: #d6eaff; color: #0066cc; }
                 .track-tag.normal { background: #fce4ec; color: #c62828; }
 
-                /* 公式配置面板 */
+                /* 摘要统计卡片 */
+                .calc-summary-grid {
+                    display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 20px;
+                }
+                .calc-summary-card {
+                    background: white; border-radius: 12px; padding: 20px; border: 1px solid #e5e5ea;
+                    box-shadow: 0 1px 4px rgba(0,0,0,.04); transition: transform .15s, box-shadow .15s;
+                }
+                .calc-summary-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+                .calc-summary-card .card-icon { font-size: 28px; margin-bottom: 8px; }
+                .calc-summary-card .card-value { font-size: 26px; font-weight: 800; color: #1d1d1f; line-height: 1.2; }
+                .calc-summary-card .card-value.blue { color: #007aff; }
+                .calc-summary-card .card-label { font-size: 13px; color: #86868b; margin-top: 4px; }
+                .calc-summary-card .card-sub { font-size: 11px; color: #aeaeb2; margin-top: 2px; }
+
+                /* 赛道分布 */
+                .calc-track-grid {
+                    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;
+                }
+                .calc-track-card {
+                    background: white; border-radius: 10px; padding: 16px; border: 1px solid #e5e5ea;
+                    transition: transform .15s, box-shadow .15s; position: relative; overflow: hidden;
+                }
+                .calc-track-card:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,.06); }
+                .calc-track-card .track-accent { position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+                .calc-track-card .track-name { font-size: 14px; font-weight: 600; color: #1d1d1f; margin-bottom: 8px; }
+                .calc-track-card .track-stats { display: flex; gap: 16px; }
+                .calc-track-card .track-stat-item .val { font-size: 18px; font-weight: 700; }
+                .calc-track-card .track-stat-item .lbl { font-size: 11px; color: #86868b; }
+
+                /* 地图明细表格 */
+                .calc-map-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+                .calc-map-table th { background: #f5f5f7; color: #555; font-size: 11px; font-weight: 600; padding: 8px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; white-space: nowrap; }
+                .calc-map-table td { padding: 8px 12px; border-bottom: 1px solid #f0f0f5; vertical-align: middle; }
+                .calc-map-table tr:hover td { background: #f8f9ff; }
+                .calc-bonus-val { font-weight: 700; color: #007aff; }
+                .calc-bonus-val.zero { color: #aeaeb2; }
+
+                /* 公式配置面板（抽屉内） */
                 .cfg-section { margin-bottom: 20px; border: 1px solid #e8e8ed; border-radius: 10px; overflow: hidden; }
                 .cfg-section-title { font-size: 14px; font-weight: 700; padding: 10px 16px; color: #fff; background: linear-gradient(135deg, #667eea, #764ba2); }
                 .cfg-section-title.encourage { background: linear-gradient(135deg, #43a047, #66bb6a); }
@@ -3295,7 +3126,7 @@
                 .cfg-desc { font-size: 11px; color: #aaa; margin-top: 2px; }
 
                 /* 公式展示条 */
-                .formula-bar { background: linear-gradient(135deg,#f8f9ff,#f0eeff); border: 1px solid #ddd8f0; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; text-align: center; font-size: 14px; color: #333; letter-spacing: .3px; }
+                .formula-bar { background: linear-gradient(135deg,#f8f9ff,#f0eeff); border: 1px solid #ddd8f0; border-radius: 10px; padding: 12px 20px; margin-bottom: 20px; text-align: center; font-size: 13px; color: #333; letter-spacing: .3px; display: inline-flex; align-items: center; gap: 4px; }
                 .formula-bar .formula-var { color: #007aff; font-weight: 600; }
 
                 /* 加载动画 */
@@ -3304,180 +3135,309 @@
                 .calc-spinner { width: 40px; height: 40px; border: 3px solid #e5e5e5; border-top-color: #007aff; border-radius: 50%; animation: spin .7s linear infinite; }
                 @keyframes spin { to{transform:rotate(360deg)} }
                 .calc-loading-text { font-size: 14px; color: #555; font-weight: 500; }
+
+                /* 空状态 */
+                .calc-empty-state {
+                    display: flex; flex-direction: column; align-items: center; justify-content: center;
+                    padding: 80px 20px; color: #86868b;
+                }
+                .calc-empty-state .empty-icon { font-size: 64px; margin-bottom: 16px; opacity: .6; }
+                .calc-empty-state .empty-text { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+                .calc-empty-state .empty-sub { font-size: 13px; color: #aeaeb2; }
+
+                /* 人员排名标签切换 */
+                .calc-rank-tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #e5e5ea; }
+                .calc-rank-tab { padding: 8px 20px; font-size: 13px; font-weight: 500; color: #86868b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .15s; background: none; border-top: none; border-left: none; border-right: none; }
+                .calc-rank-tab:hover { color: #007aff; }
+                .calc-rank-tab.active { color: #007aff; border-bottom-color: #007aff; font-weight: 600; }
             </style>
 
             <div class="calc-page">
 
-                <!-- 页面标题栏 -->
-                <div class="page-header" style="margin-bottom: 18px;">
-                    <h1 class="page-title">🧮 奖金计算</h1>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span id="calcPlanLabel" style="font-size:13px;color:#888;">当前计划：<strong style="color:#007aff;">2026年5月流量激励</strong></span>
-                        <button class="btn-calc-config" onclick="openFormulaConfig()">⚙️ 公式配置</button>
-                    </div>
-                </div>
+                <!-- 左侧主区域 -->
+                <div class="calc-main" id="calcMain">
 
-                <!-- 公式展示条 -->
-                <div class="formula-bar">
-                    激励金 <span class="formula-var">M</span> = 阶梯插值（有效用户数 <span class="formula-var">X</span> → 激励金）
-                    　按「有效游玩人数」匹配阶梯，区间内线性插值，受单图封顶与单用户上限约束
-                </div>
-
-                <!-- ====== 公式参数配置面板（核心模块）====== -->
-                <div class="calc-panel" style="max-width:720px;margin:0 auto;">
-                    <div class="calc-panel-header">
-                        <h3>📐 公式参数配置</h3>
-                        <button class="btn-calc-config" style="padding:5px 12px;font-size:12px;" onclick="resetFormulaConfig()">重置默认</button>
-                    </div>
-                    <div class="calc-panel-body">
-
-                        <!-- ====== 一、整体规则 ====== -->
-                        <div class="cfg-section">
-                            <div class="cfg-section-title">一、整体规则</div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">结算周期</div>
-                                    <div class="cfg-desc">当前计算的月份周期</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <select class="cfg-select" id="cfg_settlement_cycle" style="width:140px;">
-                                        <option value="2026-05" selected>2026年5月</option>
-                                        <option value="2026-04">2026年4月</option>
-                                        <option value="2026-06">2026年6月</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">预算上限</div>
-                                    <div class="cfg-desc">当月激励计划的总预算金额</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_budget" value="200000" step="10000" min="0">
-                                    <span class="cfg-unit">元</span>
-                                </div>
-                            </div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">单用户奖金上限</div>
-                                    <div class="cfg-desc">单个用户在结算周期内可获得的最高奖金总额</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_user_bonus_cap" value="5000" step="500" min="0">
-                                    <span class="cfg-unit">元</span>
+                    <!-- 页面标题栏 -->
+                    <div class="page-header" style="margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h1 class="page-title" style="margin-bottom: 4px;">🧮 奖金计算</h1>
+                            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                <span id="calcPlanLabel" style="font-size:13px;color:#86868b;">当前计划：<strong style="color:#007aff;">2026年5月流量激励</strong></span>
+                                <div class="formula-bar" style="margin-bottom:0;">
+                                    M = 阶梯插值（<span class="formula-var">X</span> → 激励金），按「有效游玩人数」匹配
                                 </div>
                             </div>
                         </div>
-
-                        <!-- ====== 二、鼓励赛道参数 ====== -->
-                        <div class="cfg-section">
-                            <div class="cfg-section-title encourage">二、鼓励赛道参数</div>
-                            <div class="cfg-section-subtitle">适用于跑酷、解谜、生存、射击竞技等鼓励赛道</div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">单玩法最高奖金</div>
-                                    <div class="cfg-desc">鼓励赛道单张地图的奖金封顶值</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_enc_map_cap" value="2000" step="100" min="0">
-                                    <span class="cfg-unit">元</span>
-                                </div>
-                            </div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">开始激励的最低有效游玩人数</div>
-                                    <div class="cfg-desc">低于此人数不发放激励金</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_enc_min_users" value="100" step="10" min="0">
-                                    <span class="cfg-unit">人</span>
-                                </div>
-                            </div>
-
-                            <!-- 鼓励赛道阶梯表 -->
-                            <div class="cfg-staircase-table">
-                                <table>
-                                    <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
-                                    <tbody id="encTierBody">
-                                        <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="300" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="2000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="600" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="3500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="1200" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="5000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="1800" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="8000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="2500" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                    </tbody>
-                                </table>
-                                <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addEncTierRow()">+ 添加阶梯规则</button>
-                            </div>
-                        </div>
-
-                        <!-- ====== 三、非鼓励赛道参数 ====== -->
-                        <div class="cfg-section">
-                            <div class="cfg-section-title normal">三、非鼓励赛道参数</div>
-                            <div class="cfg-section-subtitle">适用于建筑展示、休闲小游戏等非鼓励赛道</div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">单玩法最高奖金</div>
-                                    <div class="cfg-desc">非鼓励赛道单张地图的奖金封顶值</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_nor_map_cap" value="1000" step="100" min="0">
-                                    <span class="cfg-unit">元</span>
-                                </div>
-                            </div>
-
-                            <div class="cfg-form-row">
-                                <div>
-                                    <div class="cfg-label">开始激励的最低有效游玩人数</div>
-                                    <div class="cfg-desc">低于此人数不发放激励金</div>
-                                </div>
-                                <div class="cfg-input-wrap">
-                                    <input type="number" class="cfg-input" id="cfg_nor_min_users" value="100" step="10" min="0">
-                                    <span class="cfg-unit">人</span>
-                                </div>
-                            </div>
-
-                            <!-- 非鼓励赛道阶梯表 -->
-                            <div class="cfg-staircase-table">
-                                <table>
-                                    <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
-                                    <tbody id="norTierBody">
-                                        <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="80" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="2000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="280" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="3500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="450" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="5000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="650" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                        <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="8000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="900" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
-                                    </tbody>
-                                </table>
-                                <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addNorTierRow()">+ 添加阶梯规则</button>
-                            </div>
-                        </div>
-
-                        <!-- 计算按钮 -->
-                        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #eee;">
-                            <button class="btn-calc-refresh" style="width:100%;justify-content:center;" onclick="runCalculate()">✨ 应用系数并重新计算</button>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <button class="btn-calc-config" id="btnToggleConfig" onclick="toggleConfigDrawer()">⚙️ 公式配置</button>
+                            <button class="btn-calc-refresh" onclick="runCalculate()">✨ 开始计算</button>
                         </div>
                     </div>
-                </div>
 
-                <!-- 计算结果摘要卡片（计算后显示） -->
-                <div id="calcResultSummary" style="max-width:720px;margin:20px auto 0;display:none;">
-                    <div class="calc-panel">
-                        <div class="calc-panel-header">
-                            <h3>📊 计算结果</h3>
+                    <!-- 计算结果区域（计算前显示空状态） -->
+                    <div id="calcResultArea">
+                        <div class="calc-empty-state" id="calcEmptyState">
+                            <div class="empty-icon">🧮</div>
+                            <div class="empty-text">配置参数后点击「开始计算」</div>
+                            <div class="empty-sub">计算结果将在此展示摘要统计、赛道分布、地图明细</div>
                         </div>
-                        <div class="calc-panel-body">
-                            <div id="resultSummaryContent" style="font-size:14px;line-height:2;"></div>
+
+                        <!-- 摘要统计卡片（计算后显示） -->
+                        <div id="calcSummaryCards" style="display:none;">
+                            <div class="calc-summary-grid">
+                                <div class="calc-summary-card">
+                                    <div class="card-icon">🗺️</div>
+                                    <div class="card-value" id="summaryMapCount">--</div>
+                                    <div class="card-label">激励地图</div>
+                                    <div class="card-sub">参与计算的地图总数</div>
+                                </div>
+                                <div class="calc-summary-card">
+                                    <div class="card-icon">👤</div>
+                                    <div class="card-value" id="summaryAuthorCount">--</div>
+                                    <div class="card-label">激励作者</div>
+                                    <div class="card-sub">获得激励金的创作者数</div>
+                                </div>
+                                <div class="calc-summary-card">
+                                    <div class="card-icon">💰</div>
+                                    <div class="card-value blue" id="summaryTotalBonus">¥ --</div>
+                                    <div class="card-label">总激励金</div>
+                                    <div class="card-sub">本期发放总额</div>
+                                </div>
+                                <div class="calc-summary-card">
+                                    <div class="card-icon">📊</div>
+                                    <div class="card-value" id="summaryAvgBonus">¥ --</div>
+                                    <div class="card-label">平均单图奖金</div>
+                                    <div class="card-sub">总激励金 / 地图数</div>
+                                </div>
+                                <div class="calc-summary-card">
+                                    <div class="card-icon">📈</div>
+                                    <div class="card-value" id="summaryEncRatio">--%</div>
+                                    <div class="card-label">鼓励赛道占比</div>
+                                    <div class="card-sub">鼓励赛道激励金占比</div>
+                                </div>
+                            </div>
+
+                            <!-- 赛道分布卡片 -->
+                            <div class="calc-panel" style="margin-bottom: 20px;">
+                                <div class="calc-panel-header">
+                                    <h3>🏁 赛道分布</h3>
+                                </div>
+                                <div class="calc-panel-body">
+                                    <div class="calc-track-grid" id="calcTrackGrid">
+                                        <!-- 动态填充 -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 地图明细 -->
+                            <div class="calc-panel" style="margin-bottom: 20px;">
+                                <div class="calc-panel-header">
+                                    <h3>📋 地图计算明细</h3>
+                                    <div style="display:flex;gap:8px;">
+                                        <select id="calcMapFilterTrack" onchange="filterCalcMapTable()" style="border:1px solid #d2d2d7;border-radius:6px;padding:5px 10px;font-size:12px;">
+                                            <option value="all">全部赛道</option>
+                                            <option value="encourage">仅鼓励赛道</option>
+                                            <option value="normal">仅非鼓励赛道</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="calc-panel-body" style="padding:0; max-height: 400px; overflow-y: auto;">
+                                    <table class="calc-map-table">
+                                        <thead>
+                                            <tr>
+                                                <th>地图ID</th>
+                                                <th>地图名称</th>
+                                                <th>创作者</th>
+                                                <th>赛道</th>
+                                                <th>类型</th>
+                                                <th style="text-align:right;">有效游玩人数</th>
+                                                <th>档位</th>
+                                                <th style="text-align:right;">预估激励金</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="calcMapTableBody">
+                                            <!-- 动态填充 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 人员排名 -->
+                            <div class="calc-panel" style="margin-bottom: 20px;">
+                                <div class="calc-panel-header">
+                                    <h3>🏆 创作者激励排名</h3>
+                                </div>
+                                <div class="calc-panel-body" style="padding:0;">
+                                    <table class="calc-map-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:50px;">排名</th>
+                                                <th>创作者ID</th>
+                                                <th>创作者名称</th>
+                                                <th style="text-align:right;">参与地图数</th>
+                                                <th style="text-align:right;">总有效游玩人数</th>
+                                                <th style="text-align:right;">总激励金</th>
+                                                <th>赛道分布</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="calcPersonTableBody">
+                                            <!-- 动态填充 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                </div><!-- /calc-main -->
+
+            </div><!-- /calc-page -->
+
+            <!-- 右侧配置抽屉 -->
+            <div class="calc-drawer-overlay" id="calcDrawerOverlay" onclick="toggleConfigDrawer()"></div>
+            <div class="calc-config-drawer" id="calcConfigDrawer">
+                <div class="calc-config-drawer-header">
+                    <h3>⚙️ 公式参数配置</h3>
+                    <button onclick="toggleConfigDrawer()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#86868b;padding:0 4px;line-height:1;">&times;</button>
                 </div>
+                <div class="calc-config-drawer-body">
+
+                    <!-- ====== 一、整体规则 ====== -->
+                    <div class="cfg-section">
+                        <div class="cfg-section-title">一、整体规则</div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">结算周期</div>
+                                <div class="cfg-desc">当前计算的月份周期</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <select class="cfg-select" id="cfg_settlement_cycle" style="width:140px;">
+                                    <option value="2026-05" selected>2026年5月</option>
+                                    <option value="2026-04">2026年4月</option>
+                                    <option value="2026-06">2026年6月</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">预算上限</div>
+                                <div class="cfg-desc">当月激励计划的总预算金额</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <input type="number" class="cfg-input" id="cfg_budget" value="200000" step="10000" min="0">
+                                <span class="cfg-unit">元</span>
+                            </div>
+                        </div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">单用户奖金上限</div>
+                                <div class="cfg-desc">单个用户在结算周期内可获得的最高奖金总额</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <input type="number" class="cfg-input" id="cfg_user_bonus_cap" value="5000" step="500" min="0">
+                                <span class="cfg-unit">元</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ====== 二、鼓励赛道参数 ====== -->
+                    <div class="cfg-section">
+                        <div class="cfg-section-title encourage">二、鼓励赛道参数</div>
+                        <div class="cfg-section-subtitle">适用于跑酷、解谜、生存、射击竞技等鼓励赛道</div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">单玩法最高奖金</div>
+                                <div class="cfg-desc">鼓励赛道单张地图的奖金封顶值</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <input type="number" class="cfg-input" id="cfg_enc_map_cap" value="2000" step="100" min="0">
+                                <span class="cfg-unit">元</span>
+                            </div>
+                        </div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">开始激励的最低有效游玩人数</div>
+                                <div class="cfg-desc">低于此人数不发放激励金</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <input type="number" class="cfg-input" id="cfg_enc_min_users" value="100" step="10" min="0">
+                                <span class="cfg-unit">人</span>
+                            </div>
+                        </div>
+
+                        <!-- 鼓励赛道阶梯表 -->
+                        <div class="cfg-staircase-table">
+                            <table>
+                                <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
+                                <tbody id="encTierBody">
+                                    <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="300" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="2000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="600" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="3500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="1200" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="5000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="1800" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="8000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="2500" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addEncTierRow()">+ 添加阶梯规则</button>
+                        </div>
+                    </div>
+
+                    <!-- ====== 三、非鼓励赛道参数 ====== -->
+                    <div class="cfg-section">
+                        <div class="cfg-section-title normal">三、非鼓励赛道参数</div>
+                        <div class="cfg-section-subtitle">适用于建筑展示、休闲小游戏等非鼓励赛道</div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">单玩法最高奖金</div>
+                                <div class="cfg-desc">非鼓励赛道单张地图的奖金封顶值</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <input type="number" class="cfg-input" id="cfg_nor_map_cap" value="1000" step="100" min="0">
+                                <span class="cfg-unit">元</span>
+                            </div>
+                        </div>
+
+                        <div class="cfg-form-row">
+                            <div>
+                                <div class="cfg-label">开始激励的最低有效游玩人数</div>
+                                <div class="cfg-desc">低于此人数不发放激励金</div>
+                            </div>
+                            <div class="cfg-input-wrap">
+                                <input type="number" class="cfg-input" id="cfg_nor_min_users" value="100" step="10" min="0">
+                                <span class="cfg-unit">人</span>
+                            </div>
+                        </div>
+
+                        <!-- 非鼓励赛道阶梯表 -->
+                        <div class="cfg-staircase-table">
+                            <table>
+                                <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
+                                <tbody id="norTierBody">
+                                    <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="80" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="1000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="150" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="2000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="280" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="3500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="450" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="5000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="650" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                    <tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="8000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="900" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="删除此行" style="padding:2px 8px;font-size:11px;">×</button></td></tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addNorTierRow()">+ 添加阶梯规则</button>
+                        </div>
+                    </div>
+
+                    <!-- 抽屉内计算按钮 -->
+                    <div style="margin-top:16px;padding-top:14px;border-top:1px solid #eee;">
+                        <button class="btn-calc-refresh" style="width:100%;justify-content:center;" onclick="runCalculate(); toggleConfigDrawer();">✨ 应用系数并重新计算</button>
+                        <button class="btn-calc-reset" style="width:100%;margin-top:8px;text-align:center;" onclick="resetFormulaConfig()">↩ 重置默认配置</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="calc-submit-bar" id="calcSubmitBar">
                 <div class="calc-submit-bar-inner">
@@ -3537,7 +3497,7 @@
                     display: flex; align-items: center; justify-content: space-between;
                     padding: 18px 28px; background: #d4edda; border-bottom: 2px solid #28a745;
                 }
-                @media(max-width:800px){ .calc-submit-bar-inner{flex-direction:column;align-items:flex-start;} .calc-submit-actions{width:100%;} .btn-calc-submit{width:100%;justify-content:center;} }
+                @media(max-width:800px){ .calc-submit-bar-inner{flex-direction:column;align-items:flex-start;} .calc-submit-actions{width:100%;} .btn-calc-submit{width:100%;justify-content:center;} .calc-summary-grid{grid-template-columns:repeat(2,1fr);} .calc-track-grid{grid-template-columns:1fr;} }
             </style>
 
             <!-- 加载遮罩 -->
@@ -3546,8 +3506,7 @@
                 <div class="calc-loading-text">正在重新计算激励金...</div>
             </div>
 
-
-        </div>
+        </div><!-- /calculation section -->
     </main>
 
 <!-- 奖金计算引擎 -->
@@ -3751,32 +3710,134 @@ function doFullCalculation(cfg) {
 
 // ========== 渲染函数 ==========
 
+var _lastCalcResult = null; // cache for filtering
+
 function renderMapTable(maps) {
-    // 当前页面无地图明细表，此函数保留用于扩展
+    var tbody = document.getElementById('calcMapTableBody');
+    if (!tbody) return;
+    var html = '';
+    maps.forEach(function(m) {
+        var trackName = TRACK_NAMES[m.track] || m.track;
+        var trackClass = m.isEncourage ? 'encourage' : 'normal';
+        var trackLabel = m.isEncourage ? '鼓励' : '非鼓励';
+        var bonusClass = m.bonus > 0 ? '' : ' zero';
+        html += '<tr>';
+        html += '<td>' + m.id + '</td>';
+        html += '<td>' + m.name + '</td>';
+        html += '<td>' + m.author + '</td>';
+        html += '<td><span class="track-tag ' + trackClass + '">' + trackName + '</span></td>';
+        html += '<td><span class="track-tag ' + trackClass + '">' + trackLabel + '</span></td>';
+        html += '<td style="text-align:right;">' + m.rawValidUsers.toLocaleString() + '</td>';
+        html += '<td>' + m.tierLabel + '</td>';
+        html += '<td style="text-align:right;" class="calc-bonus-val' + bonusClass + '">¥ ' + m.bonus.toLocaleString() + '</td>';
+        html += '</tr>';
+    });
+    tbody.innerHTML = html;
 }
 
 function renderTrackResults(trackStats) {
-    // 当前页面无赛道结果网格，此函数保留用于扩展
+    var grid = document.getElementById('calcTrackGrid');
+    if (!grid) return;
+    var html = '';
+    var colors = {
+        parkour: '#007aff', puzzle: '#af52de', survival: '#ff9500',
+        fps: '#ff3b30', build: '#34c759', casual: '#5ac8fa'
+    };
+    Object.keys(trackStats).forEach(function(key) {
+        var t = trackStats[key];
+        var color = colors[key] || '#8e8e93';
+        html += '<div class="calc-track-card">';
+        html += '<div class="track-accent" style="background:' + color + ';"></div>';
+        html += '<div class="track-name" style="padding-left:10px;">' + t.name + '</div>';
+        html += '<div class="track-stats" style="padding-left:10px;">';
+        html += '<div class="track-stat-item"><div class="val" style="color:' + color + ';">' + t.mapCount + '</div><div class="lbl">地图数</div></div>';
+        html += '<div class="track-stat-item"><div class="val">¥' + t.totalBonus.toLocaleString() + '</div><div class="lbl">激励金</div></div>';
+        html += '<div class="track-stat-item"><div class="val">' + t.totalUsers.toLocaleString() + '</div><div class="lbl">游玩人数</div></div>';
+        html += '</div>';
+        html += '</div>';
+    });
+    grid.innerHTML = html;
 }
 
-function renderPersonRank(personRank, oldPersonRank) { /* 保留用于扩展 */ }
-function renderMapRank(mapRank, oldMapRank) { /* 保留用于扩展 */ }
+function renderPersonRank(personRank) {
+    var tbody = document.getElementById('calcPersonTableBody');
+    if (!tbody) return;
+    var html = '';
+    personRank.forEach(function(p, idx) {
+        var medalIcon = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : (idx + 1)));
+        var trackDist = Object.keys(p.tracks).map(function(k) { return k + ':' + p.tracks[k] + '张'; }).join(' / ');
+        html += '<tr>';
+        html += '<td style="text-align:center;font-weight:600;">' + medalIcon + '</td>';
+        html += '<td>' + p.authorId + '</td>';
+        html += '<td>' + p.name + '</td>';
+        html += '<td style="text-align:right;">' + p.mapCount + '</td>';
+        html += '<td style="text-align:right;">' + p.totalUsers.toLocaleString() + '</td>';
+        html += '<td style="text-align:right;" class="calc-bonus-val">¥ ' + p.totalBonus.toLocaleString() + '</td>';
+        html += '<td style="font-size:12px;color:#86868b;">' + trackDist + '</td>';
+        html += '</tr>';
+    });
+    tbody.innerHTML = html;
+}
 
 function renderStats(summary, oldSummary) {
-    var el = document.getElementById('resultSummaryContent');
-    if (!el) return;
-    var html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">';
-    html += '<div style="background:#f0f8ff;padding:14px;border-radius:8px;"><div style="font-size:12px;color:#888;">激励地图</div><div style="font-size:22px;font-weight:700;">'+summary.mapCount+' <span style="font-size:13px;color:#888;">张</span></div></div>';
-    html += '<div style="background:#f0fff0;padding:14px;border-radius:8px;"><div style="font-size:12px;color:#888;">激励作者</div><div style="font-size:22px;font-weight:700;">'+summary.authorCount+' <span style="font-size:13px;color:#888;">人</span></div></div>';
-    html += '<div style="background:#fff8f0;padding:14px;border-radius:8px;"><div style="font-size:12px;color:#888;">总激励金</div><div style="font-size:22px;font-weight:700;color:#007aff;">¥'+summary.totalBonus.toLocaleString()+'</div></div>';
-    html += '<div style="background:#f8f0ff;padding:14px;border-radius:8px;"><div style="font-size:12px;color:#888;">平均单图奖金</div><div style="font-size:22px;font-weight:700;">¥'+Math.round(summary.avgBonus).toLocaleString()+'</div></div>';
-    html += '<div style="background:#f0ffff;padding:14px;border-radius:8px;"><div style="font-size:12px;color:#888;">鼓励赛道占比</div><div style="font-size:22px;font-weight:700;">'+summary.encRatio+'%</div></div>';
-    html += '</div>';
-    el.innerHTML = html;
-    document.getElementById('calcResultSummary').style.display = 'block';
+    // Hide empty state, show result area
+    var emptyState = document.getElementById('calcEmptyState');
+    var summaryCards = document.getElementById('calcSummaryCards');
+    if (emptyState) emptyState.style.display = 'none';
+    if (summaryCards) summaryCards.style.display = 'block';
+
+    // Update summary cards
+    var el;
+    el = document.getElementById('summaryMapCount');
+    if (el) el.textContent = summary.mapCount;
+    el = document.getElementById('summaryAuthorCount');
+    if (el) el.textContent = summary.authorCount;
+    el = document.getElementById('summaryTotalBonus');
+    if (el) el.textContent = '¥ ' + summary.totalBonus.toLocaleString();
+    el = document.getElementById('summaryAvgBonus');
+    if (el) el.textContent = '¥ ' + Math.round(summary.avgBonus).toLocaleString();
+    el = document.getElementById('summaryEncRatio');
+    if (el) el.textContent = summary.encRatio + '%';
+
+    // Hide old resultSummaryContent panel (no longer used)
+    var oldPanel = document.getElementById('calcResultSummary');
+    if (oldPanel) oldPanel.style.display = 'none';
 }
 
-function renderCompare(newRes, oldRes) { /* 当前页面无对比面板 */ }
+function renderCompare(newRes, oldRes) { /* reserved */ }
+
+// ========== 地图明细筛选 ==========
+window.filterCalcMapTable = function() {
+    if (!_lastCalcResult) return;
+    var filterVal = document.getElementById('calcMapFilterTrack').value;
+    var maps = _lastCalcResult.mapRank;
+    if (filterVal === 'encourage') {
+        maps = maps.filter(function(m) { return m.isEncourage; });
+    } else if (filterVal === 'normal') {
+        maps = maps.filter(function(m) { return !m.isEncourage; });
+    }
+    renderMapTable(maps);
+};
+
+// ========== 配置抽屉开关 ==========
+window.toggleConfigDrawer = function() {
+    var drawer = document.getElementById('calcConfigDrawer');
+    var overlay = document.getElementById('calcDrawerOverlay');
+    var main = document.getElementById('calcMain');
+    var btn = document.getElementById('btnToggleConfig');
+    var isOpen = drawer.classList.contains('open');
+    if (isOpen) {
+        drawer.classList.remove('open');
+        overlay.classList.remove('show');
+        main.classList.remove('config-open');
+        btn.classList.remove('active');
+    } else {
+        drawer.classList.add('open');
+        overlay.classList.add('show');
+        main.classList.add('config-open');
+        btn.classList.add('active');
+    }
+};
 
 // ========== 交互方法 ==========
 
@@ -3855,8 +3916,10 @@ window.resetFormulaConfig = function() {
         '<tr class="nor-tier-row"><td><input type="number" class="cfg-mini-input" nor-tier-users value="8000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" nor-tier-bonus value="900" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
 };
 window.openFormulaConfig = function() {
-    var panel = document.getElementById('calculation');
-    if (panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
+    var drawer = document.getElementById('calcConfigDrawer');
+    if (drawer && !drawer.classList.contains('open')) {
+        toggleConfigDrawer();
+    }
 };
 
 window.resetCalcFilters = function() { /* 当前页面无筛选控件 */ };
@@ -3872,8 +3935,12 @@ window.runCalculate = function() {
         var result = doFullCalculation(cfg);
         var oldCache = lastResultCache;
         lastResultCache = result;
+        _lastCalcResult = result;
         window._calcInitialized = true;
         renderStats(result.summary, oldCache ? oldCache.summary : null);
+        renderTrackResults(result.trackStats);
+        renderMapTable(result.mapRank);
+        renderPersonRank(result.personRank);
         updateSubmitBarSummary(result);
         console.log('[奖金计算] 完成', result.summary);
     } catch(e) {
@@ -4410,9 +4477,9 @@ window._calcInitialized = false;
             if (sectionId === 'bonus') {
                 setTimeout(() => {
                     // 仅在 section 可见且 canvas 父容器有宽度时绘制
-                    const canvas = document.getElementById('trendChart');
-                    if (canvas && canvas.parentElement && canvas.parentElement.offsetWidth > 0) {
-                        drawTrendChart(currentChartType);
+                    var anyCanvas = document.getElementById('trendChartUser');
+                    if (anyCanvas && anyCanvas.parentElement && anyCanvas.parentElement.offsetWidth > 0) {
+                        initTrendCharts3();
                     }
                 }, 100);
             }
@@ -4843,8 +4910,8 @@ window._calcInitialized = false;
             document.getElementById('bonus-' + viewName).style.display = 'block';
             if (clickedEl) clickedEl.classList.add('active');
             // 仅在 bonus section 可见时才绘制趋势图
-            if (viewName !== 'global' && document.getElementById('bonus').offsetWidth > 0) {
-                drawTrendChart('month');
+            if (document.getElementById('bonus').offsetWidth > 0) {
+                initTrendCharts3();
             }
         }
 
@@ -4864,9 +4931,9 @@ window._calcInitialized = false;
             alert('按发放状态筛选：' + (status === 'all' ? '全部' : status));
         }
 
-        // ========== 发放趋势图表 ==========
+        // ========== 发放趋势图表（3个独立图表） ==========
 
-        const trendData = {
+        const trendData3 = {
             month: {
                 labels: ['2026-01', '2026-02', '2026-03', '2026-04'],
                 amount: [39000, 62000, 78500, 89000],
@@ -4881,220 +4948,159 @@ window._calcInitialized = false;
             }
         };
 
-        let currentChartType = 'month';
+        // 每个图表独立的周期类型
+        var chart3Types = { user: 'month', map: 'month', amount: 'month' };
 
-        function updateTrendChart(type) {
-            currentChartType = type;
-            document.getElementById('btnMonth').style.background = type === 'month' ? '#0071e3' : '#f5f5f7';
-            document.getElementById('btnMonth').style.color = type === 'month' ? 'white' : '#1d1d1f';
-            document.getElementById('btnMonth').style.borderColor = type === 'month' ? '#0071e3' : '#d2d2d7';
-            document.getElementById('btnQuarter').style.background = type === 'quarter' ? '#0071e3' : '#f5f5f7';
-            document.getElementById('btnQuarter').style.color = type === 'quarter' ? 'white' : '#1d1d1f';
-            document.getElementById('btnQuarter').style.borderColor = type === 'quarter' ? '#0071e3' : '#d2d2d7';
-            drawTrendChart(type);
+        function updateTrendChart3(chartKey, periodType) {
+            chart3Types[chartKey] = periodType;
+            var monthBtn = document.getElementById(chartKey + 'BtnMonth');
+            var quarterBtn = document.getElementById(chartKey + 'BtnQuarter');
+            var activeColor = chartKey === 'user' ? '#0071e3' : chartKey === 'map' ? '#34c759' : '#ff9500';
+            if (monthBtn) {
+                monthBtn.style.background = periodType === 'month' ? activeColor : '#f5f5f7';
+                monthBtn.style.color = periodType === 'month' ? '#fff' : '#1d1d1f';
+                monthBtn.style.borderColor = periodType === 'month' ? activeColor : '#d2d2d7';
+            }
+            if (quarterBtn) {
+                quarterBtn.style.background = periodType === 'quarter' ? activeColor : '#f5f5f7';
+                quarterBtn.style.color = periodType === 'quarter' ? '#fff' : '#1d1d1f';
+                quarterBtn.style.borderColor = periodType === 'quarter' ? activeColor : '#d2d2d7';
+            }
+            drawSingleTrendChart(chartKey, periodType);
         }
 
-        function drawTrendChart(type) {
-            const canvas = document.getElementById('trendChart');
+        function drawSingleTrendChart(chartKey, type) {
+            var canvasId = chartKey === 'user' ? 'trendChartUser' : chartKey === 'map' ? 'trendChartMap' : 'trendChartAmount';
+            var canvas = document.getElementById(canvasId);
             if (!canvas) return;
-            const parent = canvas.parentElement;
+            var parent = canvas.parentElement;
             if (!parent || parent.offsetWidth === 0) return;
-            const ctx = canvas.getContext('2d');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = parent.getBoundingClientRect();
+            var ctx = canvas.getContext('2d');
+            var dpr = window.devicePixelRatio || 1;
+            var rect = parent.getBoundingClientRect();
             canvas.width = rect.width * dpr;
-            canvas.height = 320 * dpr;
+            canvas.height = 240 * dpr;
             canvas.style.width = rect.width + 'px';
-            canvas.style.height = '320px';
+            canvas.style.height = '240px';
             ctx.scale(dpr, dpr);
-            const W = rect.width;
-            const H = 320;
+            var W = rect.width;
+            var H = 240;
 
             ctx.clearRect(0, 0, W, H);
 
-            const data = trendData[type || currentChartType];
-            const labels = data.labels;
-            const amounts = data.amount;
-            const mapCounts = data.mapCount;
-            const userCounts = data.userCount;
+            var data = trendData3[type || chart3Types[chartKey]];
+            var labels = data.labels;
+            var color, values, unit, yLabel, chartTitle;
+            if (chartKey === 'user') {
+                values = data.userCount;
+                color = '#0071e3';
+                unit = '人';
+                yLabel = '发放人数';
+                chartTitle = '人数';
+            } else if (chartKey === 'map') {
+                values = data.mapCount;
+                color = '#34c759';
+                unit = '张';
+                yLabel = '发放地图数';
+                chartTitle = '地图数';
+            } else {
+                values = data.amount;
+                color = '#ff9500';
+                unit = '元';
+                yLabel = '发放金额 (元)';
+                chartTitle = '金额';
+            }
 
-            const padLeft = 80, padRight = 80, padTop = 40, padBottom = 60;
-            const chartW = W - padLeft - padRight;
-            const chartH = H - padTop - padBottom;
-
-            const maxAmount = Math.max(...amounts) * 1.15;
-            const maxMap = Math.max(...mapCounts) * 1.15;
-            const maxUser = Math.max(...userCounts) * 1.15;
+            var maxVal = Math.max(...values) * 1.2;
+            if (maxVal === 0) maxVal = 1;
+            var padLeft = 60, padRight = 20, padTop = 30, padBottom = 45;
+            var chartW = W - padLeft - padRight;
+            var chartH = H - padTop - padBottom;
+            var barWidth = Math.min(36, chartW / labels.length * 0.5);
+            var stepX = labels.length > 1 ? chartW / labels.length : chartW;
 
             // Grid
             ctx.strokeStyle = '#e5e5ea';
             ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padTop + (chartH / 5) * i;
+            for (var i = 0; i <= 4; i++) {
+                var y = padTop + (chartH / 4) * i;
                 ctx.beginPath();
                 ctx.moveTo(padLeft, y);
                 ctx.lineTo(W - padRight, y);
                 ctx.stroke();
             }
 
-            // Y axis labels (amount)
+            // Y axis labels
             ctx.fillStyle = '#86868b';
-            ctx.font = '12px -apple-system, sans-serif';
-            ctx.textAlign = 'right';
-            for (let i = 0; i <= 5; i++) {
-                const y = padTop + (chartH / 5) * i;
-                const val = maxAmount - (maxAmount / 5) * i;
-                ctx.fillText('¥' + (val / 1000).toFixed(0) + 'k', padLeft - 12, y + 4);
-            }
-
-            // Y axis labels (map/user count - right)
-            ctx.textAlign = 'left';
-            for (let i = 0; i <= 5; i++) {
-                const y = padTop + (chartH / 5) * i;
-                const val = Math.round(maxMap - (maxMap / 5) * i);
-                ctx.fillText(val + '', W - padRight + 12, y + 4);
-            }
-
-            // X axis labels
-            ctx.textAlign = 'center';
-            const stepX = labels.length > 1 ? chartW / (labels.length - 1) : 0;
-            labels.forEach((label, i) => {
-                const x = padLeft + stepX * i;
-                ctx.fillText(label, x, H - padBottom + 25);
-            });
-
-            // Helper: draw line
-            function drawLine(values, maxVal, color, lineWidth, dash) {
-                ctx.strokeStyle = color;
-                ctx.lineWidth = lineWidth;
-                ctx.setLineDash(dash || []);
-                ctx.beginPath();
-                values.forEach((v, i) => {
-                    const x = padLeft + stepX * i;
-                    const y = padTop + chartH - (v / maxVal) * chartH;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                });
-                ctx.stroke();
-                ctx.setLineDash([]);
-            }
-
-            // Helper: draw area fill
-            function drawArea(values, maxVal, color) {
-                ctx.beginPath();
-                values.forEach((v, i) => {
-                    const x = padLeft + stepX * i;
-                    const y = padTop + chartH - (v / maxVal) * chartH;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                });
-                ctx.lineTo(padLeft + stepX * (values.length - 1), padTop + chartH);
-                ctx.lineTo(padLeft, padTop + chartH);
-                ctx.closePath();
-                const grad = ctx.createLinearGradient(0, padTop, 0, padTop + chartH);
-                grad.addColorStop(0, color + '30');
-                grad.addColorStop(1, color + '05');
-                ctx.fillStyle = grad;
-                ctx.fill();
-            }
-
-            // Draw area fill for amount
-            drawArea(amounts, maxAmount, '#0071e3');
-
-            // Draw amount line (solid blue)
-            drawLine(amounts, maxAmount, '#0071e3', 3);
-
-            // Draw map count line (dashed green)
-            drawLine(mapCounts, maxMap, '#34c759', 2, [6, 4]);
-
-            // Draw user count line (dashed orange)
-            drawLine(userCounts, maxUser, '#ff9500', 2, [6, 4]);
-
-            // Draw dots
-            function drawDots(values, maxVal, color) {
-                values.forEach((v, i) => {
-                    const x = padLeft + stepX * i;
-                    const y = padTop + chartH - (v / maxVal) * chartH;
-                    ctx.beginPath();
-                    ctx.arc(x, y, 5, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fill();
-                    ctx.strokeStyle = color;
-                    ctx.lineWidth = 2.5;
-                    ctx.stroke();
-                });
-            }
-            drawDots(amounts, maxAmount, '#0071e3');
-            drawDots(mapCounts, maxMap, '#34c759');
-            drawDots(userCounts, maxUser, '#ff9500');
-
-            // Draw value labels on dots (amount only)
-            ctx.font = 'bold 12px -apple-system, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#0071e3';
-            amounts.forEach((v, i) => {
-                const x = padLeft + stepX * i;
-                const y = padTop + chartH - (v / maxAmount) * chartH;
-                ctx.fillText('¥' + (v / 1000).toFixed(1) + 'k', x, y - 14);
-            });
-
             ctx.font = '11px -apple-system, sans-serif';
-            ctx.fillStyle = '#34c759';
-            mapCounts.forEach((v, i) => {
-                const x = padLeft + stepX * i;
-                const y = padTop + chartH - (v / maxMap) * chartH;
-                ctx.fillText(v + '张', x, y - 14);
-            });
+            ctx.textAlign = 'right';
+            for (var i = 0; i <= 4; i++) {
+                var y = padTop + (chartH / 4) * i;
+                var val = maxVal - (maxVal / 4) * i;
+                if (chartKey === 'amount') {
+                    ctx.fillText('¥' + (val / 1000).toFixed(0) + 'k', padLeft - 8, y + 4);
+                } else {
+                    ctx.fillText(Math.round(val) + '', padLeft - 8, y + 4);
+                }
+            }
 
-            ctx.fillStyle = '#ff9500';
-            userCounts.forEach((v, i) => {
-                const x = padLeft + stepX * i + 38;
-                const y = padTop + chartH - (v / maxUser) * chartH;
-                ctx.fillText(v + '人', x, y - 14);
-            });
+            // Bars with gradient
+            values.forEach(function(v, i) {
+                var centerX = padLeft + stepX * i + stepX / 2;
+                var barH = (v / maxVal) * chartH;
+                var x = centerX - barWidth / 2;
+                var barY = padTop + chartH - barH;
 
-            // Legend
-            const legendY = H - 12;
-            const legendItems = [
-                { color: '#0071e3', label: '发放总金额', dash: false },
-                { color: '#34c759', label: '地图数', dash: true },
-                { color: '#ff9500', label: '人数', dash: true }
-            ];
-            const legendStartX = W / 2 - 180;
-            legendItems.forEach((item, i) => {
-                const x = legendStartX + i * 130;
-                ctx.strokeStyle = item.color;
-                ctx.lineWidth = item.dash ? 2 : 3;
-                ctx.setLineDash(item.dash ? [4, 3] : []);
+                // Bar gradient
+                var grad = ctx.createLinearGradient(0, barY, 0, padTop + chartH);
+                grad.addColorStop(0, color);
+                grad.addColorStop(1, color + '40');
+                ctx.fillStyle = grad;
+
+                // Rounded top
+                var radius = Math.min(4, barWidth / 2);
                 ctx.beginPath();
-                ctx.moveTo(x, legendY);
-                ctx.lineTo(x + 24, legendY);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.fillStyle = '#1d1d1f';
-                ctx.font = '12px -apple-system, sans-serif';
-                ctx.textAlign = 'left';
-                ctx.fillText(item.label, x + 30, legendY + 4);
+                ctx.moveTo(x + radius, barY);
+                ctx.lineTo(x + barWidth - radius, barY);
+                ctx.quadraticCurveTo(x + barWidth, barY, x + barWidth, barY + radius);
+                ctx.lineTo(x + barWidth, padTop + chartH);
+                ctx.lineTo(x, padTop + chartH);
+                ctx.lineTo(x, barY + radius);
+                ctx.quadraticCurveTo(x, barY, x + radius, barY);
+                ctx.closePath();
+                ctx.fill();
+
+                // Value label on top
+                ctx.font = 'bold 11px -apple-system, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = color;
+                if (chartKey === 'amount') {
+                    ctx.fillText('¥' + (v / 1000).toFixed(1) + 'k', centerX, barY - 8);
+                } else {
+                    ctx.fillText(v + unit, centerX, barY - 8);
+                }
+
+                // X axis label
+                ctx.font = '11px -apple-system, sans-serif';
+                ctx.fillStyle = '#86868b';
+                ctx.fillText(labels[i], centerX, H - padBottom + 18);
             });
 
-            // Axis labels
+            // Y axis title
             ctx.save();
-            ctx.translate(16, padTop + chartH / 2);
+            ctx.translate(12, padTop + chartH / 2);
             ctx.rotate(-Math.PI / 2);
-            ctx.fillStyle = '#0071e3';
-            ctx.font = '12px -apple-system, sans-serif';
+            ctx.fillStyle = color;
+            ctx.font = '11px -apple-system, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('发放总金额 (元)', 0, 0);
+            ctx.fillText(yLabel, 0, 0);
             ctx.restore();
+        }
 
-            ctx.save();
-            ctx.translate(W - 10, padTop + chartH / 2);
-            ctx.rotate(Math.PI / 2);
-            ctx.fillStyle = '#86868b';
-            ctx.font = '12px -apple-system, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('地图数 / 人数', 0, 0);
-            ctx.restore();
+        function initTrendCharts3() {
+            ['user', 'map', 'amount'].forEach(function(key) {
+                drawSingleTrendChart(key, chart3Types[key]);
+            });
         }
 
         // 恢复用户
@@ -5834,37 +5840,8 @@ window._calcInitialized = false;
             }
         }
 
-        // ========== 驳回记录 - 名单调整与直接提交 ==========
 
-        function toggleSelectAllReject(checkbox) {
-            const checkboxes = document.querySelectorAll('.reject-check');
-            checkboxes.forEach(cb => cb.checked = checkbox.checked);
-        }
-
-        function batchAdjustTrackFromReject() {
-            const checked = document.querySelectorAll('.reject-check:checked');
-            if (checked.length === 0) {
-                alert('请先勾选需要批量调整赛道的地图！');
-                return;
-            }
-            const newTrack = prompt('请选择目标赛道（鼓励赛道 / 非鼓励赛道）：');
-            if (newTrack && (newTrack === '鼓励赛道' || newTrack === '非鼓励赛道')) {
-                alert('✅ 已将 ' + checked.length + ' 张地图的赛道调整为：' + newTrack + '\n\n建议点击「刷新计算奖金」更新预期金额。');
-            } else if (newTrack) {
-                alert('请输入有效的赛道类型！');
-            }
-        }
-
-        function batchRemoveFromRejectList() {
-            const checked = document.querySelectorAll('.reject-check:checked');
-            if (checked.length === 0) {
-                alert('请先勾选需要移除的地图！');
-                return;
-            }
-            if (confirm('确认将选中的 ' + checked.length + ' 张地图从发奖名单中移除吗？')) {
-                alert('已从发奖名单中移除 ' + checked.length + ' 张地图。');
-            }
-        }
+        // ========== 驳回记录 - 直接提交 ==========
 
         function submitAdjustedFromReject() {
             const rejectId = document.getElementById('rd-id').textContent || '(当前驳回记录)';
