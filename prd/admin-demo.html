@@ -857,7 +857,13 @@
         <div id="whitelist" class="content-section">
             <div class="page-header">
                 <h1 class="page-title">白名单管理</h1>
-                <button class="btn btn-primary" onclick="openAddUserModal()" style="background: #af52de; border-color: #af52de;">+ 人工加白用户</button>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn btn-secondary" onclick="openOpLogModal()" style="display: flex; align-items: center; gap: 6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        操作日志
+                    </button>
+                    <button class="btn btn-primary" onclick="openAddUserModal()" style="background: #af52de; border-color: #af52de;">+ 人工加白用户</button>
+                </div>
             </div>
 
             <!-- 标签页 -->
@@ -4223,6 +4229,85 @@ window._calcInitialized = false;
         </div>
     </div>
 
+    <!-- 操作日志弹窗 -->
+    <div id="opLogModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3>📋 操作日志</h3>
+                <button class="close-btn" onclick="closeModal('opLogModal')">×</button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="background: #f5f5f7; position: sticky; top: 0;">
+                            <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid #d2d2d7; font-weight: 600; color: #1d1d1f;">时间</th>
+                            <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid #d2d2d7; font-weight: 600; color: #1d1d1f;">操作人</th>
+                            <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid #d2d2d7; font-weight: 600; color: #1d1d1f;">操作内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e5e5ea;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-16 14:30:22</td>
+                            <td style="padding: 12px 16px;">管理员A</td>
+                            <td style="padding: 12px 16px;">审核通过用户 <strong>user001（张三）</strong> 的白名单申请</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea; background: #fafafa;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-16 13:15:08</td>
+                            <td style="padding: 12px 16px;">管理员A</td>
+                            <td style="padding: 12px 16px;">拒绝用户 <strong>user007（赵六）</strong> 的白名单申请，原因：段位不满足要求</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-16 11:42:35</td>
+                            <td style="padding: 12px 16px;">管理员B</td>
+                            <td style="padding: 12px 16px;">人工加白用户 <strong>user010（刘七）</strong>，原因：特殊合作方</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea; background: #fafafa;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-15 17:20:11</td>
+                            <td style="padding: 12px 16px;">管理员A</td>
+                            <td style="padding: 12px 16px;">移除白名单用户 <strong>user015（陈八）</strong>，原因：违规操作</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-15 16:05:49</td>
+                            <td style="padding: 12px 16px;">管理员B</td>
+                            <td style="padding: 12px 16px;">批量审核通过 5 位用户的白名单申请</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea; background: #fafafa;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-15 14:30:00</td>
+                            <td style="padding: 12px 16px;">管理员A</td>
+                            <td style="padding: 12px 16px;">修改审核规则：白银段位最低地图数要求从 3 调整为 5</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-14 10:12:33</td>
+                            <td style="padding: 12px 16px;">管理员C</td>
+                            <td style="padding: 12px 16px;">人工加白用户 <strong>user022（周九）</strong>，原因：运营活动合作</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea; background: #fafafa;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-14 09:00:18</td>
+                            <td style="padding: 12px 16px;">管理员A</td>
+                            <td style="padding: 12px 16px;">审核通过用户 <strong>user018（吴十）</strong> 的白名单申请</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-13 15:45:27</td>
+                            <td style="padding: 12px 16px;">管理员B</td>
+                            <td style="padding: 12px 16px;">拒绝用户 <strong>user025（孙十一）</strong> 的白名单申请，原因：共创点不足</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e5ea; background: #fafafa;">
+                            <td style="padding: 12px 16px; color: #6e6e73;">2026-04-13 11:20:55</td>
+                            <td style="padding: 12px 16px;">管理员C</td>
+                            <td style="padding: 12px 16px;">移除白名单用户 <strong>user030（钱十二）</strong>，原因：主动退出激励计划</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 16px; text-align: center; color: #8e8e93; font-size: 13px;">
+                    显示最近 10 条操作记录
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('opLogModal')">关闭</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 切换内容区域
         function showSection(sectionId, clickedEl) {
@@ -4938,6 +5023,11 @@ window._calcInitialized = false;
             if (confirm('确定要恢复该用户到白名单吗？')) {
                 alert('用户已恢复到白名单！');
             }
+        }
+
+        // 打开操作日志弹窗
+        function openOpLogModal() {
+            document.getElementById('opLogModal').classList.add('show');
         }
 
         // 手动添加用户（人工加白）
