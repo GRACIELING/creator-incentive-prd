@@ -928,11 +928,14 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="selectAllWlApp" onchange="toggleSelectAllWlApp(this)"></th>
-                                <th>用户ID</th>
-                                <th>昵称</th>
-                                <th>段位</th>
-                                <th>地图数</th>
-                                <th>累计游玩</th>
+                                <th>共创师ID</th>
+                                <th>共创师昵称</th>
+                                <th>共创师等级</th>
+                                <th>共创点</th>
+                                <th>累计发布地图数</th>
+                                <th>月发布地图数</th>
+                                <th>累计游玩PV</th>
+                                <th>月游玩PV</th>
                                 <th>申请时间</th>
                                 <th>操作</th>
                             </tr>
@@ -943,8 +946,11 @@
                                 <td>user001</td>
                                 <td>张三</td>
                                 <td><span class="badge badge-info">白银</span></td>
-                                <td>5</td>
-                                <td>15,000</td>
+                                <td>3,200</td>
+                                <td>12</td>
+                                <td>3</td>
+                                <td>156,800</td>
+                                <td>28,500</td>
                                 <td>2026-04-01 10:30</td>
                                 <td>
                                     <button class="btn btn-primary action-btn" onclick="openAuditModal('user001', '张三')">审核</button>
@@ -955,8 +961,11 @@
                                 <td>user002</td>
                                 <td>李四</td>
                                 <td><span class="badge badge-info">白银</span></td>
-                                <td>3</td>
-                                <td>8,000</td>
+                                <td>1,800</td>
+                                <td>8</td>
+                                <td>2</td>
+                                <td>89,200</td>
+                                <td>15,600</td>
                                 <td>2026-04-01 09:15</td>
                                 <td>
                                     <button class="btn btn-primary action-btn" onclick="openAuditModal('user002', '李四')">审核</button>
@@ -967,8 +976,11 @@
                                 <td>user003</td>
                                 <td>王五</td>
                                 <td><span class="badge badge-warning">青铜</span></td>
-                                <td>2</td>
-                                <td>5,000</td>
+                                <td>850</td>
+                                <td>5</td>
+                                <td>1</td>
+                                <td>52,100</td>
+                                <td>8,300</td>
                                 <td>2026-03-31 18:20</td>
                                 <td>
                                     <button class="btn btn-primary action-btn" onclick="openAuditModal('user003', '王五')">审核</button>
@@ -5068,8 +5080,8 @@ window._calcInitialized = false;
             // Determine column indices based on tab
             var levelColIdx, pointsColIdx, playColIdx;
             if (tabName === 'applications') {
-                // columns: checkbox, 用户ID, 昵称, 段位, 地图数, 累计游玩, 申请时间, 操作
-                levelColIdx = 3; pointsColIdx = -1; playColIdx = 5;
+                // columns: checkbox, 共创师ID, 共创师昵称, 共创师等级, 共创点, 累计发布地图数, 月发布地图数, 累计游玩PV, 月游玩PV, 申请时间, 操作
+                levelColIdx = 3; pointsColIdx = 4; playColIdx = 7;
             } else if (tabName === 'users') {
                 // columns: 共创师ID, 共创师昵称, 共创师等级, 共创点, 总发图数, 总激励图数, 总收益, 上月激励图数, 上月收益, 加入方式, 激励开通, 激励状态, 操作
                 levelColIdx = 2; pointsColIdx = 3; playColIdx = 4;
