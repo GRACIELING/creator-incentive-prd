@@ -805,6 +805,52 @@
         .bonus-dist-bar > div {
             transition: width 0.6s ease;
         }
+
+        /* 奖金发放 - 月份按钮式选择器 */
+        .review-month-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            background: #fff;
+            color: #1d1d1f;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .review-month-btn:hover:not(.disabled) {
+            border-color: #007aff;
+            color: #007aff;
+            background: rgba(0, 122, 255, 0.04);
+        }
+        .review-month-btn.active {
+            background: #007aff;
+            color: #fff;
+            border-color: #007aff;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+        }
+        .review-month-btn.active:hover {
+            background: #0066d6;
+            border-color: #0066d6;
+        }
+        .review-month-btn.disabled {
+            background: #f5f5f7;
+            color: #c7c7cc;
+            border-color: #e5e5ea;
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+        .review-year-selector select:focus,
+        .review-year-selector select:hover {
+            border-color: #007aff;
+        }
     </style>
 </head>
 <body>
@@ -833,7 +879,7 @@
                 🧮 <span>奖金计算</span>
             </div>
             <div class="sidebar-menu-item" onclick="showSection('review', this)">
-                ✅ <span>发奖审核与奖金预览</span>
+                ✅ <span>奖金发放</span>
             </div>
             <div class="sidebar-menu-item" onclick="showSection('bonus', this)">
                 💰 <span>奖金记录</span>
@@ -1775,17 +1821,33 @@
             </div>
         </div>
 
-        <!-- 发奖审核与奖金预览 -->
+        <!-- 奖金发放 -->
         <div id="review" class="content-section">
             <div class="page-header">
-                <h1 class="page-title">发奖审核与奖金预览</h1>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <select id="reviewMonthFilter" onchange="filterReviewByMonth(this.value)" style="padding: 8px 14px; border: 1px solid #d2d2d7; border-radius: 8px; background: #fff; color: #1d1d1f; font-size: 13px;">
-                        <option value="all">全部月份</option>
-                        <option value="2026-03" selected>2026年3月</option>
-                        <option value="2026-02">2026年2月</option>
-                        <option value="2026-01">2026年1月</option>
-                    </select>
+                <h1 class="page-title">奖金发放</h1>
+                <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                    <!-- 年份选择器 -->
+                    <div class="review-year-selector" style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 13px; color: #86868b; font-weight: 500;">年份</span>
+                        <select id="reviewYearFilter" onchange="filterReviewByYear(this.value)" style="padding: 6px 12px; border: 1px solid #d2d2d7; border-radius: 8px; background: #fff; color: #1d1d1f; font-size: 13px; outline: none;">
+                            <option value="2026" selected>2026</option>
+                        </select>
+                    </div>
+                    <!-- 月份按钮式选择器 -->
+                    <div class="review-month-grid" id="reviewMonthGrid" style="display: flex; gap: 6px; align-items: center;">
+                        <button class="review-month-btn disabled" data-month="2026-01" disabled onclick="switchReviewMonth('2026-01')">1月</button>
+                        <button class="review-month-btn disabled" data-month="2026-02" disabled onclick="switchReviewMonth('2026-02')">2月</button>
+                        <button class="review-month-btn active" data-month="2026-03" onclick="switchReviewMonth('2026-03')">3月</button>
+                        <button class="review-month-btn disabled" data-month="2026-04" disabled onclick="switchReviewMonth('2026-04')">4月</button>
+                        <button class="review-month-btn disabled" data-month="2026-05" disabled onclick="switchReviewMonth('2026-05')">5月</button>
+                        <button class="review-month-btn disabled" data-month="2026-06" disabled onclick="switchReviewMonth('2026-06')">6月</button>
+                        <button class="review-month-btn disabled" data-month="2026-07" disabled onclick="switchReviewMonth('2026-07')">7月</button>
+                        <button class="review-month-btn disabled" data-month="2026-08" disabled onclick="switchReviewMonth('2026-08')">8月</button>
+                        <button class="review-month-btn disabled" data-month="2026-09" disabled onclick="switchReviewMonth('2026-09')">9月</button>
+                        <button class="review-month-btn disabled" data-month="2026-10" disabled onclick="switchReviewMonth('2026-10')">10月</button>
+                        <button class="review-month-btn disabled" data-month="2026-11" disabled onclick="switchReviewMonth('2026-11')">11月</button>
+                        <button class="review-month-btn disabled" data-month="2026-12" disabled onclick="switchReviewMonth('2026-12')">12月</button>
+                    </div>
                 </div>
             </div>
 
@@ -5280,6 +5342,46 @@ window._calcInitialized = false;
 
         function filterBonusStatus(status) {
             alert('按发放状态筛选：' + (status === 'all' ? '全部' : status));
+        }
+
+        // ========== 奖金发放 - 月份按钮式选择器逻辑 ==========
+
+        // 可用月份配置（哪些月份有数据可查看）
+        var reviewAvailableMonths = {
+            '2026': ['2026-03', '2026-04', '2026-05']
+        };
+
+        function switchReviewMonth(monthValue) {
+            // 更新按钮状态
+            var btns = document.querySelectorAll('#reviewMonthGrid .review-month-btn');
+            btns.forEach(function(btn) {
+                if (btn.dataset.month === monthValue) {
+                    btn.classList.add('active');
+                    btn.classList.remove('disabled');
+                    btn.disabled = false;
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            // 联动跳转到奖金计算页签
+            goToCalcMonth(monthValue);
+        }
+
+        function filterReviewByYear(yearValue) {
+            // 根据年份更新月份按钮的可用状态
+            var btns = document.querySelectorAll('#reviewMonthGrid .review-month-btn');
+            var available = reviewAvailableMonths[yearValue] || [];
+            btns.forEach(function(btn) {
+                var month = btn.dataset.month;
+                if (available.indexOf(month) !== -1) {
+                    btn.classList.remove('disabled');
+                    btn.disabled = false;
+                } else {
+                    btn.classList.add('disabled');
+                    btn.classList.remove('active');
+                    btn.disabled = true;
+                }
+            });
         }
 
         // ========== 发放趋势图表（3个独立图表） ==========
