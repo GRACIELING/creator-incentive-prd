@@ -269,6 +269,7 @@ a { text-decoration: none; color: inherit; }
 /* ===== Track Badges ===== */
 .track-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
 .track-encourage { background: #faf5ff; color: #7c3aed; }
+.track-nonincentive { background: #f5f5f7; color: #8e8e93; }
 .track-normal { background: #f3f4f6; color: #6b7280; }
 
 /* ===== Adjusted ===== */
@@ -399,9 +400,16 @@ a { text-decoration: none; color: inherit; }
             <li><a href="#rv-pay">5.4 奖金发放</a></li>
           </ul>
         </li>
-        <li><a href="#sequence">6. 功能时序图</a></li>
-        <li><a href="#pages">7. 页面原型</a></li>
-        <li><a href="#rules">8. 业务规则汇总</a></li>
+        <li><a href="#bonus-records">6. 奖金记录模块</a>
+          <ul>
+            <li><a href="#br-overview">6.1 记录概览</a></li>
+            <li><a href="#br-views">6.2 多维度查看</a></li>
+            <li><a href="#br-trend">6.3 趋势可视化</a></li>
+          </ul>
+        </li>
+        <li><a href="#sequence">7. 功能时序图</a></li>
+        <li><a href="#pages">8. 页面原型</a></li>
+        <li><a href="#rules">9. 业务规则汇总</a></li>
       </ul>
     </aside>
 
@@ -551,6 +559,14 @@ flowchart LR
           <h3 id="wl-manual">3.3 人工审核</h3>
           <div class="feature-block">
             <p>自动审核未通过的申请进入人工审核队列，运营查看用户数据快照后做出决策。</p>
+            <div class="rule-tip tip-blue" style="margin-bottom: 12px;">
+              <span class="tip-icon">📋</span>
+              <strong>排序筛选：</strong>人工审核列表支持按等级、共创点、地图累计游玩人数等多维度排序，帮助运营快速定位重点申请。
+            </div>
+            <div class="rule-tip tip-blue" style="margin-bottom: 12px;">
+              <span class="tip-icon">📝</span>
+              <strong>操作日志：</strong>所有白名单相关操作（审核通过/拒绝、人工加白、处罚、移除等）均记录操作日志，可随时追溯查看。
+            </div>
             <div class="two-col">
               <div class="col-card col-green">
                 <div class="col-title">✅ 审核通过</div>
@@ -615,6 +631,10 @@ flowchart LR
                 <tr><td><span class="status-badge status-removed">已移除</span></td><td>❌ 不可归属</td><td>❌ 不计算</td><td>❌ 不发放</td></tr>
               </tbody>
             </table>
+            <div class="rule-tip tip-blue" style="margin-top: 12px;">
+              <span class="tip-icon">ℹ️</span>
+              <strong>赛道分类说明：</strong>赛道分为三种类型 — <span style="color:#7c3aed;font-weight:600;">鼓励赛道</span>（如跑酷、解谜、生存、射击等核心玩法）、<span style="color:#6b7280;font-weight:600;">非鼓励赛道</span>（参与激励但奖金系数较低）、<span style="color:#8e8e93;font-weight:600;">非激励赛道</span>（如建造、休闲等，不参与奖金计算，仅统计展示）。
+            </div>
           </div>
         </div>
       </section>
@@ -631,7 +651,7 @@ flowchart LR
             <div class="param-grid">
               <div class="param-item"><span class="param-key">计划名称</span><span class="param-val">自定义命名</span></div>
               <div class="param-item"><span class="param-key">激励月份</span><span class="param-val">YYYY-MM</span></div>
-              <div class="param-item"><span class="param-key">赛道规则</span><span class="param-val">鼓励/非鼓励赛道判断条件</span></div>
+              <div class="param-item"><span class="param-key">赛道规则</span><span class="param-val">鼓励/非鼓励/非激励赛道判断条件</span></div>
               <div class="param-item"><span class="param-key">奖金总额</span><span class="param-val">本月激励总预算</span></div>
               <div class="param-item"><span class="param-key">单张上限</span><span class="param-val">单张地图最高奖金</span></div>
               <div class="param-item"><span class="param-key">累计上限</span><span class="param-val">单用户累计最高奖金</span></div>
@@ -670,8 +690,10 @@ flowchart LR
     C & D --> E["自动归属当月激励计划"]
     E --> F{赛道自动判断}
     F -->|"满足鼓励条件"| G["🏆 鼓励赛道"]
-    F -->|"不满足"| H["📋 非鼓励赛道"]
+    F -->|"不满足鼓励\n但参与激励"| H["📋 非鼓励赛道"]
+    F -->|"不参与激励\n（如建造/休闲等）"| K["⬜ 非激励赛道\n不参与奖金计算"]
     G & H --> I["运营可在结算前\n手动调整赛道"]
+    K --> J["仅展示统计\n不计算奖金"]
             </div>
           </div>
 
@@ -688,7 +710,7 @@ flowchart LR
               </div>
               <div class="calc-step">
                 <div class="calc-num">3</div>
-                <div class="calc-content">按赛道类型应用 <strong>对应奖金公式</strong></div>
+                <div class="calc-content">按赛道类型应用 <strong>对应奖金公式</strong>（非激励赛道不参与计算）</div>
               </div>
               <div class="calc-step">
                 <div class="calc-num">4</div>
@@ -726,7 +748,7 @@ flowchart LR
               <div class="ops-item">
                 <div class="ops-icon">🔄</div>
                 <div class="ops-title">调整赛道类型</div>
-                <div class="ops-desc">将地图在鼓励/非鼓励赛道间切换</div>
+                <div class="ops-desc">将地图在鼓励/非鼓励/非激励赛道间切换</div>
               </div>
               <div class="ops-item">
                 <div class="ops-icon">💰</div>
@@ -806,12 +828,97 @@ flowchart LR
         </div>
       </section>
 
-      <!-- 6. 时序图 -->
+      <!-- 6. 奖金记录 -->
+      <section id="bonus-records" class="section">
+        <div class="card">
+          <h2>6. 奖金记录模块</h2>
+          <div class="module-badge badge-green">发奖数据与可视化</div>
+
+          <h3 id="br-overview">6.1 记录概览</h3>
+          <div class="feature-block">
+            <p>奖金发放完成后，系统记录每笔发放明细，支持多维度查看与可视化分析。</p>
+            <div class="info-grid" style="grid-template-columns: repeat(5, 1fr);">
+              <div class="info-card">
+                <div class="info-icon">💰</div>
+                <div class="info-label">发放总金额</div>
+                <div class="info-value">累计全部期数</div>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">🗺️</div>
+                <div class="info-label">已发放地图数</div>
+                <div class="info-value">累计全部期数</div>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">👥</div>
+                <div class="info-label">获奖人数</div>
+                <div class="info-value">去重统计</div>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">📊</div>
+                <div class="info-label">人均奖金</div>
+                <div class="info-value">总金额 / 人数</div>
+              </div>
+              <div class="info-card">
+                <div class="info-icon">📅</div>
+                <div class="info-label">发奖期数</div>
+                <div class="info-value">按月统计</div>
+              </div>
+            </div>
+          </div>
+
+          <h3 id="br-views">6.2 多维度查看</h3>
+          <div class="feature-block">
+            <p>奖金记录支持以下四种查看维度：</p>
+            <div class="rules-grid" style="grid-template-columns: repeat(2, 1fr);">
+              <div class="rule-card">
+                <div class="rule-title">📋 全局记录</div>
+                <div class="rule-content">按时间倒序展示所有奖金发放记录，支持按发放状态（审核中/发放中/已发放/发放失败）和期数筛选。每条记录包含：记录ID、用户ID、昵称、地图ID、奖金金额、计划名称、发放状态、更新时间。</div>
+              </div>
+              <div class="rule-card">
+                <div class="rule-title">👤 按人查看</div>
+                <div class="rule-content">以创作者为维度汇总，展示每位创作者的累计奖金、获奖地图数、参与期数、单笔最高奖金、最近获奖时间。支持可视化图表（柱状图/折线图/饼图）展示个人奖金分布。</div>
+              </div>
+              <div class="rule-card">
+                <div class="rule-title">🗺️ 按图查看</div>
+                <div class="rule-content">以地图为维度汇总，展示每张地图的奖金、创作者、所属赛道、游玩数据等。支持可视化图表展示地图奖金排名与赛道分布。</div>
+              </div>
+              <div class="rule-card">
+                <div class="rule-title">🎁 按激励计划查看</div>
+                <div class="rule-content">以激励计划为维度汇总，展示每月计划的发放总额、地图数、人数、鼓励/非鼓励赛道占比等。支持趋势图展示月度发放走势。</div>
+              </div>
+            </div>
+          </div>
+
+          <h3 id="br-trend">6.3 趋势可视化</h3>
+          <div class="feature-block">
+            <p>奖金记录提供三维度趋势图表，支持月度/季度切换：</p>
+            <div class="ops-grid" style="grid-template-columns: repeat(3, 1fr);">
+              <div class="ops-item">
+                <div class="ops-icon">👤</div>
+                <div class="ops-title">人维度 — 发放人数</div>
+                <div class="ops-desc">按月/季度展示获奖人数趋势</div>
+              </div>
+              <div class="ops-item">
+                <div class="ops-icon">🗺️</div>
+                <div class="ops-title">图维度 — 发放地图数</div>
+                <div class="ops-desc">按月/季度展示获奖地图数趋势</div>
+              </div>
+              <div class="ops-item">
+                <div class="ops-icon">💰</div>
+                <div class="ops-title">时间维度 — 发放金额</div>
+                <div class="ops-desc">按月/季度展示奖金发放总额趋势</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. 时序图 -->
       <section id="sequence" class="section">
         <div class="card">
-          <h2>6. 功能时序图</h2>
+          <h2>7. 功能时序图</h2>
 
-          <h3>6.1 白名单申请时序</h3>
+          <h3>7.1 白名单申请时序</h3>
           <div class="mermaid">
 sequenceDiagram
     participant U as 创作者(游戏端)
@@ -842,7 +949,7 @@ sequenceDiagram
     end
           </div>
 
-          <h3>6.2 月度结算时序</h3>
+          <h3>7.2 月度结算时序</h3>
           <div class="mermaid">
 sequenceDiagram
     participant SYS as 系统(定时任务)
@@ -883,7 +990,7 @@ sequenceDiagram
     end
           </div>
 
-          <h3>6.3 地图归属时序</h3>
+          <h3>7.3 地图归属时序</h3>
           <div class="mermaid">
 sequenceDiagram
     participant U as 创作者
@@ -896,7 +1003,8 @@ sequenceDiagram
     alt 白名单有效 且 存在进行中计划
         S->>DB: 自动归属当月激励计划
         S->>S: 按赛道规则自动判断赛道类型
-        S->>DB: 记录赛道类型（鼓励/非鼓励）
+        Note over S,DB: 记录赛道类型（鼓励/非鼓励/非激励）
+        Note over S,DB: 非激励赛道不参与奖金计算
         Note over S,DB: 发布日起开始收集14天数据\n每天凌晨更新一次
     else 条件不满足
         S-->>U: 不归属激励计划
@@ -905,15 +1013,16 @@ sequenceDiagram
         </div>
       </section>
 
-      <!-- 7. 页面原型 -->
+      <!-- 8. 页面原型 -->
       <section id="pages" class="section">
         <div class="card">
-          <h2>7. 页面原型 Demo</h2>
+          <h2>8. 页面原型 Demo</h2>
           <div class="tab-bar">
-            <button class="tab-btn active" onclick="showTab('tab-whitelist-list')">白名单审核列表</button>
-            <button class="tab-btn" onclick="showTab('tab-incentive-plan')">激励计划管理</button>
-            <button class="tab-btn" onclick="showTab('tab-bonus-result')">奖金结果调整</button>
-            <button class="tab-btn" onclick="showTab('tab-leader-review')">Leader审核</button>
+                <button class="tab-btn active" onclick="showTab('tab-whitelist-list')">白名单审核列表</button>
+                <button class="tab-btn" onclick="showTab('tab-incentive-plan')">激励计划管理</button>
+                <button class="tab-btn" onclick="showTab('tab-bonus-result')">奖金结果调整</button>
+                <button class="tab-btn" onclick="showTab('tab-leader-review')">Leader审核</button>
+                <button class="tab-btn" onclick="showTab('tab-bonus-records')">💰 奖金记录</button>
           </div>
 
           <!-- 白名单审核列表 -->
@@ -1099,7 +1208,7 @@ sequenceDiagram
                 <div class="stat-card"><div class="stat-num">¥487,200</div><div class="stat-label">总奖金</div></div>
                 <div class="stat-card stat-green"><div class="stat-num">86</div><div class="stat-label">地图数</div></div>
                 <div class="stat-card stat-blue"><div class="stat-num">52</div><div class="stat-label">创作者数</div></div>
-                <div class="stat-card stat-purple"><div class="stat-num">34 / 52</div><div class="stat-label">鼓励/非鼓励</div></div>
+              <div class="stat-card stat-purple"><div class="stat-num">34 / 52 / 3</div><div class="stat-label">鼓励 / 非鼓励 / 非激励</div></div>
               </div>
               <div class="review-actions">
                 <button class="btn btn-green btn-lg" onclick="showToast('已通过，进入财务审核')">✅ 审核通过 → 财务审核</button>
@@ -1107,13 +1216,66 @@ sequenceDiagram
               </div>
             </div>
           </div>
+
+          <!-- 奖金记录 -->
+          <div id="tab-bonus-records" class="tab-content">
+            <div class="page-demo">
+              <div class="demo-toolbar">
+                <span class="demo-title">💰 奖金记录</span>
+                <div>
+                  <select style="padding: 6px 12px; border: 1px solid #d2d2d7; border-radius: 6px; font-size: 13px;">
+                    <option>全部状态</option>
+                    <option>审核中</option>
+                    <option>发放中</option>
+                    <option>已发放</option>
+                    <option>发放失败</option>
+                  </select>
+                  <select style="padding: 6px 12px; border: 1px solid #d2d2d7; border-radius: 6px; font-size: 13px; margin-left: 6px;">
+                    <option>全部期数</option>
+                    <option>2026年4月</option>
+                    <option>2026年3月</option>
+                    <option>2026年2月</option>
+                  </select>
+                </div>
+              </div>
+              <!-- 概览统计 -->
+              <div class="demo-stats-row">
+                <div class="stat-card"><div class="stat-num">¥268,500</div><div class="stat-label">发放总金额</div></div>
+                <div class="stat-card stat-green"><div class="stat-num">623</div><div class="stat-label">已发放地图数</div></div>
+                <div class="stat-card stat-blue"><div class="stat-num">186</div><div class="stat-label">获奖人数</div></div>
+                <div class="stat-card stat-purple"><div class="stat-num">¥1,444</div><div class="stat-label">人均奖金</div></div>
+                <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">发奖期数</div></div>
+              </div>
+              <!-- 多维度查看Tab -->
+              <div style="display:flex; gap:8px; margin: 16px 0; border-bottom: 2px solid #f0f2f5; padding-bottom: 8px;">
+                <button class="btn btn-blue" style="font-size: 12px;">📋 全局记录</button>
+                <button class="btn btn-gray" style="font-size: 12px;">👤 按人查看</button>
+                <button class="btn btn-gray" style="font-size: 12px;">🗺️ 按图查看</button>
+                <button class="btn btn-gray" style="font-size: 12px;">🎁 按激励计划查看</button>
+              </div>
+              <div class="demo-section" style="padding: 20px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px;">
+                📊 <strong>趋势可视化：</strong>人维度（发放人数）/ 图维度（发放地图数）/ 时间维度（发放金额），支持月度/季度切换
+              </div>
+              <table class="demo-table">
+                <thead>
+                  <tr><th>记录ID</th><th>用户ID</th><th>昵称</th><th>地图ID</th><th>奖金金额</th><th>计划名称</th><th>发放状态</th><th>更新时间</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>BK001</td><td>user100</td><td>小明</td><td>MAP001</td><td>¥2,000</td><td>2026年1月流量激励</td><td><span class="status-badge status-success">已发放</span></td><td>2026-02-16</td></tr>
+                  <tr><td>BK002</td><td>user101</td><td>小红</td><td>MAP002</td><td>¥1,500</td><td>2026年1月流量激励</td><td><span class="status-badge status-success">已发放</span></td><td>2026-02-16</td></tr>
+                  <tr><td>BK003</td><td>user102</td><td>小张</td><td>MAP003</td><td>¥1,800</td><td>2026年1月流量激励</td><td><span class="status-badge status-pending">发放中</span></td><td>2026-02-16</td></tr>
+                  <tr><td>BK020</td><td>user100</td><td>小明</td><td>MAP020</td><td>¥1,800</td><td>2026年3月流量激励</td><td><span class="status-badge status-success">已发放</span></td><td>2026-04-16</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- 8. 业务规则汇总 -->
+      <!-- 9. 业务规则汇总 -->
       <section id="rules" class="section">
         <div class="card">
-          <h2>8. 业务规则汇总</h2>
+          <h2>9. 业务规则汇总</h2>
           <div class="rules-grid">
             <div class="rule-card">
               <div class="rule-title">📌 规则不回溯</div>
@@ -1146,6 +1308,14 @@ sequenceDiagram
             <div class="rule-card">
               <div class="rule-title">📌 审计日志</div>
               <div class="rule-content">运营所有调整操作（赛道/金额/移除/处罚）均记录审计日志，可追溯。</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-title">📌 赛道三分类</div>
+              <div class="rule-content">地图按玩法类型自动归属三类赛道：鼓励赛道（跑酷/解谜/生存/射击等）、非鼓励赛道（其他类型但参与激励）、非激励赛道（建造/休闲等，不参与奖金计算仅统计展示）。</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-title">📌 奖金记录可追溯</div>
+              <div class="rule-content">所有奖金发放记录永久保存，支持全局/按人/按图/按计划四个维度查看，含趋势可视化图表。</div>
             </div>
           </div>
         </div>
