@@ -1680,6 +1680,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         <!-- 发奖审核与奖金预览 -->
         <div id="review" class="content-section">
@@ -1931,7 +1932,6 @@
                     <button class="btn btn-secondary" onclick="showSection('calculation', null)" style="font-size: 12px; padding: 5px 14px;">📊 查看完整计算明细 →</button>
                 </div>
             </div>
-        </div>
 
         <!-- 待财管审核（含奖金预览） -->
             <div id="review-finance" class="review-tab-content" style="display: none;">
@@ -2261,7 +2261,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
         <!-- 奖金记录 -->
         <div id="bonus" class="content-section">
@@ -2708,14 +2707,12 @@
                     </div>
                     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px;" id="vizMapStatCards">
                         <div style="padding:20px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:10px;border-left:4px solid #34c759;">
-                            <div style="font-size:13px;color:#2e7d32;margin-bottom:6px;">鼓励地图</div
->
+<div style="font-size:13px;color:#2e7d32;margin-bottom:6px;">鼓励地图</div>
                             <div style="font-size:26px;font-weight:800;color:#1b5e20;">4 张</div>
                             <div style="font-size:13px;color:#388e3c;margin-top:4px;">总奖金 ¥6,500 | 占比 86.7%</div>
                         </div>
                         <div style="padding:20px;background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-radius:10px;border-left:4px solid #007aff;">
-                            <div style="font-size:13px;color:#1565c0;margin-bottom:6px;">非鼓励地图</div
->
+<div style="font-size:13px;color:#1565c0;margin-bottom:6px;">非鼓励地图</div>
                             <div style="font-size:26px;font-weight:800;color:#0d47a1;">1 张</div>
                             <div style="font-size:13px;color:#1976d2;margin-top:4px;">总奖金 ¥1,500 | 占比 13.3%</div>
                         </div>
@@ -2862,7 +2859,7 @@
 
                 /* 摘要统计卡片 */
                 .calc-summary-grid {
-                    display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 20px;
+                    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;
                 }
                 .calc-summary-card {
                     background: white; border-radius: 12px; padding: 20px; border: 1px solid #e5e5ea;
@@ -3011,6 +3008,12 @@
                                     <div class="card-label">鼓励占比</div>
                                     <div class="card-sub">鼓励激励金占比</div>
                                 </div>
+                                <div class="calc-summary-card">
+                                    <div class="card-icon">📊</div>
+                                    <div class="card-value blue" id="summaryCPM">¥ --</div>
+                                    <div class="card-label">CPM</div>
+                                    <div class="card-sub">每千次有效游玩奖金</div>
+                                </div>
                                 <div class="calc-summary-card" style="background:#f5f5f7;border-color:#d2d2d7;">
                                     <div class="card-icon">🚫</div>
                                     <div class="card-value" id="summaryNonIncentiveCount" style="color:#8e8e93;">--</div>
@@ -3054,6 +3057,7 @@
                                                 <th>激励分类</th>
                                                 <th>激励类型</th>
                                                 <th style="text-align:right;">有效游玩人数</th>
+                                                <th style="text-align:right;">CPM (¥)</th>
                                                 <th>档位</th>
                                                 <th style="text-align:right;">预估激励金</th>
                                             </tr>
@@ -3079,6 +3083,7 @@
                                                 <th>创作者名称</th>
                                                 <th style="text-align:right;">参与地图数</th>
                                                 <th style="text-align:right;">总有效游玩人数</th>
+                                                <th style="text-align:right;">CPM (¥)</th>
                                                 <th style="text-align:right;">总激励金</th>
                                                 <th>激励分类分布</th>
                                             </tr>
@@ -3527,17 +3532,24 @@ function doFullCalculation(cfg) {
     // 按图排序
     var mapRank = maps.slice().sort(function(a,b){ return b.bonus - a.bonus; });
 
+    // 计算 CPM（每千次有效游玩奖金）
+    var incentiveMaps = maps.filter(function(m){return m.incentiveType!=='nonincentive';});
+    var totalValidUsers = incentiveMaps.reduce(function(s,m){return s+m.rawValidUsers;},0);
+    var cpm = totalValidUsers > 0 ? Math.round(totalBonus / totalValidUsers * 1000 * 100) / 100 : 0;
+
     return {
         config: JSON.parse(JSON.stringify(cfg)),
         summary: {
             totalMapCount: maps.length,
-            mapCount: maps.filter(function(m){return m.incentiveType!=='nonincentive';}).length,
+            mapCount: incentiveMaps.length,
             authorCount: Object.keys(personRank).length,
             totalBonus: Math.round(totalBonus),
-            avgBonus: maps.filter(function(m){return m.incentiveType!=='nonincentive';}).length>0?Math.round(totalBonus/maps.filter(function(m){return m.incentiveType!=='nonincentive';}).length):0,
+            avgBonus: incentiveMaps.length>0?Math.round(totalBonus/incentiveMaps.length):0,
             encBonus: Object.keys(trackStats).reduce(function(s,k){ return s + (trackStats[k].incentiveType==='encourage'?trackStats[k].totalBonus:0); },0),
             encRatio: totalBonus>0?Math.round(Object.keys(trackStats).reduce(function(s,k){return s+(trackStats[k].incentiveType==='encourage'?trackStats[k].totalBonus:0);},0)/totalBonus*1000)/10:0,
-            nonIncentiveCount: maps.filter(function(m){return m.incentiveType==='nonincentive';}).length
+            nonIncentiveCount: maps.filter(function(m){return m.incentiveType==='nonincentive';}).length,
+            totalValidUsers: totalValidUsers,
+            cpm: cpm
         },
         maps: maps,
         trackStats: trackStats,
@@ -3573,6 +3585,8 @@ function renderMapTable(maps) {
         html += '<td><span class="track-tag ' + trackClass + '">' + trackName + '</span></td>';
         html += '<td><span class="track-tag ' + trackClass + '">' + trackLabel + '</span></td>';
         html += '<td style="text-align:right;">' + m.rawValidUsers.toLocaleString() + '</td>';
+        var cpm = m.rawValidUsers > 0 ? (m.bonus / m.rawValidUsers * 1000).toFixed(2) : '0.00';
+        html += '<td style="text-align:right;">' + cpm + '</td>';
         html += '<td>' + m.tierLabel + '</td>';
         html += '<td style="text-align:right;" class="calc-bonus-val' + bonusClass + '">¥ ' + m.bonus.toLocaleString() + '</td>';
         html += '</tr>';
@@ -3599,6 +3613,8 @@ function renderTrackResults(trackStats) {
         html += '<div class="track-stat-item"><div class="val" style="color:' + color + ';">' + t.mapCount + '</div><div class="lbl">地图数</div></div>';
         html += '<div class="track-stat-item"><div class="val">¥' + t.totalBonus.toLocaleString() + '</div><div class="lbl">激励金</div></div>';
         html += '<div class="track-stat-item"><div class="val">' + t.totalUsers.toLocaleString() + '</div><div class="lbl">游玩人数</div></div>';
+        var trackCpm = t.totalUsers > 0 ? (t.totalBonus / t.totalUsers * 1000).toFixed(2) : '0.00';
+        html += '<div class="track-stat-item"><div class="val">¥' + trackCpm + '</div><div class="lbl">CPM</div></div>';
         html += '</div>';
         html += '</div>';
     });
@@ -3618,6 +3634,8 @@ function renderPersonRank(personRank) {
         html += '<td>' + p.name + '</td>';
         html += '<td style="text-align:right;">' + p.mapCount + '</td>';
         html += '<td style="text-align:right;">' + p.totalUsers.toLocaleString() + '</td>';
+        var personCpm = p.totalUsers > 0 ? (p.totalBonus / p.totalUsers * 1000).toFixed(2) : '0.00';
+        html += '<td style="text-align:right;">' + personCpm + '</td>';
         html += '<td style="text-align:right;" class="calc-bonus-val">¥ ' + p.totalBonus.toLocaleString() + '</td>';
         html += '<td style="font-size:12px;color:#86868b;">' + trackDist + '</td>';
         html += '</tr>';
@@ -3646,6 +3664,8 @@ function renderStats(summary, oldSummary) {
     if (el) el.textContent = summary.encRatio + '%';
     el = document.getElementById('summaryNonIncentiveCount');
     if (el) el.textContent = summary.nonIncentiveCount || 0;
+    el = document.getElementById('summaryCPM');
+    if (el) el.textContent = '¥ ' + summary.cpm.toFixed(2);
 
     // Hide old resultSummaryContent panel (no longer used)
     var oldPanel = document.getElementById('calcResultSummary');
@@ -3837,7 +3857,8 @@ window.confirmSubmitCalc = function() {
         '  激励地图: ' + summary.mapCount + ' 张\n' +
         '  非激励类地图: ' + (summary.nonIncentiveCount||0) + ' 张（不参与计算）\n' +
         '  激励作者: ' + summary.authorCount + ' 人\n' +
-        '  总激励金: ¥' + Math.round(summary.totalBonus).toLocaleString() + '\n\n' +
+        '  总激励金: ¥' + Math.round(summary.totalBonus).toLocaleString() + '\n' +
+        '  CPM: ¥' + summary.cpm.toFixed(2) + '\n\n' +
         '确认提交？';
 
     if(!confirm(msg)) return;
@@ -3878,11 +3899,12 @@ window.exportCalcResult = function() {
     var maps = lastResultCache.maps;
     var lines = [];
     lines.push('\uFEFF'); // BOM for Excel UTF-8
-    lines.push('地图ID,地图名称,作者,作者ID,激励分类,激励类型,有效用户(人),阶梯档位,预期奖金(元)');
+    lines.push('地图ID,地图名称,作者,作者ID,激励分类,激励类型,有效用户(人),CPM(元/千次),阶梯档位,预期奖金(元)');
     maps.forEach(function(m){
         var trackName = TRACK_NAMES[m.track] || m.track;
         var incentiveType = m.incentiveType || (m.isEncourage ? 'encourage' : 'normal');
         var typeLabel = incentiveType === 'encourage' ? '鼓励' : (incentiveType === 'nonincentive' ? '非激励' : '非鼓励');
+        var cpm = m.rawValidUsers > 0 ? (m.bonus / m.rawValidUsers * 1000).toFixed(2) : '0.00';
         lines.push([
             m.id,
             '"' + m.name.replace(/"/g,'""') + '"',
@@ -3891,6 +3913,7 @@ window.exportCalcResult = function() {
             trackName,
             typeLabel,
             m.rawValidUsers,
+            cpm,
             m.tierLabel,
             m.bonus
         ].join(','));
@@ -3898,7 +3921,8 @@ window.exportCalcResult = function() {
 
     // 追加汇总行
     lines.push('');
-    lines.push(',,,,,合计,,,' + lastResultCache.summary.totalBonus);
+    lines.push(',,,,,,合计,,,' + lastResultCache.summary.totalBonus);
+    lines.push(',,,,,,CPM,,,' + lastResultCache.summary.cpm.toFixed(2));
 
     var csvContent = lines.join('\n');
     var blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
@@ -4121,7 +4145,8 @@ window._calcInitialized = false;
                             </div>
                         </div>
                     </div>
-                </div>                </div>                <div class="form-group">
+                </div>
+                <div class="form-group">
                     <label>奖金总额（元）</label>
                     <input type="number" id="editPlanBudget" placeholder="如：50000" min="0">
                 </div>

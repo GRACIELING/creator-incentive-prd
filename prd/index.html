@@ -1018,11 +1018,11 @@ sequenceDiagram
         <div class="card">
           <h2>8. 页面原型 Demo</h2>
           <div class="tab-bar">
-                <button class="tab-btn active" onclick="showTab('tab-whitelist-list')">白名单审核列表</button>
-                <button class="tab-btn" onclick="showTab('tab-incentive-plan')">激励计划管理</button>
-                <button class="tab-btn" onclick="showTab('tab-bonus-result')">奖金结果调整</button>
-                <button class="tab-btn" onclick="showTab('tab-leader-review')">Leader审核</button>
-                <button class="tab-btn" onclick="showTab('tab-bonus-records')">💰 奖金记录</button>
+                <button class="tab-btn active" onclick="showTab('tab-whitelist-list', this)">白名单审核列表</button>
+                <button class="tab-btn" onclick="showTab('tab-incentive-plan', this)">激励计划管理</button>
+                <button class="tab-btn" onclick="showTab('tab-bonus-result', this)">奖金结果调整</button>
+                <button class="tab-btn" onclick="showTab('tab-leader-review', this)">Leader审核</button>
+                <button class="tab-btn" onclick="showTab('tab-bonus-records', this)">💰 奖金记录</button>
           </div>
 
           <!-- 白名单审核列表 -->
@@ -1373,11 +1373,11 @@ mermaid.initialize({
 });
 
 // ===== Tab Switch =====
-function showTab(id) {
+function showTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
 }
 
 // ===== Nav Active =====
