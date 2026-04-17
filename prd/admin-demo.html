@@ -2194,7 +2194,7 @@
                                     <span id="reviewCheckCount" style="background: #007aff; color: #fff; border-radius: 10px; padding: 1px 8px; font-size: 11px;">已审核 0/5</span>
                                 </div>
                                 <div style="display: flex; gap: 10px; align-items: center;">
-                                    <button class="btn btn-secondary" onclick="showSection('calculation', null)" style="font-size: 12px; padding: 5px 14px;">📊 查看计算明细 →</button>
+                                    <button class="btn btn-secondary" onclick="goToCalcMonth('2026-03')" style="font-size: 12px; padding: 5px 14px;">📊 查看计算明细 →</button>
                                 </div>
                             </div>
                             <table style="margin-bottom: 0;">
@@ -2907,7 +2907,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="cursor: pointer;" onclick="viewPlanBonusDetail('2026-04')">
+                            <tr style="cursor: pointer;" onclick="goToCalcMonth('2026-04')">
                                 <td>2026年4月流量激励</td>
                                 <td>2026-04</td>
                                 <td>210</td>
@@ -2916,9 +2916,9 @@
                                 <td>¥424</td>
                                 <td>¥2,000</td>
                                 <td><span class="badge badge-warning">发放中</span></td>
-                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); viewPlanBonusDetail('2026-04')">查看明细</button></td>
+                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); goToCalcMonth('2026-04')">查看明细</button></td>
                             </tr>
-                            <tr style="cursor: pointer;" onclick="viewPlanBonusDetail('2026-03')">
+                            <tr style="cursor: pointer;" onclick="goToCalcMonth('2026-03')">
                                 <td>2026年3月流量激励</td>
                                 <td>2026-03</td>
                                 <td>185</td>
@@ -2927,9 +2927,9 @@
                                 <td>¥424</td>
                                 <td>¥2,000</td>
                                 <td><span class="badge badge-success">已结算</span></td>
-                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); viewPlanBonusDetail('2026-03')">查看明细</button></td>
+                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); goToCalcMonth('2026-03')">查看明细</button></td>
                             </tr>
-                            <tr style="cursor: pointer;" onclick="viewPlanBonusDetail('2026-02')">
+                            <tr style="cursor: pointer;" onclick="goToCalcMonth('2026-02')">
                                 <td>2026年2月流量激励</td>
                                 <td>2026-02</td>
                                 <td>148</td>
@@ -2938,9 +2938,9 @@
                                 <td>¥419</td>
                                 <td>¥2,000</td>
                                 <td><span class="badge badge-success">已结算</span></td>
-                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); viewPlanBonusDetail('2026-02')">查看明细</button></td>
+                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); goToCalcMonth('2026-02')">查看明细</button></td>
                             </tr>
-                            <tr style="cursor: pointer;" onclick="viewPlanBonusDetail('2026-01')">
+                            <tr style="cursor: pointer;" onclick="goToCalcMonth('2026-01')">
                                 <td>2026年1月流量激励</td>
                                 <td>2026-01</td>
                                 <td>120</td>
@@ -2949,7 +2949,7 @@
                                 <td>¥325</td>
                                 <td>¥2,000</td>
                                 <td><span class="badge badge-success">已结算</span></td>
-                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); viewPlanBonusDetail('2026-01')">查看明细</button></td>
+                                <td><button class="btn btn-primary action-btn" onclick="event.stopPropagation(); goToCalcMonth('2026-01')">查看明细</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -3112,6 +3112,14 @@
                             <h1 class="page-title" style="margin-bottom: 4px;">🧮 奖金计算</h1>
                             <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                                 <span id="calcPlanLabel" style="font-size:13px;color:#86868b;">当前计划：<strong style="color:#007aff;">2026年5月流量激励</strong></span>
+                                <select id="calcMonthSwitcher" onchange="switchCalcMonth(this.value)" style="border:1px solid #d2d2d7;border-radius:6px;padding:5px 10px;font-size:12px;color:#1d1d1f;outline:none;">
+                                    <option value="2026-01">2026年1月</option>
+                                    <option value="2026-02">2026年2月</option>
+                                    <option value="2026-03">2026年3月</option>
+                                    <option value="2026-04">2026年4月</option>
+                                    <option value="2026-05" selected>2026年5月</option>
+                                    <option value="2026-06">2026年6月</option>
+                                </select>
                                 <div class="formula-bar" style="margin-bottom:0;">
                                     M = 阶梯插值（<span class="formula-var">X</span> → 激励金），按「有效游玩人数」匹配
                                 </div>
@@ -3276,9 +3284,12 @@
                                 <div class="cfg-desc">当前计算的月份周期</div>
                             </div>
                             <div class="cfg-input-wrap">
-                                <select class="cfg-select" id="cfg_settlement_cycle" style="width:140px;">
-                                    <option value="2026-05" selected>2026年5月</option>
+                                <select class="cfg-select" id="cfg_settlement_cycle" style="width:140px;" onchange="onCfgCycleChange(this.value)">
+                                    <option value="2026-01">2026年1月</option>
+                                    <option value="2026-02">2026年2月</option>
+                                    <option value="2026-03">2026年3月</option>
                                     <option value="2026-04">2026年4月</option>
+                                    <option value="2026-05" selected>2026年5月</option>
                                     <option value="2026-06">2026年6月</option>
                                 </select>
                             </div>
@@ -5203,7 +5214,68 @@ window._calcInitialized = false;
         }
 
         function viewPlanBonusDetail(planMonth) {
-            alert('查看 ' + planMonth + ' 激励计划的奖金发放明细：\n\n包含该期所有地图的奖金发放列表、汇总统计、激励分类分布等。');
+            goToCalcMonth(planMonth);
+        }
+
+        function goToCalcMonth(planMonth) {
+            // 1. 切换到奖金计算页签
+            showSection('calculation', null);
+            // 2. 更新奖金计算页签的月份选择器
+            var monthSwitcher = document.getElementById('calcMonthSwitcher');
+            if (monthSwitcher) {
+                monthSwitcher.value = planMonth;
+            }
+            // 3. 更新配置抽屉中的结算周期
+            var cycleSelect = document.getElementById('cfg_settlement_cycle');
+            if (cycleSelect) {
+                cycleSelect.value = planMonth;
+            }
+            // 4. 更新页面标题中的计划名称
+            var planLabel = document.getElementById('calcPlanLabel');
+            var monthNames = {
+                '2026-01': '2026年1月流量激励',
+                '2026-02': '2026年2月流量激励',
+                '2026-03': '2026年3月流量激励',
+                '2026-04': '2026年4月流量激励',
+                '2026-05': '2026年5月流量激励',
+                '2026-06': '2026年6月流量激励'
+            };
+            if (planLabel) {
+                planLabel.innerHTML = '当前计划：<strong style="color:#007aff;">' + (monthNames[planMonth] || planMonth) + '</strong>';
+            }
+            // 5. 同步currentConfig
+            currentConfig.settlementCycle = planMonth;
+            // 6. 自动触发重新计算
+            if (typeof window.runCalculate === 'function') {
+                window.runCalculate();
+            }
+        }
+
+        function switchCalcMonth(monthValue) {
+            // 月份切换联动函数
+            goToCalcMonth(monthValue);
+        }
+
+        function onCfgCycleChange(monthValue) {
+            // 配置抽屉中结算周期改变时，联动页面标题的月份切换器
+            var monthSwitcher = document.getElementById('calcMonthSwitcher');
+            if (monthSwitcher) {
+                monthSwitcher.value = monthValue;
+            }
+            // 同步月份名称显示
+            var planLabel = document.getElementById('calcPlanLabel');
+            var monthNames = {
+                '2026-01': '2026年1月流量激励',
+                '2026-02': '2026年2月流量激励',
+                '2026-03': '2026年3月流量激励',
+                '2026-04': '2026年4月流量激励',
+                '2026-05': '2026年5月流量激励',
+                '2026-06': '2026年6月流量激励'
+            };
+            if (planLabel) {
+                planLabel.innerHTML = '当前计划：<strong style="color:#007aff;">' + (monthNames[monthValue] || monthValue) + '</strong>';
+            }
+            currentConfig.settlementCycle = monthValue;
         }
 
         function filterBonusStatus(status) {
