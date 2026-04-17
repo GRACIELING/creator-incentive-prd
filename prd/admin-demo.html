@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -1304,7 +1304,7 @@
                     </div>
                     <div style="padding: 15px; margin: 15px 20px; background: #e8f4fd; border-radius: 8px; border: 1px solid #b3d9f2;">
                         <p style="color: #0c5460; font-size: 13px; line-height: 1.6;">
-                            <strong>审核流程说明：</strong>自动审核规则（白名单加入条件）和赛道鼓励/非鼓励配置修改后，需经 <strong>Leader审核通过</strong> 才能正式生效。修改后页面顶部会显示"待审核"状态，请及时提交审核。
+                            <strong>审核流程说明：</strong>自动审核规则（白名单加入条件）和激励分类（鼓励/非鼓励/非激励）配置修改后，需经 <strong>Leader审核通过</strong> 才能正式生效。修改后页面顶部会显示"待审核"状态，请及时提交审核。
                         </p>
                     </div>
                     <div style="padding: 30px;">
@@ -1390,8 +1390,9 @@
             <!-- 标签页 -->
             <div class="tabs">
                 <button class="tab active" onclick="switchIncentiveTab('plans', this)">激励计划列表</button>
-                <button class="tab" onclick="switchIncentiveTab('track-config', this)">赛道配置</button>
-                <button class="tab" onclick="switchIncentiveTab('track-maps', this)">赛道地图查看</button>
+
+
+<button class="tab" onclick="switchIncentiveTab('track-maps', this)">激励地图查看</button>
             </div>
 
             <!-- 激励计划列表 -->
@@ -1399,7 +1400,7 @@
                 <!-- 自动续期提示 -->
                 <div style="padding: 15px; background: #e8f4fd; border-radius: 8px; margin-bottom: 20px; border: 1px solid #b3d9f2;">
                     <p style="color: #0c5460; font-size: 13px; line-height: 1.6;">
-                        <strong>续期说明：</strong>激励计划首次由运营手动创建，之后系统将于每月25日自动根据当前配置生成下月激励计划（状态为"待配置"），运营可在生效前修改赛道规则、奖金总额、单用户奖金上限、单用户可激励地图上限。
+                        <strong>续期说明：</strong>激励计划首次由运营手动创建，之后系统将于每月25日自动根据当前配置生成下月激励计划（状态为"待配置"），运营可在生效前修改激励分类规则、奖金总额、单用户奖金上限、单用户可激励地图上限。
                     </p>
                 </div>
 
@@ -1479,240 +1480,19 @@
                 </div>
             </div>
 
-            <!-- 赛道配置管理 -->
-            <div id="incentive-track-config" class="incentive-tab-content" style="display: none;">
-                <div class="table-container" style="margin-bottom: 20px;">
-                    <div class="table-header">
-                        <span class="table-title">赛道配置管理</span>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span class="badge badge-success" id="trackStatusBadge" style="font-size: 12px;">配置已生效</span>
-                            <button class="btn btn-primary" onclick="submitTrackForLeaderReview()" id="submitTrackReviewBtn" style="display: none; background: #ff9500; border-color: #ff9500;">提交Leader审核</button>
-                            <button class="btn btn-primary" onclick="openAddTrackRuleModal()">+ 添加赛道规则</button>
-                        </div>
-                    </div>
 
-                    <!-- 简化流程说明 -->
-                    <div style="padding: 16px 18px; background: linear-gradient(135deg, #e8f4fd, #f0e8fd); border-radius: 10px; margin-bottom: 16px; border: 1px solid #d0e8f5;">
-                        <p style="color: #0c5460; font-size: 13px; line-height: 1.8; margin: 0;">
-                            <strong>赛道配置工作原理：</strong><br>
-                            1. 在此页面定义<strong>所有赛道规则</strong>（名称、匹配标签/关键词、生效时间、鼓励/非鼓励分类）<br>
-                            2. 地图发布时，系统根据规则中的<strong>匹配条件（标签/关键词）自动识别</strong>地图落入哪条赛道<br>
-                            3. 创建激励计划时，只需从已生效的赛道中<strong>勾选本期鼓励的赛道</strong>即可，未选的自动归为非鼓励<br>
-                            <span style="font-size: 12px; color: #666;">→ 赛道配置与计划解耦：一次配置，多期复用；修改赛道需 Leader 审核后生效</span>
-                        </p>
-                    </div>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>规则名称</th>
-                                <th>赛道类型</th>
-                                <th>自动识别匹配条件</th>
-                                <th>生效时间</th>
-                                <th>优先级</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>跑酷地图规则</strong></td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
-                                <td title="系统自动识别：地图标签包含以下关键词时自动归入本赛道"><span style="font-size: 12px; color: #0071e3;">🤖 标签包含: 跑酷、跳跃、竞速</span></td>
-                                <td>2026-04-01 起</td>
-                                <td>1</td>
-                                <td><span class="badge badge-success">已生效</span></td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editTrackRule('1')">编辑</button>
-                                    <button class="btn btn-danger action-btn" onclick="deleteTrackRule('1')">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>解谜地图规则</strong></td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
-                                <td><span style="font-size: 12px; color: #0071e3;">🤖 标签包含: 解谜、谜题、智力</span></td>
-                                <td>2026-04-01 起</td>
-                                <td>1</td>
-                                <td><span class="badge badge-success">已生效</span></td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editTrackRule('2')">编辑</button>
-                                    <button class="btn btn-danger action-btn" onclick="deleteTrackRule('2')">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>生存模式规则</strong></td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
-                                <td><span style="font-size: 12px; color: #0071e3;">🤖 标签包含: 生存、生存挑战</span></td>
-                                <td>2026-04-01 起</td>
-                                <td>1</td>
-                                <td><span class="badge badge-success">已生效</span></td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editTrackRule('5')">编辑</button>
-                                    <button class="btn btn-danger action-btn" onclick="deleteTrackRule('5')">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>射击竞技规则</strong></td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
-                                <td><span style="font-size: 12px; color: #0071e3;">🤖 标签包含: 射击、FPS、对战</span></td>
-                                <td>2026-04-01 起</td>
-                                <td>1</td>
-                                <td><span class="badge badge-success">已生效</span></td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editTrackRule('6')">编辑</button>
-                                    <button class="btn btn-danger action-btn" onclick="deleteTrackRule('6')">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>建筑展示规则</strong></td>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
-                                <td><span style="font-size: 12px; color: #0071e3;">🤖 标签包含: 建筑、景观、展示</span></td>
-                                <td>2026-04-01 起</td>
-                                <td>2</td>
-                                <td><span class="badge badge-success">已生效</span></td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editTrackRule('3')">编辑</button>
-                                    <button class="btn btn-danger action-btn" onclick="deleteTrackRule('3')">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>休闲小游戏规则</strong></td>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
-                                <td><span style="font-size: 12px; color: #0071e3;">🤖 标签包含: 休闲、娱乐、小游戏</span></td>
-                                <td>2026-04-01 起</td>
-                                <td>2</td>
-                                <td><span class="badge badge-success">已生效</span></td>
-                                <td>
-                                    <button class="btn btn-primary action-btn" onclick="editTrackRule('4')">编辑</button>
-                                    <button class="btn btn-danger action-btn" onclick="deleteTrackRule('4')">删除</button>
-                                </td>
-                            </tr>
-                            <tr style="opacity: 0.7;">
-                                <td><strong>其他未分类兜底</strong></td>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
-                                <td><span style="font-size: 12px; color: #999;">🤖 兜底规则: 未匹配任何规则的地图</span></td>
-                                <td>长期有效</td>
-                                <td>99</td>
-                                <td><span class="badge badge-secondary">系统默认</span></td>
-                                <td>
-                                    <button class="btn btn-secondary action-btn" disabled style="cursor: not-allowed;">不可删</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <!-- 赛道分布统计 -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <span class="table-title">当月赛道分布统计</span>
-                        <select style="padding: 6px 12px; border: 1px solid #d2d2d7; border-radius: 6px;">
-                            <option>2026年4月</option>
-                            <option>2026年3月</option>
-                            <option>2026年2月</option>
-                        </select>
-                    </div>
-                    <div class="stats-grid" style="margin-bottom: 20px;">
-                        <div class="stat-card">
-                            <h3>总地图数</h3>
-                            <div class="value">156</div>
-                            <div class="trend">本月累计</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>鼓励赛道</h3>
-                            <div class="value">89</div>
-                            <div class="trend trend-up">57.1%</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>非鼓励赛道</h3>
-                            <div class="value">67</div>
-                            <div class="trend">42.9%</div>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>赛道类型</th>
-                                <th>地图数量</th>
-                                <th>占比</th>
-                                <th>奖金总额</th>
-                                <th>平均奖金</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
-                                <td>89</td>
-                                <td>57.1%</td>
-                                <td>¥25,680</td>
-                                <td>¥288.54</td>
-                            </tr>
-                            <tr>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
-                                <td>67</td>
-                                <td>42.9%</td>
-                                <td>¥8,520</td>
-                                <td>¥127.16</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <!-- 赛道配置变更审核记录 -->
-                <div class="table-container" style="margin-top: 20px;">
-                    <div class="table-header">
-                        <span class="table-title">赛道配置变更审核记录</span>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>变更时间</th>
-                                <th>变更内容</th>
-                                <th>修改人</th>
-                                <th>审核人</th>
-                                <th>审核状态</th>
-                                <th>审核时间</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2026-04-01 11:00</td>
-                                <td>新增规则"跑酷地图规则"（鼓励赛道）</td>
-                                <td>admin</td>
-                                <td>Leader张</td>
-                                <td><span class="badge badge-success">已通过</span></td>
-                                <td>2026-04-01 15:00</td>
-                            </tr>
-                            <tr>
-                                <td>2026-03-20 09:30</td>
-                                <td>修改"建筑展示规则"赛道类型：鼓励 → 非鼓励</td>
-                                <td>admin</td>
-                                <td>Leader张</td>
-                                <td><span class="badge badge-success">已通过</span></td>
-                                <td>2026-03-20 14:00</td>
-                            </tr>
-                            <tr style="background: #fff8e1;">
-                                <td>2026-04-03 10:00</td>
-                                <td>新增规则"生存模式规则"（鼓励赛道）</td>
-                                <td>admin</td>
-                                <td>--</td>
-                                <td><span class="badge badge-warning">待审核</span></td>
-                                <td>--</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-            <!-- 赛道地图查看 -->
+<!-- 激励地图查看 -->
             <div id="incentive-track-maps" class="incentive-tab-content" style="display: none;">
                 <!-- 筛选器 -->
                 <div style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 12px; border: 1px solid #d2d2d7;">
-                    <label style="color: #1d1d1f; font-size: 14px; font-weight: 500; margin-right: 15px;">赛道筛选：</label>
+<label style="color: #1d1d1f; font-size: 14px; font-weight: 500; margin-right: 15px;">激励分类筛选：</label>
                     <button class="btn btn-primary" onclick="filterTrackMaps('all')">全部</button>
-                    <button class="btn btn-secondary" onclick="filterTrackMaps('encourage')">鼓励赛道</button>
-                    <button class="btn btn-secondary" onclick="filterTrackMaps('normal')">非鼓励赛道</button>
+                    <button class="btn btn-secondary" onclick="filterTrackMaps('encourage')">鼓励</button>
+                    <button class="btn btn-secondary" onclick="filterTrackMaps('normal')">非鼓励</button>
+                    <button class="btn btn-secondary" onclick="filterTrackMaps('nonincentive')">非激励</button>
                     <select style="margin-left: 15px; padding: 6px 12px; border: 1px solid #d2d2d7; border-radius: 6px; background: #ffffff; color: #1d1d1f;">
                         <option>2026年4月</option>
                         <option>2026年3月</option>
@@ -1720,7 +1500,7 @@
                     </select>
                 </div>
 
-                <!-- 批量修改赛道 -->
+                <!-- 批量修改激励分类 -->
                 <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
                     <button class="btn btn-primary" onclick="openBatchTrackModal()" style="background: #E65100; border-color: #E65100; display: flex; align-items: center; gap: 6px;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -1728,7 +1508,7 @@
                     </button>
                 </div>
 
-                <!-- 赛道统计概览 -->
+                <!-- 激励分类统计概览 -->
                 <div class="stats-grid" style="margin-bottom: 20px;">
                     <div class="stat-card">
                         <h3>总地图数</h3>
@@ -1736,25 +1516,35 @@
                         <div class="trend">当月激励计划</div>
                     </div>
                     <div class="stat-card">
-                        <h3>鼓励赛道地图</h3>
+                    <h3>鼓励类地图</h3>
                         <div class="value">89</div>
                         <div class="trend trend-up">57.1%</div>
                     </div>
                     <div class="stat-card">
-                        <h3>非鼓励赛道地图</h3>
-                        <div class="value">67</div>
-                        <div class="trend">42.9%</div>
+                    <h3>非鼓励类地图</h3>
+                        <div class="value">64</div>
+                        <div class="trend">41.0%</div>
+                    </div>
+                    <div class="stat-card" style="background:#f5f5f7;">
+                    <h3 style="color:#8e8e93;">非激励类地图</h3>
+                        <div class="value" style="color:#8e8e93;">3</div>
+                        <div class="trend" style="color:#aeaeb2;">1.9%</div>
                     </div>
                     <div class="stat-card">
                         <h3>涉及创作者</h3>
                         <div class="value">128</div>
                         <div class="trend">本月参与</div>
                     </div>
+                    <div class="stat-card">
+                        <h3>CPM</h3>
+                        <div class="value">¥12.50</div>
+                        <div class="trend">每千次有效游玩奖金</div>
+                    </div>
                 </div>
 
                 <div class="table-container">
                     <div class="table-header">
-                        <span class="table-title">赛道地图列表</span>
+<span class="table-title">激励分类地图列表</span>
                         <div class="search-box">
                             <input type="text" placeholder="搜索地图ID或创作者...">
                             <button class="btn btn-primary">搜索</button>
@@ -1774,7 +1564,7 @@
                                 <th>主类型</th>
                                 <th>子类型</th>
                                 <th>地图相似度</th>
-                                <th>所属赛道</th>
+<th>所属激励分类</th>
                                 <th>总游玩PV</th>
                                 <th>14日游玩PV</th>
                                 <th>有效游玩PV</th>
@@ -1795,7 +1585,7 @@
                                 <td>跑酷</td>
                                 <td>竞速</td>
                                 <td>92%</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>50,000</td>
                                 <td>12,300</td>
                                 <td>45,600</td>
@@ -1814,7 +1604,7 @@
                                 <td>跑酷</td>
                                 <td>障碍</td>
                                 <td>78%</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>45,000</td>
                                 <td>10,800</td>
                                 <td>41,200</td>
@@ -1833,7 +1623,7 @@
                                 <td>解谜</td>
                                 <td>迷宫</td>
                                 <td>85%</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>40,000</td>
                                 <td>9,500</td>
                                 <td>36,800</td>
@@ -1852,7 +1642,7 @@
                                 <td>休闲</td>
                                 <td>建筑</td>
                                 <td>60%</td>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
+                                <td><span class="badge badge-info">非鼓励</span></td>
                                 <td>35,000</td>
                                 <td>5,200</td>
                                 <td>28,400</td>
@@ -1871,7 +1661,7 @@
                                 <td>休闲</td>
                                 <td>社交</td>
                                 <td>55%</td>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
+                                <td><span class="badge badge-info">非鼓励</span></td>
                                 <td>30,000</td>
                                 <td>4,800</td>
                                 <td>24,500</td>
@@ -1910,7 +1700,7 @@
             <div id="review-pending-submit" class="review-tab-content">
                 <div style="padding: 15px; background: #fff3e0; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffe0b2;">
                     <p style="color: #e65100; font-size: 13px; line-height: 1.6;">
-                        <strong>流程说明：</strong>月度结算完成后，系统自动计算奖金并生成发奖名单。运营可以在此页面调整赛道、移除地图、标记处罚用户，确认最终名单后点击"提交Leader审核"。
+                        <strong>流程说明：</strong>月度结算完成后，系统自动计算奖金并生成发奖名单。运营可以在此页面调整激励分类、移除地图、标记处罚用户，确认最终名单后点击"提交Leader审核"。
                     </p>
                 </div>
 
@@ -1971,7 +1761,7 @@
                             <span class="table-title">最终发奖名单 - <span id="finalListTitle"></span></span>
                             <div style="display: flex; gap: 10px; align-items: center;">
                                 <button class="btn btn-primary" onclick="recalculateBonus()" style="background: #007aff; border-color: #007aff;">🔄 刷新计算预期奖金</button>
-                                <button class="btn btn-primary" onclick="batchAdjustTrack()" style="background: #ff9500; border-color: #ff9500;">批量调整赛道</button>
+                                <button class="btn btn-primary" onclick="batchAdjustTrack()" style="background: #ff9500; border-color: #ff9500;">批量调整激励分类</button>
                                 <button class="btn btn-danger" onclick="batchRemoveFromList()">批量移除</button>
                             </div>
                         </div>
@@ -1981,8 +1771,9 @@
                             <label style="font-size: 13px; color: #86868b;">快速筛选：</label>
                             <button class="btn btn-secondary" onclick="filterFinalList('all')" style="font-size: 12px; padding: 4px 12px;">全部 (234)</button>
                             <button class="btn btn-secondary" onclick="filterFinalList('penalty')" style="font-size: 12px; padding: 4px 12px; color: #d32f2f; border-color: #d32f2f;">处罚用户 (2)</button>
-                            <button class="btn btn-secondary" onclick="filterFinalList('encourage')" style="font-size: 12px; padding: 4px 12px; color: #34c759; border-color: #34c759;">鼓励赛道 (134)</button>
-                            <button class="btn btn-secondary" onclick="filterFinalList('normal')" style="font-size: 12px; padding: 4px 12px; color: #0071e3; border-color: #0071e3;">非鼓励赛道 (100)</button>
+                            <button class="btn btn-secondary" onclick="filterFinalList('encourage')" style="font-size: 12px; padding: 4px 12px; color: #34c759; border-color: #34c759;">鼓励 (134)</button>
+                            <button class="btn btn-secondary" onclick="filterFinalList('normal')" style="font-size: 12px; padding: 4px 12px; color: #0071e3; border-color: #0071e3;">非鼓励 (100)</button>
+                            <button class="btn btn-secondary" onclick="filterFinalList('nonincentive')" style="font-size: 12px; padding: 4px 12px; color: #86868b; border-color: #86868b;">非激励 (3)</button>
                         </div>
 
                         <table>
@@ -1993,7 +1784,7 @@
                                     <th>地图名称</th>
                                     <th>创作者</th>
                                     <th>游玩次数</th>
-                                    <th>赛道</th>
+                                    <th>激励分类</th>
                                     <th>排名</th>
                                     <th>奖金金额</th>
                                     <th>用户状态</th>
@@ -2012,7 +1803,7 @@
                                     <td><span style="color: #34c759; font-weight: 600;">¥2,000</span></td>
                                     <td><span class="badge badge-success">正常</span></td>
                                     <td>
-                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP001')">调赛道</button>
+                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP001')">调分类</button>
                                         <button class="btn btn-danger action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="removeFromFinalList('MAP001')">移除</button>
                                     </td>
                                 </tr>
@@ -2027,7 +1818,7 @@
                                     <td><span style="color: #34c759; font-weight: 600;">¥1,800</span></td>
                                     <td><span class="badge badge-success">正常</span></td>
                                     <td>
-                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP002')">调赛道</button>
+                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP002')">调分类</button>
                                         <button class="btn btn-danger action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="removeFromFinalList('MAP002')">移除</button>
                                     </td>
                                 </tr>
@@ -2042,7 +1833,7 @@
                                     <td><span style="color: #34c759; font-weight: 600;">¥1,600</span></td>
                                     <td><span class="badge badge-penalty">处罚中</span></td>
                                     <td>
-                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP003')">调赛道</button>
+                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP003')">调分类</button>
                                         <button class="btn btn-danger action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="removeFromFinalList('MAP003')">移除</button>
                                     </td>
                                 </tr>
@@ -2057,7 +1848,7 @@
                                     <td><span style="color: #34c759; font-weight: 600;">¥1,200</span></td>
                                     <td><span class="badge badge-penalty">处罚中</span></td>
                                     <td>
-                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP004')">调赛道</button>
+                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP004')">调分类</button>
                                         <button class="btn btn-danger action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="removeFromFinalList('MAP004')">移除</button>
                                     </td>
                                 </tr>
@@ -2072,7 +1863,7 @@
                                     <td><span style="color: #34c759; font-weight: 600;">¥1,050</span></td>
                                     <td><span class="badge badge-success">正常</span></td>
                                     <td>
-                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP005')">调赛道</button>
+                                        <button class="btn btn-primary action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="adjustFinalTrack('MAP005')">调分类</button>
                                         <button class="btn btn-danger action-btn" style="font-size: 12px; padding: 4px 8px;" onclick="removeFromFinalList('MAP005')">移除</button>
                                     </td>
                                 </tr>
@@ -2109,11 +1900,15 @@
                             </div>
                             <div class="review-stat-item">
                                 <div class="review-stat-value" style="color: #34c759;">134</div>
-                                <div class="review-stat-label">鼓励赛道</div>
+                                <div class="review-stat-label">鼓励</div>
                             </div>
                             <div class="review-stat-item">
                                 <div class="review-stat-value" style="color: #007aff;">100</div>
-                                <div class="review-stat-label">非鼓励赛道</div>
+                                <div class="review-stat-label">非鼓励</div>
+                            </div>
+                            <div class="review-stat-item">
+                                <div class="review-stat-value" style="color: #86868b;">3</div>
+                                <div class="review-stat-label">非激励</div>
                             </div>
                         </div>
                     </div>
@@ -2130,8 +1925,8 @@
                     <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: center;">
                         <span style="font-size: 13px; color: #555;">地图数 <strong style="color:#1d1d1f;">234</strong></span>
                         <span style="font-size: 13px; color: #555;">奖金总额 <strong style="color:#007aff;">¥78,500</strong></span>
-                        <span style="font-size: 13px; color: #555;">鼓励赛道 <strong style="color:#34c759;">134</strong></span>
-                        <span style="font-size: 13px; color: #555;">非鼓励赛道 <strong style="color:#007aff;">100</strong></span>
+                        <span style="font-size: 13px; color: #555;">鼓励 <strong style="color:#34c759;">134</strong></span>
+                        <span style="font-size: 13px; color: #555;">非鼓励 <strong style="color:#007aff;">100</strong></span>
                     </div>
                     <button class="btn btn-secondary" onclick="showSection('calculation', null)" style="font-size: 12px; padding: 5px 14px;">📊 查看完整计算明细 →</button>
                 </div>
@@ -2352,7 +2147,7 @@
                                 <td>2026-04-03 15:30</td>
                                 <td>234</td>
                                 <td style="color: #d32f2f; font-weight: 600;">¥78,500</td>
-                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="奖金总额超出预算上限，部分非鼓励赛道地图奖金占比过高，需优化赛道结构后重新提交。">奖金总额超出预算上限，部分非鼓励赛道地图奖金占比过高，需优化赛道结构...</td>
+                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="奖金总额超出预算上限，部分非鼓励地图奖金占比过高，需优化激励分类结构后重新提交。">奖金总额超出预算上限，部分非鼓励地图奖金占比过高，需优化激励分类结构...</td>
                                 <td>Leader张</td>
                                 <td><span class="badge badge-warning">待处理 ⚠️</span></td>
                                 <td>
@@ -2451,7 +2246,7 @@
                             <!-- 发奖名单调整提示 -->
                             <div style="margin-bottom: 16px; padding: 16px; background: linear-gradient(135deg, #e8f5e9, #f1f8e4); border-radius: 10px; border: 1px solid #c5e1a5;">
                                 <strong style="color: #2e7d32;">📋 需要调整发奖名单？</strong>
-                                <p style="font-size: 13px; color: #555; margin-top: 6px; line-height: 1.6;">根据上方驳回原因，请在「运营待提交」标签页中调整赛道、移除地图后重新提交。调整完成后点击下方按钮直接提交审核。</p>
+                                <p style="font-size: 13px; color: #555; margin-top: 6px; line-height: 1.6;">根据上方驳回原因，请在「运营待提交」标签页中调整激励分类、移除地图后重新提交。调整完成后点击下方按钮直接提交审核。</p>
                                 <div style="margin-top: 10px; display: flex; gap: 8px;">
                                     <button class="btn btn-primary" onclick="switchReviewTab('pending-submit')" style="font-size: 12px; background: #007aff;">前往运营待提交调整名单 →</button>
                                 </div>
@@ -2820,7 +2615,7 @@
                                 <th>地图ID</th>
                                 <th>地图名称</th>
                                 <th>创作者</th>
-                                <th>赛道类型</th>
+                                <th>激励分类</th>
                                 <th>游玩次数</th>
                                 <th>奖金金额</th>
                                 <th>所属计划</th>
@@ -2833,7 +2628,7 @@
                                 <td>MAP001</td>
                                 <td>冒险关卡001</td>
                                 <td>user100 小明</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>52,000</td>
                                 <td style="font-weight: 600; color: #1d1d1f;">¥2,000</td>
                                 <td>2026年1月</td>
@@ -2844,7 +2639,7 @@
                                 <td>MAP002</td>
                                 <td>解谜迷宫</td>
                                 <td>user101 小红</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>38,000</td>
                                 <td style="font-weight: 600; color: #1d1d1f;">¥1,500</td>
                                 <td>2026年1月</td>
@@ -2855,7 +2650,7 @@
                                 <td>MAP010</td>
                                 <td>极速跑酷</td>
                                 <td>user100 小明</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>28,000</td>
                                 <td style="font-weight: 600; color: #1d1d1f;">¥1,200</td>
                                 <td>2026年2月</td>
@@ -2866,7 +2661,7 @@
                                 <td>MAP020</td>
                                 <td>仙境探险</td>
                                 <td>user100 小明</td>
-                                <td><span class="badge badge-success">鼓励赛道</span></td>
+                                <td><span class="badge badge-success">鼓励</span></td>
                                 <td>45,000</td>
                                 <td style="font-weight: 600; color: #1d1d1f;">¥1,800</td>
                                 <td>2026年3月</td>
@@ -2877,7 +2672,7 @@
                                 <td>MAP030</td>
                                 <td>创意工坊</td>
                                 <td>user104 小陈</td>
-                                <td><span class="badge badge-info">非鼓励赛道</span></td>
+                                <td><span class="badge badge-info">非鼓励</span></td>
                                 <td>30,000</td>
                                 <td style="font-weight: 600; color: #1d1d1f;">¥1,500</td>
                                 <td>2026年4月</td>
@@ -2901,10 +2696,10 @@
                 <!-- 按地图可视化图表 -->
                 <div class="viz-container" style="margin-top:24px;padding:24px;background:#fff;border-radius:12px;border:1px solid #e5e5ea;">
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
-                        <span style="font-size:15px;font-weight:700;color:#1d1d1f;">🗺️ 地图奖金与赛道分析</span>
+                        <span style="font-size:15px;font-weight:700;color:#1d1d1f;">🗺️ 地图奖金与激励分类分析</span>
                         <div style="display:flex;gap:8px;">
                             <button class="btn-viz active" id="btnVizMapBar" onclick="switchVizMap('bar')" style="background:#0071e3;color:#fff;border:none;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;font-weight:600;">柱状图</button>
-                            <button class="btn-viz" id="btnVizMapTrack" onclick="switchVizMap('track')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">赛道对比</button>
+                            <button class="btn-viz" id="btnVizMapTrack" onclick="switchVizMap('track')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">分类对比</button>
                             <button class="btn-viz" id="btnVizMapScatter" onclick="switchVizMap('scatter')" style="background:#f5f5f7;color:#1d1d1f;border:1px solid #d2d2d7;padding:5px 14px;font-size:12px;border-radius:6px;cursor:pointer;">游玩vs奖金</button>
                         </div>
                     </div>
@@ -2913,13 +2708,13 @@
                     </div>
                     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px;" id="vizMapStatCards">
                         <div style="padding:20px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:10px;border-left:4px solid #34c759;">
-                            <div style="font-size:13px;color:#2e7d32;margin-bottom:6px;">鼓励赛道地图</div
+                            <div style="font-size:13px;color:#2e7d32;margin-bottom:6px;">鼓励地图</div
 >
                             <div style="font-size:26px;font-weight:800;color:#1b5e20;">4 张</div>
                             <div style="font-size:13px;color:#388e3c;margin-top:4px;">总奖金 ¥6,500 | 占比 86.7%</div>
                         </div>
                         <div style="padding:20px;background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-radius:10px;border-left:4px solid #007aff;">
-                            <div style="font-size:13px;color:#1565c0;margin-bottom:6px;">非鼓励赛道地图</div
+                            <div style="font-size:13px;color:#1565c0;margin-bottom:6px;">非鼓励地图</div
 >
                             <div style="font-size:26px;font-weight:800;color:#0d47a1;">1 张</div>
                             <div style="font-size:13px;color:#1976d2;margin-top:4px;">总奖金 ¥1,500 | 占比 13.3%</div>
@@ -3059,10 +2854,11 @@
                 .calc-panel-header h3 { font-size: 15px; font-weight: 600; color: #1d1d1f; }
                 .calc-panel-body { padding: 16px 20px; }
 
-                /* 赛道标签 */
+                /* 激励分类标签 */
                 .track-tag { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; }
-                .track-tag.encourage { background: #d6eaff; color: #0066cc; }
-                .track-tag.normal { background: #fce4ec; color: #c62828; }
+.track-tag.encourage { background: #d6eaff; color: #0066cc; }
+.track-tag.normal { background: #fce4ec; color: #c62828; }
+.track-tag.nonincentive { background: #f2f2f7; color: #8e8e93; }
 
                 /* 摘要统计卡片 */
                 .calc-summary-grid {
@@ -3079,7 +2875,7 @@
                 .calc-summary-card .card-label { font-size: 13px; color: #86868b; margin-top: 4px; }
                 .calc-summary-card .card-sub { font-size: 11px; color: #aeaeb2; margin-top: 2px; }
 
-                /* 赛道分布 */
+                /* 激励分类分布 */
                 .calc-track-grid {
                     display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;
                 }
@@ -3179,7 +2975,7 @@
                         <div class="calc-empty-state" id="calcEmptyState">
                             <div class="empty-icon">🧮</div>
                             <div class="empty-text">配置参数后点击「开始计算」</div>
-                            <div class="empty-sub">计算结果将在此展示摘要统计、赛道分布、地图明细</div>
+                            <div class="empty-sub">计算结果将在此展示摘要统计、激励分类分布、地图明细</div>
                         </div>
 
                         <!-- 摘要统计卡片（计算后显示） -->
@@ -3212,15 +3008,21 @@
                                 <div class="calc-summary-card">
                                     <div class="card-icon">📈</div>
                                     <div class="card-value" id="summaryEncRatio">--%</div>
-                                    <div class="card-label">鼓励赛道占比</div>
-                                    <div class="card-sub">鼓励赛道激励金占比</div>
+                                    <div class="card-label">鼓励占比</div>
+                                    <div class="card-sub">鼓励激励金占比</div>
+                                </div>
+                                <div class="calc-summary-card" style="background:#f5f5f7;border-color:#d2d2d7;">
+                                    <div class="card-icon">🚫</div>
+                                    <div class="card-value" id="summaryNonIncentiveCount" style="color:#8e8e93;">--</div>
+                                    <div class="card-label" style="color:#8e8e93;">非激励类地图</div>
+                                    <div class="card-sub" style="color:#aeaeb2;">不参与奖金计算</div>
                                 </div>
                             </div>
 
-                            <!-- 赛道分布卡片 -->
+                            <!-- 激励分类分布卡片 -->
                             <div class="calc-panel" style="margin-bottom: 20px;">
                                 <div class="calc-panel-header">
-                                    <h3>🏁 赛道分布</h3>
+                                    <h3>🏁 激励分类分布</h3>
                                 </div>
                                 <div class="calc-panel-body">
                                     <div class="calc-track-grid" id="calcTrackGrid">
@@ -3235,9 +3037,10 @@
                                     <h3>📋 地图计算明细</h3>
                                     <div style="display:flex;gap:8px;">
                                         <select id="calcMapFilterTrack" onchange="filterCalcMapTable()" style="border:1px solid #d2d2d7;border-radius:6px;padding:5px 10px;font-size:12px;">
-                                            <option value="all">全部赛道</option>
-                                            <option value="encourage">仅鼓励赛道</option>
-                                            <option value="normal">仅非鼓励赛道</option>
+                                            <option value="all">全部分类</option>
+                                            <option value="encourage">仅鼓励</option>
+                                            <option value="normal">仅非鼓励</option>
+                                            <option value="nonincentive">仅非激励</option>
                                         </select>
                                     </div>
                                 </div>
@@ -3248,8 +3051,8 @@
                                                 <th>地图ID</th>
                                                 <th>地图名称</th>
                                                 <th>创作者</th>
-                                                <th>赛道</th>
-                                                <th>类型</th>
+                                                <th>激励分类</th>
+                                                <th>激励类型</th>
                                                 <th style="text-align:right;">有效游玩人数</th>
                                                 <th>档位</th>
                                                 <th style="text-align:right;">预估激励金</th>
@@ -3277,7 +3080,7 @@
                                                 <th style="text-align:right;">参与地图数</th>
                                                 <th style="text-align:right;">总有效游玩人数</th>
                                                 <th style="text-align:right;">总激励金</th>
-                                                <th>赛道分布</th>
+                                                <th>激励分类分布</th>
                                             </tr>
                                         </thead>
                                         <tbody id="calcPersonTableBody">
@@ -3343,15 +3146,15 @@
                         </div>
                     </div>
 
-                    <!-- ====== 二、鼓励赛道参数 ====== -->
+                    <!-- ====== 二、鼓励参数 ====== -->
                     <div class="cfg-section">
-                        <div class="cfg-section-title encourage">二、鼓励赛道参数</div>
-                        <div class="cfg-section-subtitle">适用于跑酷、解谜、生存、射击竞技等鼓励赛道</div>
+                        <div class="cfg-section-title encourage">二、鼓励参数</div>
+                        <div class="cfg-section-subtitle">适用于跑酷、解谜、生存、射击竞技等鼓励类玩法</div>
 
                         <div class="cfg-form-row">
                             <div>
-                                <div class="cfg-label">单玩法最高奖金</div>
-                                <div class="cfg-desc">鼓励赛道单张地图的奖金封顶值</div>
+                                <div class="cfg-label">单图最高奖金</div>
+                                <div class="cfg-desc">鼓励类单张地图的奖金封顶值</div>
                             </div>
                             <div class="cfg-input-wrap">
                                 <input type="number" class="cfg-input" id="cfg_enc_map_cap" value="2000" step="100" min="0">
@@ -3370,7 +3173,7 @@
                             </div>
                         </div>
 
-                        <!-- 鼓励赛道阶梯表 -->
+                        <!-- 鼓励阶梯表 -->
                         <div class="cfg-staircase-table">
                             <table>
                                 <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
@@ -3387,15 +3190,15 @@
                         </div>
                     </div>
 
-                    <!-- ====== 三、非鼓励赛道参数 ====== -->
+                    <!-- ====== 三、非鼓励参数 ====== -->
                     <div class="cfg-section">
-                        <div class="cfg-section-title normal">三、非鼓励赛道参数</div>
-                        <div class="cfg-section-subtitle">适用于建筑展示、休闲小游戏等非鼓励赛道</div>
+                        <div class="cfg-section-title normal">三、非鼓励参数</div>
+                        <div class="cfg-section-subtitle">适用于建筑展示、休闲小游戏等非鼓励类玩法</div>
 
                         <div class="cfg-form-row">
                             <div>
-                                <div class="cfg-label">单玩法最高奖金</div>
-                                <div class="cfg-desc">非鼓励赛道单张地图的奖金封顶值</div>
+                                <div class="cfg-label">单图最高奖金</div>
+                                <div class="cfg-desc">非鼓励类单张地图的奖金封顶值</div>
                             </div>
                             <div class="cfg-input-wrap">
                                 <input type="number" class="cfg-input" id="cfg_nor_map_cap" value="1000" step="100" min="0">
@@ -3414,7 +3217,7 @@
                             </div>
                         </div>
 
-                        <!-- 非鼓励赛道阶梯表 -->
+                        <!-- 非鼓励阶梯表 -->
                         <div class="cfg-staircase-table">
                             <table>
                                 <thead><tr><th>有效游玩人数达到</th><th>对应激励金（元）</th><th style="width:40px;"></th></tr></thead>
@@ -3428,6 +3231,22 @@
                                 </tbody>
                             </table>
                             <button class="btn btn-secondary" style="margin-top:6px;font-size:12px;padding:4px 14px;" onclick="addNorTierRow()">+ 添加阶梯规则</button>
+                        </div>
+                    </div>
+
+                    <!-- ====== 四、非激励类说明 ====== -->
+                    <div class="cfg-section">
+                        <div class="cfg-section-title" style="background: linear-gradient(135deg, #8e8e93, #636366);">四、非激励类</div>
+                        <div class="cfg-section-subtitle">非激励类地图不参与奖金计算，有效游玩数据仅用于统计分析</div>
+                        <div style="padding:12px 16px;font-size:13px;color:#86868b;line-height:1.6;">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                                <span style="font-size:18px;">🚫</span>
+                                <span>非激励类地图 <strong style="color:#1d1d1f;">不发放激励金</strong></span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <span style="font-size:18px;">📊</span>
+                                <span>游玩数据仍纳入平台整体统计</span>
+                            </div>
                         </div>
                     </div>
 
@@ -3518,31 +3337,31 @@ window._calcScriptLoaded = false;
 
 // ========== 模拟数据集 ==========
 var RAW_MAP_DATA = [
-    {id:'MAP001', name:'极速狂飙·极限跑酷', author:'创作者A', authorId:'U001', track:'parkour', isEncourage:true, validUsers:320},
-    {id:'MAP002', name:'迷雾古堡解谜', author:'创作者B', authorId:'U002', track:'puzzle', isEncourage:true, validUsers:185},
-    {id:'MAP003', name:'末日生存基地', author:'创作者A', authorId:'U001', track:'survival', isEncourage:true, validUsers:450},
-    {id:'MAP004', name:'战术突击训练场', author:'创作者C', authorId:'U003', track:'fps', isEncourage:true, validUsers:280},
-    {id:'MAP005', name:'梦幻城堡建筑展', author:'创作者D', authorId:'U004', track:'build', isEncourage:false, validUsers:95},
-    {id:'MAP006', name:'休闲钓鱼大作战', author:'创作者E', authorId:'U005', track:'casual', isEncourage:false, validUsers:120},
-    {id:'MAP007', name:'天空之城跑酷', author:'创作者F', authorId:'U006', track:'parkour', isEncourage:true, validUsers:560},
-    {id:'MAP008', name:'机械迷城逃脱', author:'创作者B', authorId:'U002', track:'puzzle', isEncourage:true, validUsers:210},
-    {id:'MAP009', name:'僵尸围城生存', author:'创作者C', authorId:'U003', track:'survival', isEncourage:true, validUsers:380},
-    {id:'MAP010', name:'狙击精英挑战赛', author:'创作者G', authorId:'U007', track:'fps', isEncourage:true, validUsers:310},
-    {id:'MAP011', name:'像素小镇建造', author:'创作者D', authorId:'U004', track:'build', isEncourage:false, validUsers:78},
-    {id:'MAP012', name:'消消乐闯关', author:'创作者E', authorId:'U005', track:'casual', isEncourage:false, validUsers:145},
-    {id:'MAP013', name:'霓虹都市跑酷', author:'创作者A', authorId:'U001', track:'parkour', isEncourage:true, validUsers:420},
-    {id:'MAP014', name:'时空迷宫探险', author:'创作者F', authorId:'U006', track:'puzzle', isEncourage:true, validUsers:168},
-    {id:'MAP015', name:'深海生存日记', author:'创作者G', authorId:'U007', track:'survival', isEncourage:true, validUsers:290},
-    {id:'MAP016', name:'枪火对决竞技场', author:'创作者C', authorId:'U003', track:'fps', isEncourage:true, validUsers:245},
-    {id:'MAP017', name:'微缩景观博物馆', author:'创作者H', authorId:'U008', track:'build', isEncourage:false, validUsers:62},
-    {id:'MAP018', name:'宠物乐园模拟器', author:'创作者I', authorId:'U009', track:'casual', isEncourage:false, validUsers:188},
-    {id:'MAP019', name:'重力翻转跑酷', author:'创作者J', authorId:'U010', track:'parkour', isEncourage:true, validUsers:350},
-    {id:'MAP020', name:'密码破译室', author:'创作者K', authorId:'U011', track:'puzzle', isEncourage:true, validUsers:132},
+    {id:'MAP001', name:'极速狂飙·极限跑酷', author:'创作者A', authorId:'U001', track:'parkour', incentiveType:'encourage', validUsers:320},
+    {id:'MAP002', name:'迷雾古堡解谜', author:'创作者B', authorId:'U002', track:'puzzle', incentiveType:'encourage', validUsers:185},
+    {id:'MAP003', name:'末日生存基地', author:'创作者A', authorId:'U001', track:'survival', incentiveType:'encourage', validUsers:450},
+    {id:'MAP004', name:'战术突击训练场', author:'创作者C', authorId:'U003', track:'fps', incentiveType:'encourage', validUsers:280},
+    {id:'MAP005', name:'梦幻城堡建筑展', author:'创作者D', authorId:'U004', track:'build', incentiveType:'normal', validUsers:95},
+    {id:'MAP006', name:'休闲钓鱼大作战', author:'创作者E', authorId:'U005', track:'casual', incentiveType:'normal', validUsers:120},
+    {id:'MAP007', name:'天空之城跑酷', author:'创作者F', authorId:'U006', track:'parkour', incentiveType:'encourage', validUsers:560},
+    {id:'MAP008', name:'机械迷城逃脱', author:'创作者B', authorId:'U002', track:'puzzle', incentiveType:'encourage', validUsers:210},
+    {id:'MAP009', name:'僵尸围城生存', author:'创作者C', authorId:'U003', track:'survival', incentiveType:'encourage', validUsers:380},
+    {id:'MAP010', name:'狙击精英挑战赛', author:'创作者G', authorId:'U007', track:'fps', incentiveType:'encourage', validUsers:310},
+    {id:'MAP011', name:'像素小镇建造', author:'创作者D', authorId:'U004', track:'build', incentiveType:'nonincentive', validUsers:78},
+    {id:'MAP012', name:'消消乐闯关', author:'创作者E', authorId:'U005', track:'casual', incentiveType:'normal', validUsers:145},
+    {id:'MAP013', name:'霓虹都市跑酷', author:'创作者A', authorId:'U001', track:'parkour', incentiveType:'encourage', validUsers:420},
+    {id:'MAP014', name:'时空迷宫探险', author:'创作者F', authorId:'U006', track:'puzzle', incentiveType:'encourage', validUsers:168},
+    {id:'MAP015', name:'深海生存日记', author:'创作者G', authorId:'U007', track:'survival', incentiveType:'encourage', validUsers:290},
+    {id:'MAP016', name:'枪火对决竞技场', author:'创作者C', authorId:'U003', track:'fps', incentiveType:'encourage', validUsers:245},
+    {id:'MAP017', name:'微缩景观博物馆', author:'创作者H', authorId:'U008', track:'build', incentiveType:'nonincentive', validUsers:62},
+    {id:'MAP018', name:'宠物乐园模拟器', author:'创作者I', authorId:'U009', track:'casual', incentiveType:'normal', validUsers:188},
+    {id:'MAP019', name:'重力翻转跑酷', author:'创作者J', authorId:'U010', track:'parkour', incentiveType:'encourage', validUsers:350},
+    {id:'MAP020', name:'密码破译室', author:'创作者K', authorId:'U011', track:'puzzle', incentiveType:'nonincentive', validUsers:132},
 ];
 
 var TRACK_NAMES = {
-    parkour:'跑酷赛道', puzzle:'解谜赛道', survival:'生存赛道',
-    fps:'射击竞技赛道', build:'建筑展示赛道', casual:'休闲小游戏赛道'
+    parkour:'跑酷', puzzle:'解谜', survival:'生存',
+    fps:'射击竞技', build:'建筑展示', casual:'休闲小游戏'
 };
 
 // ========== 当前配置（可编辑） ==========
@@ -3550,7 +3369,7 @@ var currentConfig = {
     settlementCycle: '2026-05',
     budget: 200000,
     userBonusCap: 5000,
-    // 激励类赛道
+    // 鼓励类
     encMapCap: 2000,
     encMinUsers: 100,
     encTiers: [
@@ -3561,7 +3380,7 @@ var currentConfig = {
         { users: 5000, bonus: 1800 },
         { users: 8000, bonus: 2500 }
     ],
-    // 非鼓励赛道
+    // 非鼓励类
     norMapCap: 1000,
     norMinUsers: 100,
     norTiers: [
@@ -3571,7 +3390,9 @@ var currentConfig = {
         { users: 3500, bonus: 450 },
         { users: 5000, bonus: 650 },
         { users: 8000, bonus: 900 }
-    ]
+    ],
+    // 非激励类（不参与奖金计算）
+    nonIncentiveBonus: 0
 };
 
 // ========== 上次计算结果缓存（用于对比） ==========
@@ -3636,37 +3457,52 @@ function doFullCalculation(cfg) {
     });
 
     flatMaps.forEach(function(m){
-        var isEncourage = m.isEncourage;
-        var cap = isEncourage ? cfg.encMapCap : cfg.norMapCap;
-        var tiers = isEncourage ? cfg.encTiers : cfg.norTiers;
-        var minU = isEncourage ? cfg.encMinUsers : cfg.norMinUsers;
+        var incentiveType = m.incentiveType || (m.isEncourage ? 'encourage' : 'normal');
+        var isEncourage = incentiveType === 'encourage';
+        var isNonIncentive = incentiveType === 'nonincentive';
+        var cap, tiers, minU, bonus;
         
-        var bonus = calcStaircaseBonus(m.validUsers, tiers, cap, minU);
+        if (isNonIncentive) {
+            // 非激励类：不参与奖金计算
+            bonus = 0;
+            cap = 0; tiers = []; minU = 999999;
+        } else if (isEncourage) {
+            cap = cfg.encMapCap;
+            tiers = cfg.encTiers;
+            minU = cfg.encMinUsers;
+            bonus = calcStaircaseBonus(m.validUsers, tiers, cap, minU);
+        } else {
+            cap = cfg.norMapCap;
+            tiers = cfg.norTiers;
+            minU = cfg.norMinUsers;
+            bonus = calcStaircaseBonus(m.validUsers, tiers, cap, minU);
+        }
         
-        // 单用户上限检查
-        var uid = m.authorId;
-        personBonusMap[uid] = (personBonusMap[uid] || 0) + bonus;
-        if (personBonusMap[uid] > cfg.userBonusCap) {
-            // 超出部分截断
-            bonus = Math.max(0, cfg.userBonusCap - (personBonusMap[uid] - bonus));
-            personBonusMap[uid] = cfg.userBonusCap;
+        // 单用户上限检查（非激励类跳过）
+        if (!isNonIncentive) {
+            var uid = m.authorId;
+            personBonusMap[uid] = (personBonusMap[uid] || 0) + bonus;
+            if (personBonusMap[uid] > cfg.userBonusCap) {
+                bonus = Math.max(0, cfg.userBonusCap - (personBonusMap[uid] - bonus));
+                personBonusMap[uid] = cfg.userBonusCap;
+            }
         }
         
         maps.push({
             id: m.id, name: m.name, author: m.author, authorId: m.authorId,
-            track: m.track, isEncourage: isEncourage,
+            track: m.track, incentiveType: incentiveType, isEncourage: isEncourage,
             rawValidUsers: m.validUsers,
-            tierLabel: m.validUsers < minU ? '\u4e0d\u6fc0\u52b1' : (m.validUsers >= ((tiers.length > 0 ? tiers[tiers.length-1].users : 0) || 99999) ? '\u6700\u9ad8\u6863' : '\u9636\u68af'),
+            tierLabel: isNonIncentive ? '非激励' : (m.validUsers < minU ? '未达标' : (m.validUsers >= ((tiers.length > 0 ? tiers[tiers.length-1].users : 0) || 99999) ? '最高档' : '阶梯')),
             bonus: Math.round(bonus)
         });
         totalBonus += bonus;
     });
 
-    // 按赛道聚合
+    // 按激励分类聚合
     var trackStats = {};
     maps.forEach(function(m){
         var t = m.track;
-        if(!trackStats[t]) trackStats[t] = {name: TRACK_NAMES[t]||t, isEncourage:m.isEncourage, mapCount:0, totalBonus:0, totalUsers:0};
+        if(!trackStats[t]) trackStats[t] = {name: TRACK_NAMES[t]||t, incentiveType:m.incentiveType, isEncourage:m.isEncourage, mapCount:0, totalBonus:0, totalUsers:0};
         trackStats[t].mapCount++;
         trackStats[t].totalBonus += m.bonus;
         trackStats[t].totalUsers += m.rawValidUsers;
@@ -3682,7 +3518,7 @@ function doFullCalculation(cfg) {
         p.mapCount++;
         p.totalUsers += m.rawValidUsers;
         p.totalBonus += m.bonus;
-        var tkey = m.isEncourage?'鼓励':'非鼓励';
+        var tkey = m.incentiveType === 'encourage' ? '鼓励' : (m.incentiveType === 'nonincentive' ? '非激励' : '非鼓励');
         p.tracks[tkey] = (p.tracks[tkey]||0)+1;
     });
 
@@ -3694,12 +3530,14 @@ function doFullCalculation(cfg) {
     return {
         config: JSON.parse(JSON.stringify(cfg)),
         summary: {
-            mapCount: maps.length,
+            totalMapCount: maps.length,
+            mapCount: maps.filter(function(m){return m.incentiveType!=='nonincentive';}).length,
             authorCount: Object.keys(personRank).length,
             totalBonus: Math.round(totalBonus),
-            avgBonus: maps.length>0?Math.round(totalBonus/maps.length):0,
-            encBonus: Object.keys(trackStats).reduce(function(s,k){ return s + (trackStats[k].isEncourage?trackStats[k].totalBonus:0); },0),
-            encRatio: totalBonus>0?Math.round(Object.keys(trackStats).reduce(function(s,k){return s+(trackStats[k].isEncourage?trackStats[k].totalBonus:0);},0)/totalBonus*1000)/10:0
+            avgBonus: maps.filter(function(m){return m.incentiveType!=='nonincentive';}).length>0?Math.round(totalBonus/maps.filter(function(m){return m.incentiveType!=='nonincentive';}).length):0,
+            encBonus: Object.keys(trackStats).reduce(function(s,k){ return s + (trackStats[k].incentiveType==='encourage'?trackStats[k].totalBonus:0); },0),
+            encRatio: totalBonus>0?Math.round(Object.keys(trackStats).reduce(function(s,k){return s+(trackStats[k].incentiveType==='encourage'?trackStats[k].totalBonus:0);},0)/totalBonus*1000)/10:0,
+            nonIncentiveCount: maps.filter(function(m){return m.incentiveType==='nonincentive';}).length
         },
         maps: maps,
         trackStats: trackStats,
@@ -3718,8 +3556,15 @@ function renderMapTable(maps) {
     var html = '';
     maps.forEach(function(m) {
         var trackName = TRACK_NAMES[m.track] || m.track;
-        var trackClass = m.isEncourage ? 'encourage' : 'normal';
-        var trackLabel = m.isEncourage ? '鼓励' : '非鼓励';
+        var incentiveType = m.incentiveType || (m.isEncourage ? 'encourage' : 'normal');
+        var trackClass, trackLabel;
+        if (incentiveType === 'encourage') {
+            trackClass = 'encourage'; trackLabel = '鼓励';
+        } else if (incentiveType === 'nonincentive') {
+            trackClass = 'nonincentive'; trackLabel = '非激励';
+        } else {
+            trackClass = 'normal'; trackLabel = '非鼓励';
+        }
         var bonusClass = m.bonus > 0 ? '' : ' zero';
         html += '<tr>';
         html += '<td>' + m.id + '</td>';
@@ -3746,9 +3591,10 @@ function renderTrackResults(trackStats) {
     Object.keys(trackStats).forEach(function(key) {
         var t = trackStats[key];
         var color = colors[key] || '#8e8e93';
+        var typeLabel = t.incentiveType === 'encourage' ? '鼓励' : (t.incentiveType === 'nonincentive' ? '非激励' : '非鼓励');
         html += '<div class="calc-track-card">';
         html += '<div class="track-accent" style="background:' + color + ';"></div>';
-        html += '<div class="track-name" style="padding-left:10px;">' + t.name + '</div>';
+        html += '<div class="track-name" style="padding-left:10px;">' + t.name + ' <span class="track-tag ' + (t.incentiveType === 'encourage' ? 'encourage' : (t.incentiveType === 'nonincentive' ? 'nonincentive' : 'normal')) + '" style="font-size:11px;margin-left:6px;">' + typeLabel + '</span></div>';
         html += '<div class="track-stats" style="padding-left:10px;">';
         html += '<div class="track-stat-item"><div class="val" style="color:' + color + ';">' + t.mapCount + '</div><div class="lbl">地图数</div></div>';
         html += '<div class="track-stat-item"><div class="val">¥' + t.totalBonus.toLocaleString() + '</div><div class="lbl">激励金</div></div>';
@@ -3798,6 +3644,8 @@ function renderStats(summary, oldSummary) {
     if (el) el.textContent = '¥ ' + Math.round(summary.avgBonus).toLocaleString();
     el = document.getElementById('summaryEncRatio');
     if (el) el.textContent = summary.encRatio + '%';
+    el = document.getElementById('summaryNonIncentiveCount');
+    if (el) el.textContent = summary.nonIncentiveCount || 0;
 
     // Hide old resultSummaryContent panel (no longer used)
     var oldPanel = document.getElementById('calcResultSummary');
@@ -3812,9 +3660,11 @@ window.filterCalcMapTable = function() {
     var filterVal = document.getElementById('calcMapFilterTrack').value;
     var maps = _lastCalcResult.mapRank;
     if (filterVal === 'encourage') {
-        maps = maps.filter(function(m) { return m.isEncourage; });
+        maps = maps.filter(function(m) { return (m.incentiveType || (m.isEncourage ? 'encourage' : 'normal')) === 'encourage'; });
     } else if (filterVal === 'normal') {
-        maps = maps.filter(function(m) { return !m.isEncourage; });
+        maps = maps.filter(function(m) { return (m.incentiveType || (m.isEncourage ? 'encourage' : 'normal')) === 'normal'; });
+    } else if (filterVal === 'nonincentive') {
+        maps = maps.filter(function(m) { return (m.incentiveType || (m.isEncourage ? 'encourage' : 'normal')) === 'nonincentive'; });
     }
     renderMapTable(maps);
 };
@@ -3876,7 +3726,7 @@ window.readCurrentConfig = function() {
         if(u && b && u.value!==''){ currentConfig.encTiers.push({users:parseInt(u.value)||0, bonus:parseInt(b.value)||0}); }
     });
     if(currentConfig.encTiers.length===0){ currentConfig.encTiers = [{users:100,bonus:30}]; }
-    // 非鼓励赛道 - 动态读取阶梯行
+    // 非鼓励 - 动态读取阶梯行
     currentConfig.norMapCap = parseInt(document.getElementById('cfg_nor_map_cap').value) || 1000;
     currentConfig.norMinUsers = parseInt(document.getElementById('cfg_nor_min_users').value) || 100;
     currentConfig.norTiers = [];
@@ -3894,7 +3744,7 @@ window.resetFormulaConfig = function() {
     document.getElementById('cfg_settlement_cycle').value = '2026-05';
     document.getElementById('cfg_budget').value = 200000;
     document.getElementById('cfg_user_bonus_cap').value = 5000;
-    // 鼓励赛道 - 重置为默认6行阶梯
+    // 鼓励 - 重置为默认6行阶梯
     document.getElementById('cfg_enc_map_cap').value = 2000;
     document.getElementById('cfg_enc_min_users').value = 100;
     document.getElementById('encTierBody').innerHTML =
@@ -3904,7 +3754,7 @@ window.resetFormulaConfig = function() {
         '<tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="3500" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="1200" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>' +
         '<tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="5000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="1800" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>' +
         '<tr class="enc-tier-row"><td><input type="number" class="cfg-mini-input" enc-tier-users value="8000" step="50" min="0"></td><td><input type="number" class="cfg-mini-input" enc-tier-bonus value="2500" step="10" min="0"></td><td><button class="btn btn-danger btn-sm" onclick="removeTierRow(this)" title="\u5220\u9664\u6b44\u884c" style="padding:2px 8px;font-size:11px;">&times;</button></td></tr>';
-    // 非鼓励赛道 - 重置为默认6行阶梯
+    // 非鼓励 - 重置为默认6行阶梯
     document.getElementById('cfg_nor_map_cap').value = 1000;
     document.getElementById('cfg_nor_min_users').value = 100;
     document.getElementById('norTierBody').innerHTML =
@@ -3973,16 +3823,19 @@ window.confirmSubmitCalc = function() {
         '  结算周期: ' + cfg.settlementCycle + '\n' +
         '  预算上限: ¥' + cfg.budget.toLocaleString() + '\n' +
         '  单用户奖金上限: ¥' + cfg.userBonusCap.toLocaleString() + '\n\n' +
-        '━━ 激励类赛道参数 ━━\n' +
-        '  单玩法最高奖金: ¥' + cfg.encMapCap.toLocaleString() + '\n' +
+'━━ 鼓励类参数 ━━\n' +
+        '  单图最高奖金: ¥' + cfg.encMapCap.toLocaleString() + '\n' +
         '  激励阶梯: ' + encTiersStr + '\n' +
         '  开始激励门槛: ' + cfg.encMinUsers + ' 人\n\n' +
-        '━━ 非鼓励赛道参数 ━━\n' +
-        '  单玩法最高奖金: ¥' + cfg.norMapCap.toLocaleString() + '\n' +
+        '━━ 非鼓励类参数 ━━\n' +
+        '  单图最高奖金: ¥' + cfg.norMapCap.toLocaleString() + '\n' +
         '  激励阶梯: ' + norTiersStr + '\n' +
         '  开始激励门槛: ' + cfg.norMinUsers + ' 人\n\n' +
+        '━━ 非激励类 ━━\n' +
+        '  不参与奖金计算\n\n' +
         '━━ 计算结果摘要 ━━\n' +
         '  激励地图: ' + summary.mapCount + ' 张\n' +
+        '  非激励类地图: ' + (summary.nonIncentiveCount||0) + ' 张（不参与计算）\n' +
         '  激励作者: ' + summary.authorCount + ' 人\n' +
         '  总激励金: ¥' + Math.round(summary.totalBonus).toLocaleString() + '\n\n' +
         '确认提交？';
@@ -4025,16 +3878,18 @@ window.exportCalcResult = function() {
     var maps = lastResultCache.maps;
     var lines = [];
     lines.push('\uFEFF'); // BOM for Excel UTF-8
-    lines.push('地图ID,地图名称,作者,作者ID,赛道,是否鼓励赛道,有效用户(人),阶梯档位,预期奖金(元)');
+    lines.push('地图ID,地图名称,作者,作者ID,激励分类,激励类型,有效用户(人),阶梯档位,预期奖金(元)');
     maps.forEach(function(m){
         var trackName = TRACK_NAMES[m.track] || m.track;
+        var incentiveType = m.incentiveType || (m.isEncourage ? 'encourage' : 'normal');
+        var typeLabel = incentiveType === 'encourage' ? '鼓励' : (incentiveType === 'nonincentive' ? '非激励' : '非鼓励');
         lines.push([
             m.id,
             '"' + m.name.replace(/"/g,'""') + '"',
             '"' + m.author.replace(/"/g,'""') + '"',
             m.authorId,
             trackName,
-            m.isEncourage?'是':'否',
+            typeLabel,
             m.rawValidUsers,
             m.tierLabel,
             m.bonus
@@ -4158,7 +4013,7 @@ window._calcInitialized = false;
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                    <strong>简化流程说明：</strong>赛道规则已在"赛道配置"tab中统一维护（含生效时间与自动识别算法）。创建计划时只需选择本期的<strong>鼓励类赛道</strong>，未选择的赛道默认为非鼓励。
+<strong>配置说明：</strong>玩法类型分为三类：<strong style="color:#34c759;">鼓励</strong>、<strong style="color:#0071e3;">非鼓励</strong>、<strong style="color:#86868b;">非激励</strong>，彼此互斥。点击某类下的玩法类型即可将其归入该类，未归类的自动进入非激励。
                 </div>
                 <div class="form-group">
                     <label>计划名称</label>
@@ -4169,32 +4024,35 @@ window._calcInitialized = false;
                     <input type="month" id="planMonth">
                 </div>
                 <div class="form-group">
-                    <label>鼓励赛道选择 <span style="font-weight: 400; font-size: 12px; color: #86868b;">（从已配置的赛道规则中选择本期鼓励的赛道，未选则为非鼓励）</span></label>
-                    <div style="border: 1px solid #d2d2d7; border-radius: 8px; padding: 14px 16px; background: #fafafa; max-height: 220px; overflow-y: auto;">
-                        <div style="margin-bottom: 8px; font-size: 12px; color: #86868b; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">
-                            当前共 <strong style="color: #0071e3;">7</strong> 条已生效赛道规则 · 引用自「赛道配置」
+                    <label>玩法类型分类配置 <span style="font-weight: 400; font-size: 12px; color: #86868b;">（点击即可切换归属，三类互斥联动）</span></label>
+                    <div id="trackTypeSelector" style="border: 1px solid #d2d2d7; border-radius: 8px; padding: 14px 16px; background: #fafafa;">
+                        <!-- 鼓励 -->
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 13px; font-weight: 600; color: #34c759; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#34c759;"></span> 鼓励
+                                <span id="encourageCount" style="font-weight: 400; font-size: 11px; color: #86868b; margin-left: 4px;">(0)</span>
+                            </div>
+                            <div id="encourageZone" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#f0faf3;border-radius:6px;border:1px solid #c3e6cb;min-height:38px;">
+                            </div>
                         </div>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="parkour"> <span><strong>跑酷赛道</strong> <span style="font-size: 11px; color: #999;">标签: 跑酷、跳跃、竞速</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="puzzle"> <span><strong>解谜赛道</strong> <span style="font-size: 11px; color: #999;">标签: 解谜、谜题、智力</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="survival"> <span><strong>生存赛道</strong> <span style="font-size: 11px; color: #999;">标签: 生存、生存挑战</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="fps"> <span><strong>射击竞技赛道</strong> <span style="font-size: 11px; color: #999;">标签: 射击、FPS、对战</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" value="build"> <span><strong>建筑展示赛道</strong> <span style="font-size: 11px; color: #999;">标签: 建筑、景观、展示</span></span> <span class="badge badge-info" style="margin-left: auto; font-size: 11px;">非鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" value="casual"> <span><strong>休闲小游戏赛道</strong> <span style="font-size: 11px; color: #999;">标签: 休闲、娱乐、小游戏</span></span> <span class="badge badge-info" style="margin-left: auto; font-size: 11px;">非鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 0; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" value="other"> <span><strong>其他未分类赛道</strong> <span style="font-size: 11px; color: #999;">未匹配任何规则的地图</span></span> <span class="badge badge-info" style="margin-left: auto; font-size: 11px;">非鼓励</span>
-                        </label>
+                        <!-- 非鼓励 -->
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 13px; font-weight: 600; color: #0071e3; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#0071e3;"></span> 非鼓励
+                                <span id="discourageCount" style="font-weight: 400; font-size: 11px; color: #86868b; margin-left: 4px;">(0)</span>
+                            </div>
+                            <div id="discourageZone" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#f0f7fa;border-radius:6px;border:1px solid #bee5eb;min-height:38px;">
+                            </div>
+                        </div>
+                        <!-- 非激励 -->
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600; color: #86868b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#86868b;"></span> 非激励
+                                <span id="nonIncentiveCount" style="font-weight: 400; font-size: 11px; color: #86868b; margin-left: 4px;">(7)</span>
+                            </div>
+                            <div id="nonIncentiveZone" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#f5f5f7;border-radius:6px;border:1px solid #d2d2d7;min-height:38px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -4226,42 +4084,44 @@ window._calcInitialized = false;
             </div>
             <div class="modal-body">
                 <div class="alert alert-warning">
-                    <strong>注意：</strong>修改鼓励赛道选择后，未勾选的赛道将自动变为"非鼓励"。赛道规则本身在"赛道配置"tab中维护，此处仅控制本期哪些赛道为鼓励类。
+<strong>注意：</strong>修改玩法类型分类后，三类互斥：鼓励、非鼓励、非激励。点击某类下的玩法类型即可将其归入该类，未归类的自动进入非激励。
                 </div>
                 <div class="form-group">
                     <label>计划名称</label>
                     <input type="text" id="editPlanName" readonly style="background: #f5f5f7; color: #86868b;">
                 </div>
                 <div class="form-group">
-                    <label>本期鼓励赛道 <span style="font-weight: 400; font-size: 12px; color: #86868b;">（调整勾选即可切换鼓励/非鼓励）</span></label>
-                    <div style="border: 1px solid #d2d2d7; border-radius: 8px; padding: 14px 16px; background: #fafafa; max-height: 220px; overflow-y: auto;">
-                        <div style="margin-bottom: 8px; font-size: 12px; color: #86868b; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">
-                            当前共 <strong style="color: #0071e3;">7</strong> 条已生效赛道规则 · 引用自「赛道配置」
+                    <label>玩法类型分类配置 <span style="font-weight: 400; font-size: 12px; color: #86868b;">（点击即可切换归属，三类互斥联动）</span></label>
+                    <div id="editTrackTypeSelector" style="border: 1px solid #d2d2d7; border-radius: 8px; padding: 14px 16px; background: #fafafa;">
+                        <!-- 鼓励 -->
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 13px; font-weight: 600; color: #34c759; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#34c759;"></span> 鼓励
+                                <span id="editEncourageCount" style="font-weight: 400; font-size: 11px; color: #86868b; margin-left: 4px;">(0)</span>
+                            </div>
+                            <div id="editEncourageZone" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#f0faf3;border-radius:6px;border:1px solid #c3e6cb;min-height:38px;">
+                            </div>
                         </div>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="parkour"> <span><strong>跑酷赛道</strong> <span style="font-size: 11px; color: #999;">标签: 跑酷、跳跃、竞速</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="puzzle"> <span><strong>解谜赛道</strong> <span style="font-size: 11px; color: #999;">标签: 解谜、谜题、智力</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="survival"> <span><strong>生存赛道</strong> <span style="font-size: 11px; color: #999;">标签: 生存、生存挑战</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" checked value="fps"> <span><strong>射击竞技赛道</strong> <span style="font-size: 11px; color: #999;">标签: 射击、FPS、对战</span></span> <span class="badge badge-success" style="margin-left: auto; font-size: 11px;">鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" value="build"> <span><strong>建筑展示赛道</strong> <span style="font-size: 11px; color: #999;">标签: 建筑、景观、展示</span></span> <span class="badge badge-info" style="margin-left: auto; font-size: 11px;">非鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 6px; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" value="casual"> <span><strong>休闲小游戏赛道</strong> <span style="font-size: 11px; color: #999;">标签: 休闲、娱乐、小游戏</span></span> <span class="badge badge-info" style="margin-left: auto; font-size: 11px;">非鼓励</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; margin-bottom: 0; background: white; border-radius: 6px; border: 1px solid #e5e5e5; cursor: pointer;">
-                            <input type="checkbox" value="other"> <span><strong>其他未分类赛道</strong> <span style="font-size: 11px; color: #999;">未匹配任何规则的地图</span></span> <span class="badge badge-info" style="margin-left: auto; font-size: 11px;">非鼓励</span>
-                        </label>
+                        <!-- 非鼓励 -->
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 13px; font-weight: 600; color: #0071e3; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#0071e3;"></span> 非鼓励
+                                <span id="editDiscourageCount" style="font-weight: 400; font-size: 11px; color: #86868b; margin-left: 4px;">(0)</span>
+                            </div>
+                            <div id="editDiscourageZone" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#f0f7fa;border-radius:6px;border:1px solid #bee5eb;min-height:38px;">
+                            </div>
+                        </div>
+                        <!-- 非激励 -->
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600; color: #86868b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#86868b;"></span> 非激励
+                                <span id="editNonIncentiveCount" style="font-weight: 400; font-size: 11px; color: #86868b; margin-left: 4px;">(7)</span>
+                            </div>
+                            <div id="editNonIncentiveZone" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#f5f5f7;border-radius:6px;border:1px solid #d2d2d7;min-height:38px;">
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
+                </div>                </div>                <div class="form-group">
                     <label>奖金总额（元）</label>
                     <input type="number" id="editPlanBudget" placeholder="如：50000" min="0">
                 </div>
@@ -4407,16 +4267,16 @@ window._calcInitialized = false;
         </div>
     </div>
 
-    <!-- 批量修改赛道弹窗 -->
+    <!-- 批量修改激励分类弹窗 -->
     <div id="batchTrackModal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <h3>📥 批量修改赛道</h3>
+                <h3>📥 批量修改激励分类</h3>
                 <button class="close-btn" onclick="closeModal('batchTrackModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" style="margin-bottom: 20px;">
-                    <strong>操作说明：</strong>下载模板 → 填写地图ID与目标赛道 → 上传文件 → 系统自动比对存量数据并更新
+                    <strong>操作说明：</strong>下载模板 → 填写地图ID与激励类型（鼓励、非鼓励和非激励） → 上传文件 → 系统自动比对存量数据并更新
                 </div>
 
                 <!-- 步骤1：下载模板 -->
@@ -4424,7 +4284,7 @@ window._calcInitialized = false;
                     <div style="display: flex; align-items: center; justify-content: space-between;">
                         <div>
                             <div style="font-weight: 600; font-size: 14px; color: #1d1d1f; margin-bottom: 4px;">Step 1 · 下载模板</div>
-                            <div style="font-size: 13px; color: #6e6e73;">下载 Excel 模板，按格式填写地图ID、地图名称、目标赛道</div>
+                            <div style="font-size: 13px; color: #6e6e73;">下载 Excel 模板，按格式填写地图ID、地图名称、目标激励分类（鼓励/非鼓励/非激励）</div>
                         </div>
                         <button class="btn btn-secondary" onclick="downloadTrackTemplate()" style="white-space: nowrap; display: flex; align-items: center; gap: 6px;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -4535,9 +4395,89 @@ window._calcInitialized = false;
             closeModal('auditModal');
         }
 
+        // 玩法类型数据（创建计划弹窗用）
+        const gameplayTypes = [
+            { id: 'parkour', name: '跑酷', tags: '跑酷、跳跃、竞速' },
+            { id: 'puzzle', name: '解谜', tags: '解谜、谜题、智力' },
+            { id: 'survival', name: '生存', tags: '生存、生存挑战' },
+            { id: 'fps', name: '射击竞技', tags: '射击、FPS、对战' },
+            { id: 'build', name: '建筑展示', tags: '建筑、景观、展示' },
+            { id: 'casual', name: '休闲小游戏', tags: '休闲、娱乐、小游戏' },
+            { id: 'other', name: '其他未分类', tags: '未匹配任何规则的地图' }
+        ];
+        // 当前分类状态: encourage / discourage / nonIncentive
+        let trackClassification = {};
+
         // 打开创建计划模态框
         function openCreatePlanModal() {
+            // 初始全部为非激励
+            trackClassification = {};
+            gameplayTypes.forEach(t => { trackClassification[t.id] = 'nonIncentive'; });
+            renderTrackTypeCards();
             document.getElementById('createPlanModal').classList.add('show');
+        }
+
+        // 渲染玩法类型卡片——每个区域展示全部，选中高亮，非选中灰暗
+        function renderTrackTypeCards() {
+            renderFullZone('encourageZone', 'encourage', 'trackClassification');
+            renderFullZone('discourageZone', 'discourage', 'trackClassification');
+            renderFullZone('nonIncentiveZone', 'nonIncentive', 'trackClassification');
+
+            const counts = { encourage: 0, discourage: 0, nonIncentive: 0 };
+            gameplayTypes.forEach(t => { counts[trackClassification[t.id] || 'nonIncentive']++; });
+            document.getElementById('encourageCount').textContent = '(' + counts.encourage + ')';
+            document.getElementById('discourageCount').textContent = '(' + counts.discourage + ')';
+            document.getElementById('nonIncentiveCount').textContent = '(' + counts.nonIncentive + ')';
+        }
+
+        // 渲染全展示区域：所有玩法类型都显示，归属当前分类的高亮，其余灰暗
+        function renderFullZone(zoneId, zoneClass, stateVar) {
+            const zone = document.getElementById(zoneId);
+            const stateObj = stateVar === 'trackClassification' ? trackClassification : editTrackClassification;
+            const isEdit = stateVar === 'editTrackClassification';
+            const clickFn = isEdit ? 'handleEditTrackClick' : 'handleTrackClick';
+
+            const activeStyles = {
+                encourage:   { bg: '#e8f8ed', border: '#34c759', color: '#1e7e34', iconBg: '#34c759', iconColor: '#fff' },
+                discourage:  { bg: '#e8f0fe', border: '#0071e3', color: '#0c5460', iconBg: '#0071e3', iconColor: '#fff' },
+                nonIncentive:{ bg: '#f5f5f7', border: '#86868b', color: '#555',     iconBg: '#86868b', iconColor: '#fff' }
+            };
+            const inactiveStyle = { bg: '#fff', border: '#e0e0e0', color: '#bbb', iconBg: '#e0e0e0', iconColor: '#ccc' };
+
+            let html = '';
+            gameplayTypes.forEach(t => {
+                const cls = stateObj[t.id] || 'nonIncentive';
+                const isActive = (cls === zoneClass);
+                const s = isActive ? activeStyles[zoneClass] : inactiveStyle;
+                const checkIcon = isActive
+                    ? '<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:' + s.iconBg + ';color:' + s.iconColor + ';font-size:10px;font-weight:bold;">✓</span>'
+                    : '<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:' + s.iconBg + ';color:' + s.iconColor + ';font-size:10px;border:1px solid #d0d0d0;"></span>';
+
+                html += '<div onclick="' + clickFn + '(\'' + t.id + '\',\'' + zoneClass + '\')" ' +
+                    'style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;' +
+                    'background:' + s.bg + ';border:1.5px solid ' + (isActive ? s.border : '#e8e8e8') + ';cursor:pointer;font-size:13px;transition:all 0.15s;' +
+                    'user-select:none;' + (isActive ? 'font-weight:600;' : '') + '" ' +
+                    'onmouseover="this.style.transform=\'scale(1.04)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.1)\'" ' +
+                    'onmouseout="this.style.transform=\'scale(1)\';this.style.boxShadow=\'none\'">' +
+                    checkIcon +
+                    '<span style="color:' + s.color + '">' + t.name + '</span>' +
+                    '<span style="font-size:10px;color:' + (isActive ? '#999' : '#ccc') + ';">' + t.tags + '</span>' +
+                    '</div>';
+            });
+            zone.innerHTML = html;
+        }
+
+        // 点击玩法类型：将其归入所点击的分类区域
+        function handleTrackClick(typeId, zoneClass) {
+            const currentClass = trackClassification[typeId] || 'nonIncentive';
+            if (currentClass === zoneClass) {
+                // 已属于该类，点击取消 → 退回非激励
+                trackClassification[typeId] = 'nonIncentive';
+            } else {
+                // 归入该类
+                trackClassification[typeId] = zoneClass;
+            }
+            renderTrackTypeCards();
         }
 
         // 提交创建计划
@@ -4548,16 +4488,18 @@ window._calcInitialized = false;
             const planUserBonusLimit = document.getElementById('planUserBonusLimit').value;
             const planUserMapLimit = document.getElementById('planUserMapLimit').value;
 
-            // 收集勾选的鼓励赛道
-            const checkboxes = document.querySelectorAll('#createPlanModal input[type="checkbox"]:checked');
-            const encouragedTracks = Array.from(checkboxes).map(cb => {
-                const label = cb.closest('label');
-                return label.querySelector('strong') ? label.querySelector('strong').textContent : cb.value;
-            });
-            const totalTracks = document.querySelectorAll('#createPlanModal input[type="checkbox"]').length;
+            // 收集三类玩法
+            const encourageTypes = gameplayTypes.filter(t => trackClassification[t.id] === 'encourage');
+            const discourageTypes = gameplayTypes.filter(t => trackClassification[t.id] === 'discourage');
+            const nonIncentiveTypes = gameplayTypes.filter(t => trackClassification[t.id] === 'nonIncentive');
 
             if (!planName || !planMonth || !planBudget || !planUserBonusLimit || !planUserMapLimit) {
                 alert('请填写完整信息！');
+                return;
+            }
+
+            if (encourageTypes.length === 0) {
+                alert('请至少选择一个鼓励玩法类型！');
                 return;
             }
 
@@ -4565,12 +4507,16 @@ window._calcInitialized = false;
                   '📅 计划月份：' + planMonth + '\n' +
                   '💰 奖金总额：¥' + planBudget + '\n' +
                   '👤 单用户奖金上限：¥' + planUserBonusLimit + ' · 地图上限：' + planUserMapLimit + '张\n\n' +
-                  '✅ 本期鼓励赛道（' + encouragedTracks.length + '/' + totalTracks + '）：\n   ' + (encouragedTracks.length > 0 ? encouragedTracks.join('、') : '未选择') + '\n' +
-                  '⬜ 非鼓励赛道（' + (totalTracks - encouragedTracks.length) + '个）：自动归为非鼓励\n\n' +
-                  '💡 地图发布时将按"赛道配置"中的规则自动识别所属赛道。');
+                  '✅ 鼓励（' + encourageTypes.length + '）：\n   ' + encourageTypes.map(t => t.name).join('、') + '\n' +
+                  '🔵 非鼓励（' + discourageTypes.length + '）：\n   ' + (discourageTypes.length > 0 ? discourageTypes.map(t => t.name).join('、') : '无') + '\n' +
+                  '⬜ 非激励（' + nonIncentiveTypes.length + '）：\n   ' + (nonIncentiveTypes.length > 0 ? nonIncentiveTypes.map(t => t.name).join('、') : '无') + '\n\n' +
+                  '💡 地图发布时将按系统规则自动识别所属玩法类型及激励分类。');
 
             closeModal('createPlanModal');
         }
+
+        // 修改计划弹窗的分类状态
+        let editTrackClassification = {};
 
         // 打开修改计划模态框
         function openEditPlanModal(planName) {
@@ -4578,7 +4524,39 @@ window._calcInitialized = false;
             document.getElementById('editPlanBudget').value = '50000';
             document.getElementById('editPlanUserBonusLimit').value = '5000';
             document.getElementById('editPlanUserMapLimit').value = '10';
+            // 模拟已有配置：跑酷/解谜/生存/射击为鼓励，建筑/休闲为非鼓励，其他为非激励
+            editTrackClassification = {
+                parkour: 'encourage', puzzle: 'encourage', survival: 'encourage', fps: 'encourage',
+                build: 'discourage', casual: 'discourage', other: 'nonIncentive'
+            };
+            renderEditTrackTypeCards();
             document.getElementById('editPlanModal').classList.add('show');
+        }
+
+        // 渲染修改弹窗的玩法类型卡片
+        function renderEditTrackTypeCards() {
+            renderFullZone('editEncourageZone', 'encourage', 'editTrackClassification');
+            renderFullZone('editDiscourageZone', 'discourage', 'editTrackClassification');
+            renderFullZone('editNonIncentiveZone', 'nonIncentive', 'editTrackClassification');
+
+            const counts = { encourage: 0, discourage: 0, nonIncentive: 0 };
+            gameplayTypes.forEach(t => { counts[editTrackClassification[t.id] || 'nonIncentive']++; });
+            document.getElementById('editEncourageCount').textContent = '(' + counts.encourage + ')';
+            document.getElementById('editDiscourageCount').textContent = '(' + counts.discourage + ')';
+            document.getElementById('editNonIncentiveCount').textContent = '(' + counts.nonIncentive + ')';
+        }
+
+        // 点击玩法类型：将其归入所点击的分类区域
+        function handleEditTrackClick(typeId, zoneClass) {
+            const currentClass = editTrackClassification[typeId] || 'nonIncentive';
+            if (currentClass === zoneClass) {
+                // 已属于该类，点击取消 → 退回非激励
+                editTrackClassification[typeId] = 'nonIncentive';
+            } else {
+                // 归入该类
+                editTrackClassification[typeId] = zoneClass;
+            }
+            renderEditTrackTypeCards();
         }
 
         // 提交修改计划
@@ -4588,13 +4566,9 @@ window._calcInitialized = false;
             const planUserBonusLimit = document.getElementById('editPlanUserBonusLimit').value;
             const planUserMapLimit = document.getElementById('editPlanUserMapLimit').value;
 
-            // 收集勾选的鼓励赛道
-            const checkboxes = document.querySelectorAll('#editPlanModal input[type="checkbox"]:checked');
-            const encouragedTracks = Array.from(checkboxes).map(cb => {
-                const label = cb.closest('label');
-                return label.querySelector('strong') ? label.querySelector('strong').textContent : cb.value;
-            });
-            const totalTracks = document.querySelectorAll('#editPlanModal input[type="checkbox"]').length;
+            const encourageTypes = gameplayTypes.filter(t => editTrackClassification[t.id] === 'encourage');
+            const discourageTypes = gameplayTypes.filter(t => editTrackClassification[t.id] === 'discourage');
+            const nonIncentiveTypes = gameplayTypes.filter(t => editTrackClassification[t.id] === 'nonIncentive');
 
             if (!planBudget || !planUserBonusLimit || !planUserMapLimit) {
                 alert('请填写完整信息！');
@@ -4603,8 +4577,9 @@ window._calcInitialized = false;
 
             alert('激励计划"' + planName + '"配置修改成功！\n\n' +
                   '💰 奖金总额：¥' + planBudget + '\n' +
-                  '✅ 本期鼓励赛道（' + encouragedTracks.length + '/' + totalTracks + '）：\n   ' + (encouragedTracks.length > 0 ? encouragedTracks.join('、') : '未选择') + '\n\n' +
-                  '⬜ 未勾选的 ' + (totalTracks - encouragedTracks.length) + ' 个赛道将自动变为非鼓励\n' +
+                  '✅ 鼓励（' + encourageTypes.length + '）：\n   ' + encourageTypes.map(t => t.name).join('、') + '\n' +
+                  '🔵 非鼓励（' + discourageTypes.length + '）：\n   ' + (discourageTypes.length > 0 ? discourageTypes.map(t => t.name).join('、') : '无') + '\n' +
+                  '⬜ 非激励（' + nonIncentiveTypes.length + '）：\n   ' + (nonIncentiveTypes.length > 0 ? nonIncentiveTypes.map(t => t.name).join('、') : '无') + '\n\n' +
                   '修改后的配置将在下月生效。');
 
             closeModal('editPlanModal');
@@ -4640,7 +4615,7 @@ window._calcInitialized = false;
             });
         }
 
-        // 筛选赛道地图
+        // 筛选激励分类地图
         function filterTrackMaps(filterType) {
             const tbody = document.querySelector('#incentive-track-maps tbody');
             const rows = tbody.querySelectorAll('tr');
@@ -4657,13 +4632,13 @@ window._calcInitialized = false;
             });
         }
 
-        // 调整地图赛道
+        // 调整地图激励分类
         function editMapTrack(mapId) {
-            const newTrack = prompt('请选择赛道类型（鼓励赛道 / 非鼓励赛道）：');
-            if (newTrack && (newTrack === '鼓励赛道' || newTrack === '非鼓励赛道')) {
-                alert('地图 ' + mapId + ' 的赛道已调整为：' + newTrack);
+            const newTrack = prompt('请选择激励分类（鼓励 / 非鼓励 / 非激励）：');
+            if (newTrack && (newTrack === '鼓励' || newTrack === '非鼓励' || newTrack === '非激励')) {
+                alert('地图 ' + mapId + ' 的激励分类已调整为：' + newTrack);
             } else if (newTrack) {
-                alert('请输入有效的赛道类型！');
+                alert('请输入有效的激励分类（鼓励 / 非鼓励 / 非激励）！');
             }
         }
 
@@ -4686,7 +4661,7 @@ window._calcInitialized = false;
             closeModal('reviewModal');
         }
 
-        // 打开计划详情 - 基本配置 + 赛道汇总概览
+        // 打开计划详情 - 基本配置 + 激励分类汇总概览
         function openPlanDetail(planName) {
             const content = `
                 <style>
@@ -4740,19 +4715,20 @@ window._calcInitialized = false;
                             <div style="font-size: 13px;"><strong>奖金总额：</strong>¥50,000</div>
                             <div style="font-size: 13px;"><strong>单用户上限：</strong>¥5,000 / 10张</div>
                             <div style="font-size: 13px;"><strong>涉及创作者：</strong>128人</div>
+                            <div style="font-size: 13px;"><strong>CPM：</strong>¥12.50</div>
                         </div>
                     </div>
 
-                    <!-- 各赛道汇总概览 -->
+                    <!-- 各激励分类汇总概览 -->
                     <div class="pd-section">
                         <div class="pd-section-title">
-                            <span class="pd-icon">🗺️</span> 赛道分布概览
+<span class="pd-icon">🗺️</span> 激励奖金分布概览
                         </div>
                         <table class="pd-summary-table">
                             <thead>
                                 <tr>
-                                    <th>赛道类型</th>
-                                    <th>具体赛道规则</th>
+                                    <th>激励分类</th>
+                                    <th>具体玩法类型</th>
                                     <th>地图数量</th>
                                     <th>投稿人数</th>
                                     <th>激励金额</th>
@@ -4760,13 +4736,13 @@ window._calcInitialized = false;
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- 鼓励赛道 -->
+                                <!-- 鼓励 -->
                                 <tr class="pd-track-type-header">
-                                    <td colspan="6"><span class="pd-encourage-badge">✅ 鼓励赛道</span> &nbsp;共 4 个具体规则 · 89 张地图 · 奖金 ¥25,680 (51.4%)</td>
+<td colspan="6"><span class="pd-encourage-badge">✅ 鼓励</span> &nbsp;共 4 个玩法类型 · 89 张地图 · 奖金 ¥25,680 (51.4%)</td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>跑酷赛道（标签：跑酷、跳跃、竞速）</td>
+                                    <td>跑酷</td>
                                     <td><strong>35</strong></td>
                                     <td>22人</td>
                                     <td class="pd-amount">¥10,200</td>
@@ -4774,7 +4750,7 @@ window._calcInitialized = false;
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>解谜赛道（标签：解谜、谜题、智力）</td>
+                                    <td>解谜</td>
                                     <td><strong>28</strong></td>
                                     <td>19人</td>
                                     <td class="pd-amount">¥8,400</td>
@@ -4782,7 +4758,7 @@ window._calcInitialized = false;
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>生存赛道（标签：生存、生存挑战）</td>
+                                    <td>生存</td>
                                     <td><strong>16</strong></td>
                                     <td>12人</td>
                                     <td class="pd-amount">¥4,480</td>
@@ -4790,20 +4766,20 @@ window._calcInitialized = false;
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>射击竞技赛道（标签：射击、FPS、对战）</td>
+                                    <td>射击竞技</td>
                                     <td><strong>10</strong></td>
                                     <td>8人</td>
                                     <td class="pd-amount">¥2,600</td>
                                     <td>5.2%</td>
                                 </tr>
 
-                                <!-- 非鼓励赛道 -->
+                                <!-- 非鼓励 -->
                                 <tr class="pd-track-type-header">
-                                    <td colspan="6"><span class="pd-normal-badge">⚪ 非鼓励赛道</span> &nbsp;共 3 个具体规则 · 67 张地图 · 奖金 ¥8,520 (17.0%)</td>
+<td colspan="6"><span class="pd-normal-badge">⚪ 非鼓励</span> &nbsp;共 3 个玩法类型 · 67 张地图 · 奖金 ¥8,520 (17.0%)</td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>建筑展示赛道（标签：建筑、景观、展示）</td>
+                                    <td>建筑展示</td>
                                     <td><strong>32</strong></td>
                                     <td>25人</td>
                                     <td class="pd-amount">¥3,840</td>
@@ -4811,7 +4787,7 @@ window._calcInitialized = false;
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>休闲小游戏赛道（标签：休闲、娱乐、小游戏）</td>
+                                    <td>休闲小游戏</td>
                                     <td><strong>23</strong></td>
                                     <td>17人</td>
                                     <td class="pd-amount">¥2,530</td>
@@ -4819,7 +4795,7 @@ window._calcInitialized = false;
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>其他/未分类赛道（默认分类）</td>
+                                    <td>其他/未分类</td>
                                     <td><strong>12</strong></td>
                                     <td>9人</td>
                                     <td class="pd-amount">¥2,150</td>
@@ -4834,12 +4810,12 @@ window._calcInitialized = false;
                         <div class="pd-section-title"><span class="pd-icon">📊</span> 本期总览</div>
                         <div class="pd-summary-row">
                             <div class="pd-summary-item"><span class="pd-summary-label">总地图数</span><span class="pd-summary-value">156 张</span></div>
-                            <div class="pd-summary-item"><span class="pd-summary-label">鼓励赛道</span><span class="pd-summary-value" style="color:#34c759;">89张 (57.1%) · ¥25,680</span></div>
-                            <div class="pd-summary-item"><span class="pd-summary-label">非鼓励赛道</span><span class="pd-summary-value" style="color:#007aff;">67张 (42.9%) · ¥8,520</span></div>
+                            <div class="pd-summary-item"><span class="pd-summary-label">鼓励</span><span class="pd-summary-value" style="color:#34c759;">89张 (57.1%) · ¥25,680</span></div>
+                            <div class="pd-summary-item"><span class="pd-summary-label">非鼓励</span><span class="pd-summary-value" style="color:#007aff;">67张 (42.9%) · ¥8,520</span></div>
                             <div class="pd-summary-item"><span class="pd-summary-label">已发放奖金</span><span class="pd-summary-value">¥34,200</span></div>
                         </div>
                         <div style="margin-top: 10px; font-size: 12px; color: #999; line-height: 1.6;">
-                            💡 如需查看每张地图的详细信息（地图ID、创作者、游玩排名等），请前往「赛道地图查看」标签页。
+💡 如需查看每张地图的详细信息（地图ID、创作者、游玩排名等），请前往「激励地图查看」标签页。
                         </div>
                     </div>
                 </div>
@@ -4920,11 +4896,11 @@ window._calcInitialized = false;
         }
 
         function viewMapBonusDetail(mapId) {
-            alert("查看地图 " + mapId + " 的奖金明细：\n\n包含该地图的游玩数据、赛道类型、奖金计算详情、创作者信息等。");
+            alert("查看地图 " + mapId + " 的奖金明细：\n\n包含该地图的游玩数据、激励分类、奖金计算详情、创作者信息等。");
         }
 
         function viewPlanBonusDetail(planMonth) {
-            alert('查看 ' + planMonth + ' 激励计划的奖金发放明细：\n\n包含该期所有地图的奖金发放列表、汇总统计、赛道分布等。');
+            alert('查看 ' + planMonth + ' 激励计划的奖金发放明细：\n\n包含该期所有地图的奖金发放列表、汇总统计、激励分类分布等。');
         }
 
         function filterBonusStatus(status) {
@@ -5374,7 +5350,7 @@ window._calcInitialized = false;
 
         // 修改待配置计划
         function editPendingPlan(planName) {
-            alert('正在打开 ' + planName + ' 的赛道配置编辑页面...\n\n修改保存后，该配置即为下月生效的规则。');
+            alert('正在打开 ' + planName + ' 的计划编辑页面...\n\n修改保存后，该配置即为下月生效的规则。');
         }
 
         // Leader审核：通过单项
@@ -5423,8 +5399,8 @@ window._calcInitialized = false;
                 '即将通过 2026年3月流量激励 的全部 234 张地图。\n\n' +
                 '汇总信息：\n' +
                 '• 总奖金：¥78,500\n' +
-                '• 鼓励赛道：134张 (¥52,000)\n' +
-                '• 非鼓励赛道：100张 (¥26,500)\n\n' +
+                '• 鼓励：134张 (¥52,000)\n' +
+                '• 非鼓励：100张 (¥26,500)\n\n' +
                 '⚠️ 注意：名单中包含处罚用户，通过后将进入财管审核流程。';
             if (confirm(confirmMsg)) {
                 alert('✅ 审核通过！\n\n已将 2026年3月流量激励（234张地图，¥78,500）提交至财管审核。');
@@ -5504,16 +5480,9 @@ window._calcInitialized = false;
             }
         }
 
-        // ========== 赛道规则配置相关函数（含Leader审核） ==========
+        // ========== 激励分类规则配置相关函数（含Leader审核） ==========
 
-        function deleteTrackRule(ruleId) {
-            if (confirm('确定要删除这条赛道规则吗？')) {
-                alert('规则 ID ' + ruleId + ' 已删除！\n\n变更需提交Leader审核后生效。');
-                document.getElementById('trackStatusBadge').textContent = '配置待审核';
-                document.getElementById('trackStatusBadge').className = 'badge badge-warning';
-                document.getElementById('submitTrackReviewBtn').style.display = 'inline-block';
-            }
-        }
+
 
         // ========== 已提交发奖 - 批次明细 ==========
 
@@ -5585,14 +5554,14 @@ window._calcInitialized = false;
             document.getElementById('finalListPanel').style.display = 'block';
         }
 
-        // 刷新计算预期奖金（运营调整赛道分类后手动触发）
+        // 刷新计算预期奖金（运营调整激励分类后手动触发）
         function recalculateBonus() {
             const confirmMsg =
                 '【刷新计算预期奖金】\n\n' +
-                '将根据当前赛道分类和排名规则重新计算所有地图的预期奖金金额。\n\n' +
-                '注意：调整赛道分类后，请务必点击此按钮刷新，以确保奖金数据准确。';
+                '将根据当前激励分类和排名规则重新计算所有地图的预期奖金金额。\n\n' +
+                '注意：调整激励分类后，请务必点击此按钮刷新，以确保奖金数据准确。';
             if (confirm(confirmMsg)) {
-                alert('✅ 奖金已刷新计算！\n\n已基于最新赛道分类和排名数据重新计算预期奖金。\n当前名单：234张地图，总奖金 ¥78,500');
+                alert('✅ 奖金已刷新计算！\n\n已基于最新激励分类和排名数据重新计算预期奖金。\n当前名单：234张地图，总奖金 ¥78,500');
             }
         }
 
@@ -5609,11 +5578,11 @@ window._calcInitialized = false;
         }
 
         function adjustFinalTrack(mapId) {
-            const newTrack = prompt('请选择赛道类型（鼓励赛道 / 非鼓励赛道）：');
-            if (newTrack && (newTrack === '鼓励赛道' || newTrack === '非鼓励赛道')) {
-                alert('地图 ' + mapId + ' 的赛道已调整为：' + newTrack + '\n\n请确认后提交Leader审核。');
+            const newTrack = prompt('请选择激励分类（鼓励 / 非鼓励 / 非激励）：');
+            if (newTrack && (newTrack === '鼓励' || newTrack === '非鼓励' || newTrack === '非激励')) {
+                alert('地图 ' + mapId + ' 的激励分类已调整为：' + newTrack + '\n\n请确认后提交Leader审核。');
             } else if (newTrack) {
-                alert('请输入有效的赛道类型！');
+                alert('请输入有效的激励分类（鼓励 / 非鼓励 / 非激励）！');
             }
         }
 
@@ -5629,7 +5598,7 @@ window._calcInitialized = false;
         }
 
         
-        // ========== 批量修改赛道 - 弹窗式操作 ==========
+        // ========== 批量修改激励分类 - 弹窗式操作 ==========
 
         function openBatchTrackModal() {
             // 重置上传状态
@@ -5644,15 +5613,15 @@ window._calcInitialized = false;
 
         function downloadTrackTemplate() {
             // 生成CSV模板内容
-            var csvContent = '\uFEFF地图ID,地图名称,目标赛道\n';
-            csvContent += 'MAP001,冒险关卡001,跑酷赛道\n';
-            csvContent += 'MAP002,迷雾古堡,解谜赛道\n';
-            csvContent += 'MAP003,休闲小镇,休闲小游戏赛道\n';
+            var csvContent = '\uFEFF地图ID,地图名称,目标激励分类\n';
+            csvContent += 'MAP001,冒险关卡001,鼓励\n';
+            csvContent += 'MAP002,迷雾古堡,非鼓励\n';
+            csvContent += 'MAP003,休闲小镇,非激励\n';
             var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             var url = URL.createObjectURL(blob);
             var link = document.createElement('a');
             link.href = url;
-            link.download = '批量修改赛道模板.csv';
+            link.download = '批量修改激励分类模板.csv';
             link.click();
             URL.revokeObjectURL(url);
             alert('✅ 模板已下载！\n\n请按照模板格式填写后上传。');
@@ -5680,12 +5649,12 @@ window._calcInitialized = false;
             var fileName = fileInput.files[0].name;
             var msg = '确认导入文件：' + fileName + '？\n\n';
             msg += '系统将自动比对存量数据：\n';
-            msg += '• 覆盖更新：地图ID匹配且赛道有变化的记录\n';
-            msg += '• 跳过：赛道配置相同的记录\n';
+            msg += '• 覆盖更新：地图ID匹配且激励分类有变化的记录\n';
+            msg += '• 跳过：激励分类配置相同的记录\n';
             msg += '• 忽略：地图ID不存在的记录';
 
             if (confirm(msg)) {
-                alert('✅ 批量导入成功！\n\n已覆盖更新 12 张地图的赛道配置。\n跳过相同 5 条。\n告警不存在 2 条（已忽略）。');
+                alert('✅ 批量导入成功！\n\n已覆盖更新 12 张地图的激励分类配置。\n跳过相同 5 条。\n告警不存在 2 条（已忽略）。');
                 closeModal('batchTrackModal');
             }
         }
@@ -5694,12 +5663,12 @@ window._calcInitialized = false;
         function batchAdjustTrack() {
             const checked = document.querySelectorAll('.final-check:checked');
             if (checked.length === 0) {
-                alert('请先勾选要调整赛道的地图！');
+                alert('请先勾选要调整激励分类的地图！');
                 return;
             }
-            const newTrack = prompt('已选择 ' + checked.length + ' 张地图，请输入新的赛道类型（鼓励赛道 / 非鼓励赛道）：');
-            if (newTrack && (newTrack === '鼓励赛道' || newTrack === '非鼓励赛道')) {
-                alert('已将 ' + checked.length + ' 张地图的赛道批量调整为：' + newTrack);
+            const newTrack = prompt('已选择 ' + checked.length + ' 张地图，请输入新的激励分类类型（鼓励 / 非鼓励 / 非激励）：');
+            if (newTrack && (newTrack === '鼓励' || newTrack === '非鼓励' || newTrack === '非激励')) {
+                alert('已将 ' + checked.length + ' 张地图的激励分类批量调整为：' + newTrack);
             }
         }
 
@@ -5732,6 +5701,11 @@ window._calcInitialized = false;
                     let isNormal = false;
                     badges.forEach(b => { if (b.textContent.trim() === '非鼓励') isNormal = true; });
                     row.style.display = isNormal ? '' : 'none';
+                } else if (type === 'nonincentive') {
+                    const badges = row.querySelectorAll('.badge');
+                    let isNonIncentive = false;
+                    badges.forEach(b => { if (b.textContent.trim() === '非激励') isNonIncentive = true; });
+                    row.style.display = isNonIncentive ? '' : 'none';
                 }
             });
         }
@@ -5762,41 +5736,6 @@ window._calcInitialized = false;
             }
         }
 
-        // ========== 赛道配置 - Leader审核 ==========
-
-        function submitTrackForLeaderReview() {
-            if (confirm('即将提交赛道配置变更至Leader审核。\n\n确定提交吗？')) {
-                alert('已提交赛道配置变更至Leader审核！\n\n审核通过后配置将正式生效。');
-                document.getElementById('trackStatusBadge').textContent = '配置审核中';
-                document.getElementById('trackStatusBadge').className = 'badge badge-info';
-                document.getElementById('submitTrackReviewBtn').style.display = 'none';
-            }
-        }
-
-        function openAddTrackRuleModal() {
-            const ruleName = prompt('请输入规则名称：');
-            if (!ruleName) return;
-
-            const trackType = prompt('请选择赛道类型（鼓励赛道/非鼓励赛道）：');
-            if (!trackType || (trackType !== '鼓励赛道' && trackType !== '非鼓励赛道')) {
-                alert('请输入有效的赛道类型！');
-                return;
-            }
-
-            const conditions = prompt('请输入匹配条件（用逗号分隔多个标签或关键词）：');
-            if (!conditions) return;
-
-            const priority = prompt('请输入优先级（数字越小优先级越高）：');
-            if (!priority || isNaN(priority)) {
-                alert('请输入有效的优先级数字！');
-                return;
-            }
-
-            alert('赛道规则 "' + ruleName + '" 已添加（待审核状态）！\n\n新增规则需提交Leader审核后才能正式生效。');
-            document.getElementById('trackStatusBadge').textContent = '配置待审核';
-            document.getElementById('trackStatusBadge').className = 'badge badge-warning';
-            document.getElementById('submitTrackReviewBtn').style.display = 'inline-block';
-        }
 
         // ========== 驳回记录相关函数 ==========
 
@@ -5806,7 +5745,7 @@ window._calcInitialized = false;
             document.getElementById('rd-id').textContent = rejectId;
 
             const rejectData = {
-                'REJ-202604001': { plan: '2026年3月流量激励', source: '<span class="badge badge-danger">Leader驳回</span>', time: '2026-04-03 15:30', person: 'Leader张', amount: '¥78,500', reason: '奖金总额超出预算上限（¥78,500 > ¥70,000），部分非鼓励赛道地图奖金占比过高（42.9%），需优化赛道结构后重新提交。\n\n具体建议：\n1. 将部分非鼓励赛道地图移除出激励范围\n2. 或调整非鼓励赛道奖金系数\n3. 重新计算后再次提交审核' },
+                'REJ-202604001': { plan: '2026年3月流量激励', source: '<span class="badge badge-danger">Leader驳回</span>', time: '2026-04-03 15:30', person: 'Leader张', amount: '¥78,500', reason: '奖金总额超出预算上限（¥78,500 > ¥70,000），部分非鼓励地图奖金占比过高（42.9%），需优化激励分类结构后重新提交。\n\n具体建议：\n1. 将部分非鼓励地图移除出激励范围\n2. 或调整非鼓励奖金系数\n3. 重新计算后再次提交审核' },
                 'REJ-202603002': { plan: '2026年2月流量激励', source: '<span class="badge badge-danger">财管驳回</span>', time: '2026-03-18 11:00', person: '财管王', amount: '¥65,200', reason: '存在多笔大额异常奖金，单笔奖金超过 ¥1,800 的有 12 笔，最高达 ¥2,000。需运营复核以下问题：\n1. 高金额地图的游玩数据是否真实\n2. 是否存在刷量行为\n3. 处罚用户是否已正确标记' },
                 'REJ-202602003': { plan: '2026年2月流量激励', source: '<span class="badge badge-danger">Leader驳回</span>', time: '2026-02-28 09:45', person: 'Leader李', amount: '¥42,300', reason: '数据异常：部分地图游玩数据疑似刷量。MAP050、MAP051、MAP052 的游玩次数增长曲线异常陡峭，建议运营核实后处理。' },
                 'REJ-202601004': { plan: '2026年1月流量激励', source: '<span class="badge badge-danger">Leader驳回</span>', time: '2026-01-25 14:20', person: 'Leader张', amount: '¥35,000', reason: '处罚用户未标注：名单中包含 user150、user151 两名处于"处罚中"状态的用户，但在提交时未做任何标记和说明。请确认处罚用户的发奖决定后重新提交。' },
@@ -5830,7 +5769,7 @@ window._calcInitialized = false;
                 '从驳回记录「' + rejectId + '」重新提交\n\n' +
                 '操作步骤：\n' +
                 '1. 系统将打开该批次的发奖名单调整面板\n' +
-                '2. 请根据驳回原因修改名单/赛道/移除异常数据\n' +
+                '2. 请根据驳回原因修改名单/激励分类/移除异常数据\n' +
                 '3. 确认无误后提交 Leader 审核';
             if (confirm(confirmMsg)) {
                 alert('✅ 已打开调整面板！\n\n请根据驳回原因完成修改后重新提交审核。\n驳回记录状态将更新为"已重新提交"。');
@@ -5858,12 +5797,6 @@ window._calcInitialized = false;
             }
         }
 
-        function editTrackRule(ruleId) {
-            alert('正在编辑规则 ID: ' + ruleId + '\n\n修改保存后需提交Leader审核。');
-            document.getElementById('trackStatusBadge').textContent = '配置待审核';
-            document.getElementById('trackStatusBadge').className = 'badge badge-warning';
-            document.getElementById('submitTrackReviewBtn').style.display = 'inline-block';
-        }
     
 
         // ========== 奖金记录数据可视化引擎 ==========
@@ -6105,7 +6038,7 @@ window._calcInitialized = false;
                     ctx.fillText(d.track==='enc'?鼓励:非鼓励,x+barW/2,H-padB+32);
                 });
                 // legend
-                ctx.fillStyle='#34c759';ctx.fillRect(W-140,padT+8,12,12);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(鼓励赛道,W-122,padT+18);
+                ctx.fillStyle='#34c759';ctx.fillRect(W-140,padT+8,12,12);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(鼓励,W-122,padT+18);
                 ctx.fillStyle='#007aff';ctx.fillRect(W-140,padT+26,12,12);ctx.fillText(非鼓励,W-122,padT+36);
                 
             } else if(type==='track'){
@@ -6140,7 +6073,7 @@ window._calcInitialized = false;
                     ctx.fillText(m.label,gx+grpW/2,H-padB+18);
                 });
                 // legend
-                ctx.fillStyle='#34c759';ctx.fillRect(W/2-60,padT+6,14,14);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(鼓励赛道,W/2-40,padT+17);
+                ctx.fillStyle='#34c759';ctx.fillRect(W/2-60,padT+6,14,14);ctx.fillStyle='#1d1d1f';ctx.font='12px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText(鼓励,W/2-40,padT+17);
                 ctx.fillStyle='#007aff';ctx.fillRect(W/2+20,padT+6,14,14);ctx.fillText(非鼓励,W/2+40,padT+17);
                 
             } else if(type==='scatter'){
