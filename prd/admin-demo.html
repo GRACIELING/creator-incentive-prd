@@ -1830,29 +1830,17 @@
                     <div class="review-year-selector" style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 13px; color: #86868b; font-weight: 500;">年份</span>
                         <select id="reviewYearFilter" onchange="filterReviewByYear(this.value)" style="padding: 6px 12px; border: 1px solid #d2d2d7; border-radius: 8px; background: #fff; color: #1d1d1f; font-size: 13px; outline: none;">
+                            <option value="2025">2025</option>
                             <option value="2026" selected>2026</option>
                         </select>
                     </div>
-                    <!-- 月份按钮式选择器 -->
-                    <div class="review-month-grid" id="reviewMonthGrid" style="display: flex; gap: 6px; align-items: center;">
-                        <button class="review-month-btn disabled" data-month="2026-01" disabled onclick="switchReviewMonth('2026-01')">1月</button>
-                        <button class="review-month-btn disabled" data-month="2026-02" disabled onclick="switchReviewMonth('2026-02')">2月</button>
-                        <button class="review-month-btn active" data-month="2026-03" onclick="switchReviewMonth('2026-03')">3月</button>
-                        <button class="review-month-btn disabled" data-month="2026-04" disabled onclick="switchReviewMonth('2026-04')">4月</button>
-                        <button class="review-month-btn disabled" data-month="2026-05" disabled onclick="switchReviewMonth('2026-05')">5月</button>
-                        <button class="review-month-btn disabled" data-month="2026-06" disabled onclick="switchReviewMonth('2026-06')">6月</button>
-                        <button class="review-month-btn disabled" data-month="2026-07" disabled onclick="switchReviewMonth('2026-07')">7月</button>
-                        <button class="review-month-btn disabled" data-month="2026-08" disabled onclick="switchReviewMonth('2026-08')">8月</button>
-                        <button class="review-month-btn disabled" data-month="2026-09" disabled onclick="switchReviewMonth('2026-09')">9月</button>
-                        <button class="review-month-btn disabled" data-month="2026-10" disabled onclick="switchReviewMonth('2026-10')">10月</button>
-                        <button class="review-month-btn disabled" data-month="2026-11" disabled onclick="switchReviewMonth('2026-11')">11月</button>
-                        <button class="review-month-btn disabled" data-month="2026-12" disabled onclick="switchReviewMonth('2026-12')">12月</button>
-                    </div>
+                    <!-- 月份按钮式选择器 - 由JS动态生成 -->
+                    <div class="review-month-grid" id="reviewMonthGrid" style="display: flex; gap: 6px; align-items: center;"></div>
                 </div>
             </div>
 
             <!-- 审批流程时间线 -->
-            <div class="review-timeline" style="margin-bottom: 24px; padding: 18px 28px; background: #fff; border-radius: 12px; border: 1px solid #e5e5ea; box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
+            <div class="review-timeline" id="reviewTimeline" style="margin-bottom: 24px; padding: 18px 28px; background: #fff; border-radius: 12px; border: 1px solid #e5e5ea; box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
                 <div style="display: flex; align-items: center; justify-content: space-between; position: relative;">
                     <!-- 流程节点 -->
                     <div class="timeline-node" data-step="calc" style="display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 1;">
@@ -1889,160 +1877,15 @@
 
             <!-- 标签页 - 简化为待处理/历史记录 -->
             <div class="tabs">
-                <button class="tab active" onclick="switchReviewTab('pending')">待处理 <span style="background:#ff3b30;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;">3</span></button>
+                <button class="tab active" onclick="switchReviewTab('pending')">待处理 <span id="reviewPendingCount" style="background:#ff3b30;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;">3</span></button>
                 <button class="tab" onclick="switchReviewTab('history')">历史记录</button>
             </div>
 
             <!-- 待处理 - 卡片式批次列表 -->
             <div id="review-pending" class="review-tab-content">
-                <!-- 批次1: 运营待提交 -->
-                <div class="review-batch-card" onclick="openReviewDetail('batch-ops-1')" style="cursor: pointer;">
-                    <div class="batch-card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #f0f0f0;">
-                        <div style="display: flex; align-items: center; gap: 14px;">
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #ff9500, #ff6b00); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff;">📝</div>
-                            <div>
-                                <div style="font-size: 15px; font-weight: 600; color: #1d1d1f;">2026年3月流量激励</div>
-                                <div style="font-size: 12px; color: #86868b; margin-top: 2px;">2026-03-01 ~ 2026-03-31</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span class="badge badge-warning" style="font-size: 12px; padding: 4px 12px; border-radius: 6px;">运营待提交</span>
-                            <span style="color: #c7c7cc; font-size: 18px;">›</span>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; padding: 16px 22px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #1d1d1f;">234</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">地图数</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #007aff;">¥78,500</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">奖金总额</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #34c759;">134</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">鼓励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #007aff;">100</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">非鼓励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #ff3b30;">2</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">处罚用户</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #ff9500;">3次</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">运营调整</div>
-                        </div>
-                    </div>
-                    <div style="padding: 10px 22px 14px; display: flex; gap: 10px; border-top: 1px solid #f5f5f5;">
-                        <button class="btn btn-primary" onclick="event.stopPropagation(); openFinalListDetail('2026年3月流量激励')" style="font-size: 13px; padding: 6px 16px; background: #007aff; border-color: #007aff;">查看/调整名单</button>
-                        <button class="btn btn-success" onclick="event.stopPropagation(); submitToLeader('2026年3月流量激励')" style="font-size: 13px; padding: 6px 16px;">提交Leader审核</button>
-                    </div>
-                </div>
-
-                <!-- 批次2: 运营待提交 -->
-                <div class="review-batch-card" onclick="openReviewDetail('batch-ops-2')" style="cursor: pointer;">
-                    <div class="batch-card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #f0f0f0;">
-                        <div style="display: flex; align-items: center; gap: 14px;">
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #ff9500, #ff6b00); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff;">📝</div>
-                            <div>
-                                <div style="font-size: 15px; font-weight: 600; color: #1d1d1f;">2026年2月流量激励</div>
-                                <div style="font-size: 12px; color: #86868b; margin-top: 2px;">2026-02-01 ~ 2026-02-28</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span class="badge badge-warning" style="font-size: 12px; padding: 4px 12px; border-radius: 6px;">运营待提交</span>
-                            <span style="color: #c7c7cc; font-size: 18px;">›</span>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 16px 22px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #1d1d1f;">198</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">地图数</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #007aff;">¥65,200</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">奖金总额</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #34c759;">112</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">鼓励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #007aff;">86</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">非鼓励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #ff9500;">1次</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">运营调整</div>
-                        </div>
-                    </div>
-                    <div style="padding: 10px 22px 14px; display: flex; gap: 10px; border-top: 1px solid #f5f5f5;">
-                        <button class="btn btn-primary" onclick="event.stopPropagation(); openFinalListDetail('2026年2月流量激励')" style="font-size: 13px; padding: 6px 16px; background: #007aff; border-color: #007aff;">查看/调整名单</button>
-                        <button class="btn btn-success" onclick="event.stopPropagation(); submitToLeader('2026年2月流量激励')" style="font-size: 13px; padding: 6px 16px;">提交Leader审核</button>
-                    </div>
-                </div>
-
-                <!-- 批次3: 待Leader审核 -->
-                <div class="review-batch-card" onclick="openReviewDetail('batch-leader-1')" style="cursor: pointer; border-left: 4px solid #007aff;">
-                    <div class="batch-card-header" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #f0f0f0;">
-                        <div style="display: flex; align-items: center; gap: 14px;">
-                            <div style="width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #007aff, #0055d4); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff;">📋</div>
-                            <div>
-                                <div style="font-size: 15px; font-weight: 600; color: #1d1d1f;">2026年3月流量激励</div>
-                                <div style="font-size: 12px; color: #86868b; margin-top: 2px;">2026-03-01 ~ 2026-03-31 · 运营提交于 04-02 14:30</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span class="badge badge-info" style="font-size: 12px; padding: 4px 12px; border-radius: 6px; background: #007aff;">待Leader审核</span>
-                            <span style="color: #c7c7cc; font-size: 18px;">›</span>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; padding: 16px 22px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #1d1d1f;">234</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">总地图</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #007aff;">¥78,500</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">奖金总额</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #34c759;">134</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">鼓励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #007aff;">100</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">非鼓励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #86868b;">3</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">非激励</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 20px; font-weight: 700; color: #ff3b30;">2</div>
-                            <div style="font-size: 11px; color: #86868b; margin-top: 2px;">处罚用户</div>
-                        </div>
-                    </div>
-                    <!-- 迷你奖金分布条 -->
-                    <div style="padding: 0 22px 12px;">
-                        <div style="font-size: 11px; color: #86868b; margin-bottom: 4px;">奖金分布</div>
-                        <div style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: #f0f0f0;">
-                            <div style="width: 66.2%; background: #34c759;" title="鼓励 ¥52,000"></div>
-                            <div style="width: 33.8%; background: #007aff;" title="非鼓励 ¥26,500"></div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 10px; color: #86868b;">
-                            <span>🟢 鼓励 ¥52,000</span>
-                            <span>🔵 非鼓励 ¥26,500</span>
-                        </div>
-                    </div>
-                    <div style="padding: 10px 22px 14px; display: flex; gap: 10px; border-top: 1px solid #f5f5f5;">
-                        <button class="btn btn-primary" onclick="event.stopPropagation(); openReviewDetail('batch-leader-1')" style="font-size: 13px; padding: 6px 16px; background: #007aff; border-color: #007aff;">审核详情</button>
-                        <button class="btn-reject-all" onclick="event.stopPropagation(); rejectBatchLeader()" style="font-size: 13px; padding: 6px 16px;">驳回</button>
-                        <button class="btn-approve-all" onclick="event.stopPropagation(); approveBatchLeader()" style="font-size: 13px; padding: 6px 16px;">✓ 通过并提交财管</button>
-                    </div>
+                <!-- 批次卡片列表 - 由JS动态生成 -->
+                <div id="reviewBatchCards">
+                    <!-- 默认内容由JS初始化时填充 -->
                 </div>
 
                 <!-- 最终名单详情面板（支持逐条审核） -->
@@ -2379,104 +2222,8 @@
 
             <!-- 历史记录标签页 -->
             <div id="review-history" class="review-tab-content" style="display: none;">
-                <!-- 历史筛选栏 -->
-                <div style="padding: 16px 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                    <select style="padding: 6px 12px; border: 1px solid #d1d1d6; border-radius: 8px; font-size: 13px; background: #fff;">
-                        <option>全部月份</option>
-                        <option>2026年3月</option>
-                        <option>2026年2月</option>
-                        <option>2026年1月</option>
-                    </select>
-                    <select style="padding: 6px 12px; border: 1px solid #d1d1d6; border-radius: 8px; font-size: 13px; background: #fff;">
-                        <option>全部状态</option>
-                        <option>已发放</option>
-                        <option>已驳回</option>
-                        <option>审批中</option>
-                    </select>
-                    <input type="text" placeholder="搜索批次名称..." style="padding: 6px 12px; border: 1px solid #d1d1d6; border-radius: 8px; font-size: 13px; width: 200px;">
-                </div>
-
-                <!-- 历史批次列表 -->
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <!-- 已完成批次1 -->
-                    <div style="background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 20px 24px; cursor: pointer;" onclick="openHistoryDetail('202603')">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
-                                    <span style="font-size: 15px; font-weight: 600; color: #1d1d1f;">2026年3月流量激励</span>
-                                    <span style="background: #e8f8ed; color: #34c759; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600;"> 已发放</span>
-                                </div>
-                                <div style="font-size: 12px; color: #86868b;">2026-03-01 ~ 2026-03-31  发放完成于 2026-04-08</div>
-                            </div>
-                            <div style="font-size: 13px; color: #86868b;"></div>
-                        </div>
-                        <div style="display: flex; gap: 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #f0f0f0;">
-                            <div><span style="font-size: 12px; color: #86868b;">地图数</span><br><strong style="font-size: 16px; color: #1d1d1f;">234</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">奖金总额</span><br><strong style="font-size: 16px; color: #007aff;">78,500</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">鼓励/非鼓励</span><br><strong style="font-size: 16px; color: #1d1d1f;">134/100</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">CPM</span><br><strong style="font-size: 16px; color: #ff9500;">335</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">审批耗时</span><br><strong style="font-size: 16px; color: #1d1d1f;">3天</strong></div>
-                        </div>
-                        <!-- 审批流程进度条 -->
-                        <div style="margin-top: 12px; display: flex; align-items: center; gap: 0;">
-                            <div style="flex: 1; height: 4px; background: #34c759; border-radius: 2px;"></div>
-                            <div style="padding: 0 4px; font-size: 10px; color: #34c759;"></div>
-                            <div style="flex: 1; height: 4px; background: #34c759; border-radius: 2px;"></div>
-                            <div style="padding: 0 4px; font-size: 10px; color: #34c759;"></div>
-                            <div style="flex: 1; height: 4px; background: #34c759; border-radius: 2px;"></div>
-                            <div style="padding: 0 4px; font-size: 10px; color: #34c759;"></div>
-                            <div style="flex: 1; height: 4px; background: #34c759; border-radius: 2px;"></div>
-                            <div style="padding: 0 4px; font-size: 10px; color: #34c759;"></div>
-                            <div style="flex: 1; height: 4px; background: #34c759; border-radius: 2px;"></div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 10px; color: #86868b;">
-                            <span>奖金计算</span><span>运营确认</span><span>Leader审核</span><span>财管审核</span><span>发放完成</span>
-                        </div>
-                    </div>
-
-                    <!-- 已完成批次2 -->
-                    <div style="background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 20px 24px; cursor: pointer;" onclick="openHistoryDetail('202602')">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
-                                    <span style="font-size: 15px; font-weight: 600; color: #1d1d1f;">2026年2月流量激励</span>
-                                    <span style="background: #e8f8ed; color: #34c759; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600;"> 已发放</span>
-                                </div>
-                                <div style="font-size: 12px; color: #86868b;">2026-02-01 ~ 2026-02-28  发放完成于 2026-03-10</div>
-                            </div>
-                            <div style="font-size: 13px; color: #86868b;"></div>
-                        </div>
-                        <div style="display: flex; gap: 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #f0f0f0;">
-                            <div><span style="font-size: 12px; color: #86868b;">地图数</span><br><strong style="font-size: 16px; color: #1d1d1f;">198</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">奖金总额</span><br><strong style="font-size: 16px; color: #007aff;">65,200</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">鼓励/非鼓励</span><br><strong style="font-size: 16px; color: #1d1d1f;">112/86</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">CPM</span><br><strong style="font-size: 16px; color: #ff9500;">329</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">审批耗时</span><br><strong style="font-size: 16px; color: #1d1d1f;">4天</strong></div>
-                        </div>
-                    </div>
-
-                    <!-- 已驳回批次 -->
-                    <div style="background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 20px 24px; cursor: pointer;" onclick="openHistoryDetail('202601')">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
-                                    <span style="font-size: 15px; font-weight: 600; color: #1d1d1f;">2026年1月流量激励</span>
-                                    <span style="background: #ffebee; color: #ff3b30; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 600;"> 已驳回</span>
-                                </div>
-                                <div style="font-size: 12px; color: #86868b;">2026-01-01 ~ 2026-01-31  驳回于 2026-02-12</div>
-                            </div>
-                            <div style="font-size: 13px; color: #86868b;"></div>
-                        </div>
-                        <div style="display: flex; gap: 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #f0f0f0;">
-                            <div><span style="font-size: 12px; color: #86868b;">地图数</span><br><strong style="font-size: 16px; color: #1d1d1f;">186</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">奖金总额</span><br><strong style="font-size: 16px; color: #007aff;">56,800</strong></div>
-                            <div><span style="font-size: 12px; color: #86868b;">驳回原因</span><br><strong style="font-size: 13px; color: #ff3b30;">数据异常，需重新计算</strong></div>
-                            <div>
-                                <button class="btn btn-primary" onclick="event.stopPropagation(); resubmitBatch('202601')" style="font-size: 12px; padding: 5px 14px;">重新提交</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- 历史记录内容由JS根据选中月份动态生成 -->
+                <div style="padding:40px 20px;text-align:center;color:#86868b;font-size:14px;">请先选择月份查看历史记录</div>
             </div>
         </div>
 
@@ -4602,6 +4349,11 @@ window._calcInitialized = false;
                 window._calcInitialized = true;
                 setTimeout(function(){ window.runCalculate(); }, 150);
             }
+            // 切换到奖金发放页面时，初始化月份选择器
+            if (sectionId === 'review' && !window._reviewMonthInitialized) {
+                window._reviewMonthInitialized = true;
+                setTimeout(function(){ initReviewMonthGrid(); }, 100);
+            }
         }
 
         // 切换白名单标签页
@@ -4643,16 +4395,21 @@ window._calcInitialized = false;
                 tab.style.display = 'none';
             });
             
+            var m = currentReviewMonth.split('-');
+            var mLabel = m[0] + '年' + parseInt(m[1],10) + '月流量激励';
+            var dateRange = currentReviewMonth + '-01 ~ ' + currentReviewMonth + '-' + new Date(parseInt(m[0]), parseInt(m[1],10), 0).getDate();
+            var data = reviewMonthData[currentReviewMonth] || {};
+            
             if (role === 'leader' || role === 'batch-leader-1') {
-                title.textContent = '📋 2026年3月流量激励 - Leader审核';
-                meta.textContent = '2026-03-01 ~ 2026-03-31 · 运营提交于 04-02 14:30';
+                title.textContent = '📋 ' + mLabel + ' - Leader审核';
+                meta.textContent = dateRange + ' · 运营提交于 ' + (data.stepDates && data.stepDates[1] || '');
             } else if (role === 'finance' || role === 'batch-finance-1') {
-                title.textContent = '📋 2026年3月流量激励 - 财管审核';
-                meta.textContent = '2026-03-01 ~ 2026-03-31 · Leader通过于 04-03 10:15';
+                title.textContent = '📋 ' + mLabel + ' - 财管审核';
+                meta.textContent = dateRange + ' · Leader通过于 ' + (data.stepDates && data.stepDates[2] || '');
             } else if (role === 'batch-ops-1' || role === 'batch-ops-2') {
                 // 运营待提交，打开最终名单面板
                 document.getElementById('review-pending').style.display = 'block';
-                openFinalListDetail('2026年3月流量激励');
+                openFinalListDetail(mLabel);
                 return;
             }
             panel.style.display = 'block';
@@ -5346,43 +5103,330 @@ window._calcInitialized = false;
 
         // ========== 奖金发放 - 月份按钮式选择器逻辑 ==========
 
+        // 当前选中的月份
+        var currentReviewMonth = '2026-03';
+
         // 可用月份配置（哪些月份有数据可查看）
         var reviewAvailableMonths = {
-            '2026': ['2026-03', '2026-04', '2026-05']
+            '2025': ['2025-01','2025-02','2025-03','2025-04','2025-05','2025-06',
+                     '2025-07','2025-08','2025-09','2025-10','2025-11','2025-12'],
+            '2026': ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06']
         };
 
+        // 各月份的审批流程状态数据
+        var reviewMonthData = {
+            '2025-01': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['02-01 完成','02-02 提交','02-03 通过','02-04 通过','02-08 发放'], bonusTotal: '¥52,100', mapCount: 176, encourageCount: 98, nonEncourageCount: 78, penaltyCount: 1, adjustCount: '0次' },
+            '2025-02': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['03-01 完成','03-02 提交','03-03 通过','03-04 通过','03-08 发放'], bonusTotal: '¥58,300', mapCount: 189, encourageCount: 108, nonEncourageCount: 81, penaltyCount: 2, adjustCount: '1次' },
+            '2025-03': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['04-01 完成','04-02 提交','04-03 通过','04-04 通过','04-08 发放'], bonusTotal: '¥64,800', mapCount: 201, encourageCount: 120, nonEncourageCount: 81, penaltyCount: 1, adjustCount: '2次' },
+            '2025-04': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['05-01 完成','05-02 提交','05-03 通过','05-05 通过','05-09 发放'], bonusTotal: '¥61,200', mapCount: 195, encourageCount: 115, nonEncourageCount: 80, penaltyCount: 3, adjustCount: '1次' },
+            '2025-05': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['06-01 完成','06-02 提交','06-03 通过','06-04 通过','06-08 发放'], bonusTotal: '¥67,500', mapCount: 210, encourageCount: 125, nonEncourageCount: 85, penaltyCount: 0, adjustCount: '0次' },
+            '2025-06': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['07-01 完成','07-02 提交','07-03 通过','07-04 通过','07-08 发放'], bonusTotal: '¥71,000', mapCount: 218, encourageCount: 130, nonEncourageCount: 88, penaltyCount: 2, adjustCount: '1次' },
+            '2025-07': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['08-01 完成','08-02 提交','08-03 通过','08-05 通过','08-09 发放'], bonusTotal: '¥73,200', mapCount: 225, encourageCount: 135, nonEncourageCount: 90, penaltyCount: 1, adjustCount: '2次' },
+            '2025-08': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['09-01 完成','09-02 提交','09-03 通过','09-04 通过','09-08 发放'], bonusTotal: '¥69,800', mapCount: 215, encourageCount: 128, nonEncourageCount: 87, penaltyCount: 2, adjustCount: '1次' },
+            '2025-09': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['10-01 完成','10-02 提交','10-03 通过','10-04 通过','10-08 发放'], bonusTotal: '¥76,100', mapCount: 230, encourageCount: 140, nonEncourageCount: 90, penaltyCount: 1, adjustCount: '0次' },
+            '2025-10': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['11-01 完成','11-02 提交','11-03 通过','11-04 通过','11-08 发放'], bonusTotal: '¥80,500', mapCount: 240, encourageCount: 145, nonEncourageCount: 95, penaltyCount: 0, adjustCount: '1次' },
+            '2025-11': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['12-01 完成','12-02 提交','12-03 通过','12-04 通过','12-08 发放'], bonusTotal: '¥82,300', mapCount: 248, encourageCount: 150, nonEncourageCount: 98, penaltyCount: 2, adjustCount: '3次' },
+            '2025-12': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['01-01 完成','01-02 提交','01-03 通过','01-05 通过','01-09 发放'], bonusTotal: '¥88,600', mapCount: 260, encourageCount: 158, nonEncourageCount: 102, penaltyCount: 1, adjustCount: '2次' },
+            '2026-01': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['02-01 完成','02-02 提交','02-03 通过','02-05 通过','02-09 发放'], bonusTotal: '¥56,800', mapCount: 186, encourageCount: 105, nonEncourageCount: 81, penaltyCount: 1, adjustCount: '1次' },
+            '2026-02': { status: 'done',   pendingCount: 0, stage: 5, stepDates: ['03-01 完成','03-02 提交','03-04 通过','03-05 通过','03-09 发放'], bonusTotal: '¥65,200', mapCount: 198, encourageCount: 112, nonEncourageCount: 86, penaltyCount: 0, adjustCount: '1次' },
+            '2026-03': { status: 'active', pendingCount: 3, stage: 2, stepDates: ['04-01 完成','04-02 提交','进行中','待处理','待处理'], bonusTotal: '¥78,500', mapCount: 234, encourageCount: 134, nonEncourageCount: 100, penaltyCount: 2, adjustCount: '3次' },
+            '2026-04': { status: 'active', pendingCount: 2, stage: 1, stepDates: ['04-05 完成','运营待提交','待处理','待处理','待处理'], bonusTotal: '¥82,100', mapCount: 245, encourageCount: 140, nonEncourageCount: 105, penaltyCount: 1, adjustCount: '2次' },
+            '2026-05': { status: 'active', pendingCount: 1, stage: 0, stepDates: ['计算中','待处理','待处理','待处理','待处理'], bonusTotal: '¥85,000', mapCount: 252, encourageCount: 148, nonEncourageCount: 104, penaltyCount: 0, adjustCount: '0次' },
+            '2026-06': { status: 'active', pendingCount: 0, stage: 0, stepDates: ['未开始','待处理','待处理','待处理','待处理'], bonusTotal: '—', mapCount: 0, encourageCount: 0, nonEncourageCount: 0, penaltyCount: 0, adjustCount: '0次' }
+        };
+
+        // 初始化月份按钮
+        function initReviewMonthGrid() {
+            var year = document.getElementById('reviewYearFilter').value;
+            renderMonthButtons(year);
+            // 默认选中最新可用月份
+            var available = reviewAvailableMonths[year] || [];
+            if (available.length > 0) {
+                var lastMonth = available[available.length - 1];
+                switchReviewMonth(lastMonth);
+            }
+        }
+
+        function renderMonthButtons(year) {
+            var grid = document.getElementById('reviewMonthGrid');
+            var available = reviewAvailableMonths[year] || [];
+            var html = '';
+            for (var i = 1; i <= 12; i++) {
+                var monthVal = year + '-' + (i < 10 ? '0' + i : i);
+                var isAvailable = available.indexOf(monthVal) !== -1;
+                var isActive = (monthVal === currentReviewMonth);
+                var cls = 'review-month-btn';
+                if (isActive && isAvailable) cls += ' active';
+                else if (!isAvailable) cls += ' disabled';
+                var disabled = !isAvailable ? ' disabled' : '';
+                html += '<button class="' + cls + '" data-month="' + monthVal + '"' + disabled + ' onclick="switchReviewMonth(\'' + monthVal + '\')">' + i + '月</button>';
+            }
+            grid.innerHTML = html;
+        }
+
         function switchReviewMonth(monthValue) {
+            currentReviewMonth = monthValue;
             // 更新按钮状态
             var btns = document.querySelectorAll('#reviewMonthGrid .review-month-btn');
             btns.forEach(function(btn) {
+                btn.classList.remove('active');
                 if (btn.dataset.month === monthValue) {
                     btn.classList.add('active');
-                    btn.classList.remove('disabled');
-                    btn.disabled = false;
-                } else {
-                    btn.classList.remove('active');
                 }
             });
-            // 联动跳转到奖金计算页签
-            goToCalcMonth(monthValue);
+            // 联动更新下方内容
+            updateReviewContent(monthValue);
         }
 
         function filterReviewByYear(yearValue) {
-            // 根据年份更新月份按钮的可用状态
-            var btns = document.querySelectorAll('#reviewMonthGrid .review-month-btn');
+            renderMonthButtons(yearValue);
+            // 切换年份时，尝试保持同月，否则选最新可用月份
+            var sameMonth = yearValue + currentReviewMonth.substring(4);
             var available = reviewAvailableMonths[yearValue] || [];
-            btns.forEach(function(btn) {
-                var month = btn.dataset.month;
-                if (available.indexOf(month) !== -1) {
-                    btn.classList.remove('disabled');
-                    btn.disabled = false;
-                } else {
-                    btn.classList.add('disabled');
-                    btn.classList.remove('active');
-                    btn.disabled = true;
-                }
-            });
+            if (available.indexOf(sameMonth) !== -1) {
+                switchReviewMonth(sameMonth);
+            } else if (available.length > 0) {
+                switchReviewMonth(available[available.length - 1]);
+            }
         }
+
+        // 联动更新审批时间线 + 待处理/历史记录
+        function updateReviewContent(monthValue) {
+            var data = reviewMonthData[monthValue];
+            if (!data) return;
+            var parts = monthValue.split('-');
+            var yearStr = parts[0];
+            var monthNum = parseInt(parts[1], 10);
+            var monthLabel = yearStr + '年' + monthNum + '月流量激励';
+            var dateRange = monthValue + '-01 ~ ' + monthValue + '-' + new Date(parseInt(yearStr), monthNum, 0).getDate();
+
+            // ---- 更新时间线 ----
+            updateTimeline(data, monthValue);
+
+            // ---- 更新待处理数字徽章 ----
+            var badge = document.getElementById('reviewPendingCount');
+            if (badge) {
+                badge.textContent = data.pendingCount;
+                badge.style.display = data.pendingCount > 0 ? '' : 'none';
+            }
+
+            // ---- 更新待处理卡片列表 ----
+            updatePendingCards(data, monthValue, monthLabel, dateRange);
+
+            // ---- 更新历史记录 ----
+            updateHistoryCards(data, monthValue, monthLabel, dateRange);
+        }
+
+        function updateTimeline(data, monthValue) {
+            var stages = ['calc','ops','leader','finance','award'];
+            var labels = ['奖金计算','运营确认','Leader审核','财管审核','发放完成'];
+            var stepNums = ['✓','✓','2','3','4','5'];
+            var currentStage = data.stage; // 0~5
+
+            var html = '<div style="display: flex; align-items: center; justify-content: space-between; position: relative;">';
+            for (var i = 0; i < 5; i++) {
+                var isDone = i < currentStage;
+                var isCurrent = i === currentStage;
+                var dotStyle, labelStyle, dateStyle;
+
+                if (isDone) {
+                    dotStyle = 'width:32px;height:32px;border-radius:50%;background:#34c759;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;';
+                    labelStyle = 'font-size:12px;color:#1d1d1f;font-weight:600;';
+                    dateStyle = 'font-size:10px;color:#86868b;';
+                } else if (isCurrent) {
+                    dotStyle = 'width:32px;height:32px;border-radius:50%;background:#007aff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;box-shadow:0 0 0 4px rgba(0,122,255,0.2);animation:pulse-dot 2s infinite;';
+                    labelStyle = 'font-size:12px;color:#007aff;font-weight:600;';
+                    dateStyle = 'font-size:10px;color:#007aff;';
+                } else {
+                    dotStyle = 'width:32px;height:32px;border-radius:50%;background:#e5e5ea;display:flex;align-items:center;justify-content:center;color:#86868b;font-size:14px;font-weight:700;';
+                    labelStyle = 'font-size:12px;color:#86868b;font-weight:500;';
+                    dateStyle = 'font-size:10px;color:#c7c7cc;';
+                }
+
+                var dotContent = isDone ? '✓' : (i + 1);
+                html += '<div class="timeline-node" data-step="' + stages[i] + '" style="display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;">';
+                html += '<div class="timeline-dot" style="' + dotStyle + '">' + dotContent + '</div>';
+                html += '<span style="' + labelStyle + '">' + labels[i] + '</span>';
+                html += '<span style="' + dateStyle + '">' + data.stepDates[i] + '</span>';
+                html += '</div>';
+
+                if (i < 4) {
+                    var lineBg;
+                    if (isDone) lineBg = '#34c759';
+                    else if (isCurrent) lineBg = 'linear-gradient(90deg, #34c759 50%, #d1d1d6 50%)';
+                    else lineBg = '#d1d1d6';
+                    html += '<div class="timeline-line" style="flex:1;height:3px;background:' + lineBg + ';margin:0 -8px;margin-bottom:28px;border-radius:2px;"></div>';
+                }
+            }
+            html += '</div>';
+            document.getElementById('reviewTimeline').innerHTML = html;
+        }
+
+        function updatePendingCards(data, monthValue, monthLabel, dateRange) {
+            var container = document.getElementById('reviewBatchCards');
+            if (!container) return;
+
+            if (data.status === 'done') {
+                // 已完成的月份，待处理为空
+                container.innerHTML = '<div style="padding:40px 20px;text-align:center;color:#86868b;font-size:14px;">🎉 ' + monthLabel + ' 已全部发放完成，无待处理事项</div>';
+                return;
+            }
+
+            var cards = '';
+            var stage = data.stage;
+            var parts = monthValue.split('-');
+            var mNum = parseInt(parts[1], 10);
+
+            // 批次1: 运营待提交 (stage == 1)
+            if (stage <= 1) {
+                var opsLabel = stage === 1 ? '运营待提交' : '计算中';
+                var opsColor = stage === 1 ? 'linear-gradient(135deg, #ff9500, #ff6b00)' : 'linear-gradient(135deg, #8e8e93, #636366)';
+                var opsBadge = stage === 1 ? '<span class="badge badge-warning" style="font-size:12px;padding:4px 12px;border-radius:6px;">运营待提交</span>' : '<span class="badge" style="font-size:12px;padding:4px 12px;border-radius:6px;background:#f0f0f0;color:#86868b;">计算中</span>';
+                cards += '<div class="review-batch-card" style="cursor:pointer;' + (stage === 1 ? '' : 'opacity:0.6;') + '">';
+                cards += '<div class="batch-card-header" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #f0f0f0;">';
+                cards += '<div style="display:flex;align-items:center;gap:14px;">';
+                cards += '<div style="width:42px;height:42px;border-radius:10px;background:' + opsColor + ';display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">📝</div>';
+                cards += '<div><div style="font-size:15px;font-weight:600;color:#1d1d1f;">' + monthLabel + '</div>';
+                cards += '<div style="font-size:12px;color:#86868b;margin-top:2px;">' + dateRange + '</div></div></div>';
+                cards += '<div style="display:flex;align-items:center;gap:10px;">' + opsBadge + '</div></div>';
+                cards += '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:16px 22px;">';
+                cards += statCell(data.mapCount, '地图数', '#1d1d1f');
+                cards += statCell(data.bonusTotal, '奖金总额', '#007aff');
+                cards += statCell(data.encourageCount, '鼓励', '#34c759');
+                cards += statCell(data.nonEncourageCount, '非鼓励', '#007aff');
+                cards += statCell(data.penaltyCount, '处罚用户', '#ff3b30');
+                cards += statCell(data.adjustCount, '运营调整', '#ff9500');
+                cards += '</div>';
+                if (stage === 1) {
+                    cards += '<div style="padding:10px 22px 14px;display:flex;gap:10px;border-top:1px solid #f5f5f5;">';
+                    cards += '<button class="btn btn-primary" style="font-size:13px;padding:6px 16px;background:#007aff;border-color:#007aff;" onclick="event.stopPropagation();openFinalListDetail(\'' + monthLabel + '\')">查看/调整名单</button>';
+                    cards += '<button class="btn btn-success" style="font-size:13px;padding:6px 16px;" onclick="event.stopPropagation();submitToLeader(\'' + monthLabel + '\')">提交Leader审核</button>';
+                    cards += '</div>';
+                }
+                cards += '</div>';
+            }
+
+            // 批次2: 待Leader审核 (stage == 2)
+            if (stage === 2) {
+                cards += '<div class="review-batch-card" style="cursor:pointer;border-left:4px solid #007aff;">';
+                cards += '<div class="batch-card-header" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #f0f0f0;">';
+                cards += '<div style="display:flex;align-items:center;gap:14px;">';
+                cards += '<div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#007aff,#0055d4);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">📋</div>';
+                cards += '<div><div style="font-size:15px;font-weight:600;color:#1d1d1f;">' + monthLabel + '</div>';
+                cards += '<div style="font-size:12px;color:#86868b;margin-top:2px;">' + dateRange + ' · 运营提交于 ' + data.stepDates[1] + '</div></div></div>';
+                cards += '<div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-info" style="font-size:12px;padding:4px 12px;border-radius:6px;background:#007aff;">待Leader审核</span></div></div>';
+                cards += '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:16px 22px;">';
+                cards += statCell(data.mapCount, '总地图', '#1d1d1f');
+                cards += statCell(data.bonusTotal, '奖金总额', '#007aff');
+                cards += statCell(data.encourageCount, '鼓励', '#34c759');
+                cards += statCell(data.nonEncourageCount, '非鼓励', '#007aff');
+                cards += statCell(data.nonEncourageCount, '非激励', '#86868b');
+                cards += statCell(data.penaltyCount, '处罚用户', '#ff3b30');
+                cards += '</div>';
+                // 奖金分布条
+                var total = data.encourageCount + data.nonEncourageCount;
+                var encPct = total > 0 ? (data.encourageCount / total * 100).toFixed(1) : 50;
+                var nonPct = total > 0 ? (100 - parseFloat(encPct)).toFixed(1) : 50;
+                cards += '<div style="padding:0 22px 12px;"><div style="font-size:11px;color:#86868b;margin-bottom:4px;">奖金分布</div>';
+                cards += '<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:#f0f0f0;">';
+                cards += '<div style="width:' + encPct + '%;background:#34c759;"></div>';
+                cards += '<div style="width:' + nonPct + '%;background:#007aff;"></div></div>';
+                cards += '<div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:#86868b;">';
+                cards += '<span>🟢 鼓励 ' + data.encourageCount + '</span><span>🔵 非鼓励 ' + data.nonEncourageCount + '</span></div></div>';
+                cards += '<div style="padding:10px 22px 14px;display:flex;gap:10px;border-top:1px solid #f5f5f5;">';
+                cards += '<button class="btn btn-primary" style="font-size:13px;padding:6px 16px;background:#007aff;border-color:#007aff;" onclick="event.stopPropagation();openReviewDetail(\'batch-leader-1\')">审核详情</button>';
+                cards += '<button class="btn-reject-all" style="font-size:13px;padding:6px 16px;" onclick="event.stopPropagation();rejectBatchLeader()">驳回</button>';
+                cards += '<button class="btn-approve-all" style="font-size:13px;padding:6px 16px;" onclick="event.stopPropagation();approveBatchLeader()">✓ 通过并提交财管</button>';
+                cards += '</div></div>';
+            }
+
+            // 批次3: 待财管审核 (stage == 3)
+            if (stage === 3) {
+                cards += '<div class="review-batch-card" style="cursor:pointer;border-left:4px solid #5856d6;">';
+                cards += '<div class="batch-card-header" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #f0f0f0;">';
+                cards += '<div style="display:flex;align-items:center;gap:14px;">';
+                cards += '<div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#5856d6,#3634a3);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;">💰</div>';
+                cards += '<div><div style="font-size:15px;font-weight:600;color:#1d1d1f;">' + monthLabel + '</div>';
+                cards += '<div style="font-size:12px;color:#86868b;margin-top:2px;">' + dateRange + ' · Leader通过于 ' + data.stepDates[2] + '</div></div></div>';
+                cards += '<div style="display:flex;align-items:center;gap:10px;"><span class="badge" style="font-size:12px;padding:4px 12px;border-radius:6px;background:#5856d6;color:#fff;">待财管审核</span></div></div>';
+                cards += '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:16px 22px;">';
+                cards += statCell(data.mapCount, '总地图', '#1d1d1f');
+                cards += statCell(data.bonusTotal, '奖金总额', '#007aff');
+                cards += statCell(data.encourageCount, '鼓励', '#34c759');
+                cards += statCell(data.nonEncourageCount, '非鼓励', '#007aff');
+                cards += statCell(data.nonEncourageCount, '非激励', '#86868b');
+                cards += statCell(data.penaltyCount, '处罚用户', '#ff3b30');
+                cards += '</div>';
+                cards += '<div style="padding:10px 22px 14px;display:flex;gap:10px;border-top:1px solid #f5f5f5;">';
+                cards += '<button class="btn btn-primary" style="font-size:13px;padding:6px 16px;background:#5856d6;border-color:#5856d6;" onclick="event.stopPropagation();openReviewDetail(\'batch-finance-1\')">审核详情</button>';
+                cards += '<button class="btn-reject-all" style="font-size:13px;padding:6px 16px;" onclick="event.stopPropagation();rejectBatchLeader()">驳回</button>';
+                cards += '<button class="btn-approve-all" style="font-size:13px;padding:6px 16px;background:#5856d6;border-color:#5856d6;" onclick="event.stopPropagation();approveBatchLeader()">✓ 审核通过并发放</button>';
+                cards += '</div></div>';
+            }
+
+            container.innerHTML = cards;
+        }
+
+        function statCell(value, label, color) {
+            return '<div style="text-align:center;"><div style="font-size:20px;font-weight:700;color:' + color + ';">' + value + '</div><div style="font-size:11px;color:#86868b;margin-top:2px;">' + label + '</div></div>';
+        }
+
+        function updateHistoryCards(data, monthValue, monthLabel, dateRange) {
+            var container = document.getElementById('review-history');
+            if (!container) return;
+
+            if (data.status !== 'done') {
+                container.innerHTML = '<div style="padding:40px 20px;text-align:center;color:#86868b;font-size:14px;">📋 ' + monthLabel + ' 审批进行中，暂无历史记录</div>';
+                return;
+            }
+
+            var parts = monthValue.split('-');
+            var yearStr = parts[0];
+            var mNum = parseInt(parts[1], 10);
+
+            // 发放完成日期推算
+            var doneDate = data.stepDates[4] ? data.stepDates[4].replace('发放','') : '';
+            var stage = data.stage;
+            var total = data.encourageCount + data.nonEncourageCount;
+            var encPct = total > 0 ? (data.encourageCount / total * 100).toFixed(1) : 50;
+
+            var html = '<div style="padding:16px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">';
+            html += '<select style="padding:6px 12px;border:1px solid #d1d1d6;border-radius:8px;font-size:13px;background:#fff;">';
+            html += '<option>' + monthLabel + '</option></select>';
+            html += '<select style="padding:6px 12px;border:1px solid #d1d1d6;border-radius:8px;font-size:13px;background:#fff;">';
+            html += '<option>已发放</option></select></div>';
+
+            html += '<div style="display:flex;flex-direction:column;gap:12px;">';
+            html += '<div style="background:#fff;border:1px solid #e5e5ea;border-radius:12px;padding:20px 24px;cursor:pointer;" onclick="openHistoryDetail(\'' + monthValue.replace('-','') + '\')">';
+            html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;"><div>';
+            html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:6px;">';
+            html += '<span style="font-size:15px;font-weight:600;color:#1d1d1f;">' + monthLabel + '</span>';
+            html += '<span style="background:#e8f8ed;color:#34c759;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;">已发放</span></div>';
+            html += '<div style="font-size:12px;color:#86868b;">' + dateRange + '  发放完成于 ' + yearStr + '-' + doneDate + '</div></div></div>';
+            html += '<div style="display:flex;gap:24px;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;">';
+            html += '<div><span style="font-size:12px;color:#86868b;">地图数</span><br><strong style="font-size:16px;color:#1d1d1f;">' + data.mapCount + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">奖金总额</span><br><strong style="font-size:16px;color:#007aff;">' + data.bonusTotal.replace('¥','') + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">鼓励/非鼓励</span><br><strong style="font-size:16px;color:#1d1d1f;">' + data.encourageCount + '/' + data.nonEncourageCount + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">CPM</span><br><strong style="font-size:16px;color:#ff9500;">' + (Math.round(parseInt(data.bonusTotal.replace(/[¥,]/g,'')) / data.mapCount) || '—') + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">审批耗时</span><br><strong style="font-size:16px;color:#1d1d1f;">' + (3 + Math.floor(Math.random()*3)) + '天</strong></div></div>';
+            // 审批流程进度条（全部完成）
+            html += '<div style="margin-top:12px;display:flex;align-items:center;gap:0;">';
+            for (var j = 0; j < 5; j++) {
+                html += '<div style="flex:1;height:4px;background:#34c759;border-radius:2px;"></div>';
+                if (j < 4) html += '<div style="padding:0 4px;font-size:10px;color:#34c759;"></div>';
+            }
+            html += '</div>';
+            html += '<div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:#86868b;">';
+            html += '<span>奖金计算</span><span>运营确认</span><span>Leader审核</span><span>财管审核</span><span>发放完成</span></div>';
+            html += '</div></div>';
+
+            container.innerHTML = html;
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initReviewMonthGrid();
+        });
 
         // ========== 发放趋势图表（3个独立图表） ==========
 
