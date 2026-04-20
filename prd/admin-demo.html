@@ -801,10 +801,6 @@
             background: #2db84d;
         }
 
-        /* 奖金分布条动画 */
-        .bonus-dist-bar > div {
-            transition: width 0.6s ease;
-        }
 
         /* 奖金发放 - 月份按钮式选择器 */
         .review-month-btn {
@@ -1901,7 +1897,7 @@
                             </div>
                         </div>
 
-                        <!-- 快捷筛选 + 奖金分布概览 -->
+                        <!-- 快捷筛选 -->
                         <div style="padding: 12px 20px; background: #f5f5f7; border-bottom: 1px solid #e5e5e5;">
                             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                                 <div style="display: flex; gap: 8px; align-items: center;">
@@ -1911,15 +1907,6 @@
 <button class="btn btn-secondary" onclick="filterFinalList('encourage')" style="font-size: 12px; padding: 4px 12px; color: #34c759; border-color: #34c759;">🟢 鼓励类 (134)</button>
 <button class="btn btn-secondary" onclick="filterFinalList('normal')" style="font-size: 12px; padding: 4px 12px; color: #0071e3; border-color: #0071e3;">🔵 非鼓励类 (100)</button>
                                     <button class="btn btn-secondary" onclick="filterFinalList('nonincentive')" style="font-size: 12px; padding: 4px 12px; color: #86868b; border-color: #86868b;">⬜ 非激励 (3)</button>
-                                </div>
-                                <!-- 迷你奖金分布条 -->
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 11px; color: #86868b;">奖金分布</span>
-                                    <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #e5e5ea; width: 160px;">
-                                        <div style="width: 66.2%; background: #34c759;"></div>
-                                        <div style="width: 33.8%; background: #007aff;"></div>
-                                    </div>
-                                    <span style="font-size: 10px; color: #86868b;">¥78,500</span>
                                 </div>
                             </div>
                         </div>
@@ -2039,15 +2026,15 @@
                             <button class="btn btn-secondary" onclick="closeReviewDetail()" style="font-size: 13px; padding: 6px 16px;">← 返回列表</button>
                         </div>
 
-                        <!-- 审核摘要统计 + 奖金分布 -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid #f0f0f0;">
-                            <!-- 左侧：统计 -->
-                            <div style="padding: 20px 24px; border-right: 1px solid #f0f0f0;">
+                        <!-- 审核摘要统计 -->
+                        <div style="border-bottom: 1px solid #f0f0f0;">
+                            <!-- 统计 -->
+                            <div style="padding: 20px 24px;">
                                 <div style="font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 12px;">📊 数据概览</div>
                                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
                                     <div style="text-align: center; padding: 10px; background: #e8f0fe; border-radius: 8px;">
                                         <div style="font-size: 16px; font-weight: 700; color: #007aff;">¥78,500</div>
-                                        <div style="font-size: 10px; color: #86868b;">奖金总额(CPM)</div>
+                                        <div style="font-size: 10px; color: #86868b;">奖金总额(金额/CPM)</div>
                                     </div>
                                     <div style="text-align: center; padding: 10px; background: #e8f0fe; border-radius: 8px;">
                                         <div style="font-size: 16px; font-weight: 700; color: #5856d6;">1,138</div>
@@ -2067,26 +2054,13 @@
                                     </div>
                                     <div style="text-align: center; padding: 10px; background: #e8f8ed; border-radius: 8px;">
                                         <div style="font-size: 16px; font-weight: 700; color: #34c759;">¥52,000</div>
-                                        <div style="font-size: 10px; color: #86868b;">鼓励类奖金(CPM)</div>
+                                        <div style="font-size: 10px; color: #86868b;">鼓励类奖金(金额/CPM)</div>
                                     </div>
                                     <div style="text-align: center; padding: 10px; background: #e8f0fe; border-radius: 8px;">
                                         <div style="font-size: 16px; font-weight: 700; color: #007aff;">¥26,500</div>
-                                        <div style="font-size: 10px; color: #86868b;">非鼓励类奖金(CPM)</div>
+                                        <div style="font-size: 10px; color: #86868b;">非鼓励类奖金(金额/CPM)</div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- 右侧：奖金分布可视化 -->
-                            <div style="padding: 20px 24px;">
-                                <div style="font-size: 13px; font-weight: 600; color: #1d1d1f; margin-bottom: 12px;">💰 奖金分布</div>
-                                <!-- 分布条 -->
-                                <div style="display: flex; height: 28px; border-radius: 8px; overflow: hidden; background: #f0f0f0; margin-bottom: 12px;">
-                                    <div style="width: 66.2%; background: linear-gradient(135deg, #34c759, #30d158); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 600;" title="鼓励类奖金(CPM) ¥52,000">¥52,000</div>
-                                    <div style="width: 33.8%; background: linear-gradient(135deg, #007aff, #0055d4); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 600;" title="非鼓励类奖金(CPM) ¥26,500">¥26,500</div>
-                                </div>
-                                <!-- 图例 -->
-                                <div style="display: flex; gap: 16px; font-size: 12px; color: #555;">
-                                    <span>🟢 鼓励类 134张 (66.2%)</span>
-                                    <span>🔵 非鼓励类 100张 (33.8%)</span>
                             </div>
                         </div>
                         <!-- 逐条审核表格 -->
@@ -5288,24 +5262,14 @@ window._calcInitialized = false;
                 cards += '<div style="font-size:12px;color:#86868b;margin-top:2px;">' + dateRange + '</div></div></div>';
                 cards += '<div style="display:flex;align-items:center;gap:10px;">' + opsBadge + '</div></div>';
                 cards += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px;padding:16px 22px;">';
-                cards += statCell(data.bonusTotal, '奖金总额(CPM)', '#007aff');
+                cards += statCell(data.bonusTotal, '奖金总额(金额/CPM)', '#007aff');
                 cards += statCell(data.incentiveUserCount, '激励用户数', '#5856d6');
                 cards += statCell(data.mapCount, '地图数', '#1d1d1f');
                 cards += statCell(data.encourageCount, '鼓励地图数', '#34c759');
                 cards += statCell(data.nonEncourageCount, '非鼓励地图数', '#007aff');
-                cards += statCell(data.encourageBonus, '鼓励类奖金(CPM)', '#34c759');
-                cards += statCell(data.nonEncourageBonus, '非鼓励类奖金(CPM)', '#007aff');
+                cards += statCell(data.encourageBonus, '鼓励类奖金(金额/CPM)', '#34c759');
+                cards += statCell(data.nonEncourageBonus, '非鼓励类奖金(金额/CPM)', '#007aff');
                 cards += '</div>';
-                // 奖金分布条
-                var total = data.encourageCount + data.nonEncourageCount;
-                var encPct = total > 0 ? (data.encourageCount / total * 100).toFixed(1) : 50;
-                var nonPct = total > 0 ? (100 - parseFloat(encPct)).toFixed(1) : 50;
-                cards += '<div style="padding:0 22px 12px;"><div style="font-size:11px;color:#86868b;margin-bottom:4px;">奖金分布</div>';
-                cards += '<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:#f0f0f0;">';
-                cards += '<div style="width:' + encPct + '%;background:#34c759;"></div>';
-                cards += '<div style="width:' + nonPct + '%;background:#007aff;"></div></div>';
-                cards += '<div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:#86868b;">';
-                cards += '<span>🟢 鼓励类 ' + data.encourageCount + '</span><span>🔵 非鼓励类 ' + data.nonEncourageCount + '</span></div></div>';
                 if (stage === 1) {
                     cards += '<div style="padding:10px 22px 14px;display:flex;gap:10px;border-top:1px solid #f5f5f5;">';
                     cards += '<button class="btn btn-primary" style="font-size:13px;padding:6px 16px;background:#007aff;border-color:#007aff;" onclick="event.stopPropagation();openFinalListDetail(\'' + monthLabel + '\')">查看/调整名单</button>';
@@ -5325,24 +5289,14 @@ window._calcInitialized = false;
                 cards += '<div style="font-size:12px;color:#86868b;margin-top:2px;">' + dateRange + ' · 运营提交于 ' + data.stepDates[1] + '</div></div></div>';
                 cards += '<div style="display:flex;align-items:center;gap:10px;"><span class="badge badge-info" style="font-size:12px;padding:4px 12px;border-radius:6px;background:#007aff;">待Leader审核</span></div></div>';
                 cards += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px;padding:16px 22px;">';
-                cards += statCell(data.bonusTotal, '奖金总额(CPM)', '#007aff');
+                cards += statCell(data.bonusTotal, '奖金总额(金额/CPM)', '#007aff');
                 cards += statCell(data.incentiveUserCount, '激励用户数', '#5856d6');
                 cards += statCell(data.mapCount, '地图数', '#1d1d1f');
                 cards += statCell(data.encourageCount, '鼓励地图数', '#34c759');
                 cards += statCell(data.nonEncourageCount, '非鼓励地图数', '#007aff');
-                cards += statCell(data.encourageBonus, '鼓励类奖金(CPM)', '#34c759');
-                cards += statCell(data.nonEncourageBonus, '非鼓励类奖金(CPM)', '#007aff');
+                cards += statCell(data.encourageBonus, '鼓励类奖金(金额/CPM)', '#34c759');
+                cards += statCell(data.nonEncourageBonus, '非鼓励类奖金(金额/CPM)', '#007aff');
                 cards += '</div>';
-                // 奖金分布条
-                var total = data.encourageCount + data.nonEncourageCount;
-                var encPct = total > 0 ? (data.encourageCount / total * 100).toFixed(1) : 50;
-                var nonPct = total > 0 ? (100 - parseFloat(encPct)).toFixed(1) : 50;
-                cards += '<div style="padding:0 22px 12px;"><div style="font-size:11px;color:#86868b;margin-bottom:4px;">奖金分布</div>';
-                cards += '<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:#f0f0f0;">';
-                cards += '<div style="width:' + encPct + '%;background:#34c759;"></div>';
-                cards += '<div style="width:' + nonPct + '%;background:#007aff;"></div></div>';
-                cards += '<div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:#86868b;">';
-                cards += '<span>🟢 鼓励类 ' + data.encourageCount + '</span><span>🔵 非鼓励类 ' + data.nonEncourageCount + '</span></div></div>';
                 cards += '<div style="padding:10px 22px 14px;display:flex;gap:10px;border-top:1px solid #f5f5f5;">';
                 cards += '<button class="btn btn-primary" style="font-size:13px;padding:6px 16px;background:#007aff;border-color:#007aff;" onclick="event.stopPropagation();openReviewDetail(\'batch-leader-1\')">审核详情</button>';
                 cards += '<button class="btn-reject-all" style="font-size:13px;padding:6px 16px;" onclick="event.stopPropagation();rejectBatchLeader()">驳回</button>';
@@ -5360,24 +5314,14 @@ window._calcInitialized = false;
                 cards += '<div style="font-size:12px;color:#86868b;margin-top:2px;">' + dateRange + ' · Leader通过于 ' + data.stepDates[2] + '</div></div></div>';
                 cards += '<div style="display:flex;align-items:center;gap:10px;"><span class="badge" style="font-size:12px;padding:4px 12px;border-radius:6px;background:#5856d6;color:#fff;">待财管审核</span></div></div>';
                 cards += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px;padding:16px 22px;">';
-                cards += statCell(data.bonusTotal, '奖金总额(CPM)', '#007aff');
+                cards += statCell(data.bonusTotal, '奖金总额(金额/CPM)', '#007aff');
                 cards += statCell(data.incentiveUserCount, '激励用户数', '#5856d6');
                 cards += statCell(data.mapCount, '地图数', '#1d1d1f');
                 cards += statCell(data.encourageCount, '鼓励地图数', '#34c759');
                 cards += statCell(data.nonEncourageCount, '非鼓励地图数', '#007aff');
-                cards += statCell(data.encourageBonus, '鼓励类奖金(CPM)', '#34c759');
-                cards += statCell(data.nonEncourageBonus, '非鼓励类奖金(CPM)', '#007aff');
+                cards += statCell(data.encourageBonus, '鼓励类奖金(金额/CPM)', '#34c759');
+                cards += statCell(data.nonEncourageBonus, '非鼓励类奖金(金额/CPM)', '#007aff');
                 cards += '</div>';
-                // 奖金分布条
-                var total = data.encourageCount + data.nonEncourageCount;
-                var encPct = total > 0 ? (data.encourageCount / total * 100).toFixed(1) : 50;
-                var nonPct = total > 0 ? (100 - parseFloat(encPct)).toFixed(1) : 50;
-                cards += '<div style="padding:0 22px 12px;"><div style="font-size:11px;color:#86868b;margin-bottom:4px;">奖金分布</div>';
-                cards += '<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:#f0f0f0;">';
-                cards += '<div style="width:' + encPct + '%;background:#34c759;"></div>';
-                cards += '<div style="width:' + nonPct + '%;background:#007aff;"></div></div>';
-                cards += '<div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:#86868b;">';
-                cards += '<span>🟢 鼓励类 ' + data.encourageCount + '</span><span>🔵 非鼓励类 ' + data.nonEncourageCount + '</span></div></div>';
                 cards += '<div style="padding:10px 22px 14px;display:flex;gap:10px;border-top:1px solid #f5f5f5;">';
                 cards += '<button class="btn btn-primary" style="font-size:13px;padding:6px 16px;background:#5856d6;border-color:#5856d6;" onclick="event.stopPropagation();openReviewDetail(\'batch-finance-1\')">审核详情</button>';
                 cards += '<button class="btn-reject-all" style="font-size:13px;padding:6px 16px;" onclick="event.stopPropagation();rejectBatchLeader()">驳回</button>';
@@ -5426,11 +5370,11 @@ window._calcInitialized = false;
             html += '<div style="font-size:12px;color:#86868b;">' + dateRange + '  发放完成于 ' + yearStr + '-' + doneDate + '</div></div></div>';
             html += '<div style="display:flex;gap:24px;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;">';
             html += '<div><span style="font-size:12px;color:#86868b;">地图数</span><br><strong style="font-size:16px;color:#1d1d1f;">' + data.mapCount + '</strong></div>';
-            html += '<div><span style="font-size:12px;color:#86868b;">奖金总额(CPM)</span><br><strong style="font-size:16px;color:#007aff;">' + data.bonusTotal.replace('¥','') + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">奖金总额(金额/CPM)</span><br><strong style="font-size:16px;color:#007aff;">' + data.bonusTotal.replace('¥','') + '</strong></div>';
             html += '<div><span style="font-size:12px;color:#86868b;">鼓励地图数</span><br><strong style="font-size:16px;color:#1d1d1f;">' + data.encourageCount + '</strong></div>';
             html += '<div><span style="font-size:12px;color:#86868b;">非鼓励地图数</span><br><strong style="font-size:16px;color:#1d1d1f;">' + data.nonEncourageCount + '</strong></div>';
-            html += '<div><span style="font-size:12px;color:#86868b;">鼓励类奖金(CPM)</span><br><strong style="font-size:16px;color:#34c759;">' + data.encourageBonus.replace('¥','') + '</strong></div>';
-            html += '<div><span style="font-size:12px;color:#86868b;">非鼓励类奖金(CPM)</span><br><strong style="font-size:16px;color:#007aff;">' + data.nonEncourageBonus.replace('¥','') + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">鼓励类奖金(金额/CPM)</span><br><strong style="font-size:16px;color:#34c759;">' + data.encourageBonus.replace('¥','') + '</strong></div>';
+            html += '<div><span style="font-size:12px;color:#86868b;">非鼓励类奖金(金额/CPM)</span><br><strong style="font-size:16px;color:#007aff;">' + data.nonEncourageBonus.replace('¥','') + '</strong></div>';
             html += '<div><span style="font-size:12px;color:#86868b;">审批耗时</span><br><strong style="font-size:16px;color:#1d1d1f;">' + (3 + Math.floor(Math.random()*3)) + '天</strong></div></div>';
             // 审批流程进度条（全部完成）
             html += '<div style="margin-top:12px;display:flex;align-items:center;gap:0;">';
@@ -5942,7 +5886,7 @@ window._calcInitialized = false;
                 '【Leader批次审核 - 通过】\n\n' +
                 '即将通过 2026年3月流量激励 的全部 234 张地图。\n\n' +
                 '汇总信息：\n' +
-                '• 奖金总额(CPM)：¥78,500\n' +
+                '• 奖金总额(金额/CPM)：¥78,500\n' +
                 '• 激励用户数：1,138\n' +
                 '• 鼓励地图数：134张 (鼓励类奖金 ¥52,000)\n' +
                 '• 非鼓励地图数：100张 (非鼓励类奖金 ¥26,500)\n\n' +
